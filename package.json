@@ -1,0 +1,49 @@
+{
+  "name": "vtf-cms",
+  "version": "1.0.0",
+  "description": "VTF CMS",
+  "author": "Yuri Loktionov <web@ite-expo.ru>",
+  "private": true,
+  "scripts": {
+    "dev": "backpack dev",
+    "build": "nuxt build && backpack build",
+    "start": "cross-env NODE_ENV=production node build/main.js",
+    "precommit": "npm run lint",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
+  },
+  "dependencies": {
+    "assert-plus": "^1.0.0",
+    "axios": "^0.16.2",
+    "body-parser": "^1.18.2",
+    "bootstrap": "^4.0.0-beta",
+    "bunyan": "^1.8.12",
+    "cross-env": "^5.0.1",
+    "express": "^4.15.3",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.2.1",
+    "nuxt": "^1.0.0-rc3",
+    "passport": "^0.4.0",
+    "passport-azure-ad": "^3.0.8",
+    "popper.js": "^1.12.5",
+    "restify": "^6.0.1",
+    "source-map-support": "^0.4.15",
+    "vee-validate": "^2.0.0-beta.17",
+    "vue-easy-toast": "^1.0.2",
+    "vue-sortable-tree": "^1.0.26",
+    "vue-style-loader": "^3.0.3"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "backpack-core": "^0.4.1",
+    "eslint": "^4.3.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-loader": "^1.9.0",
+    "eslint-plugin-html": "^3.1.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "node-sass": "^4.5.3",
+    "sass-loader": "^6.0.6"
+  }
+}
