@@ -20,6 +20,8 @@ const options = {
 
 if (options.clientID === 'f8a798d8-2314-425e-80d7-5086efb1ae95') {
   console.error("Please update 'options' with the client id (application id) of your application")
+  console.log(host)
+  console.log(port)
 }
 
 let bearerStrategy = new BearerStrategy(options, function (token, done) {
@@ -49,7 +51,7 @@ app.use(bodyParser.json());
 app.use('/api', api)
 
 // Import and Set Nuxt.js options
-let config = require('../nuxt.config.js')
+let config = require('./nuxt.config.js')
 config.dev = !(process.env.NODE_ENV === 'production')
 
 // Init Nuxt.js
