@@ -1,20 +1,17 @@
-import { Router } from 'express'
+const Router = require('express').Router
 
-import users from './users'
-import colors from './colors'
-import pages from './pages'
-import languages from './languages'
-import templates from './templates'
-import site from './site'
+let colors = require('./colors')
+let pages = require('./pages')
+let languages = require('./languages')
+let templates = require('./templates')
+let site = require('./site')
 
 const router = Router()
 
-// Add USERS Routes
-router.use(users)
 router.use(colors)
 router.use(pages)
 router.use(languages)
 router.use(templates)
 router.use(site)
 
-export default router
+module.exports = router

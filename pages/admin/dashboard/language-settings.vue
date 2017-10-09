@@ -9,24 +9,12 @@
       <div class="col-12 col-sm-12">
         <h6 class="text-primary">Added languages</h6>
         <ul class="tag-list">
-          <!--li class="tag-list-item">
-            <span class="tag-list-item-delete">
-              <i class="fa fa-remove"></i>
-            </span>
-            English
-          </li>
-          <li class="tag-list-item">
-            <span class="tag-list-item-delete">
-              <i class="fa fa-remove"></i>
-            </span>
-            Русский
-          </li-->
           <li class="tag-list-item" v-for="language in siteLanguages">{{ language.name }}</li>
         </ul>
       </div>
     </div>
     <hr>
-    <div class="form-horizontal">
+    <form class="form-horizontal" @submit="addLanguageToSiteLanguages(newLanguage)">
       <div class="form-group row">
         <label class="col-12 col-sm-4" for="input-langauge">Additional languages</label>
         <div class="col-12 col-sm-6">
@@ -35,10 +23,10 @@
           </select>
         </div>
         <div class="col-12 col-sm-2">
-          <button @click="addLanguageToSiteLanguages(newLanguage)" class="btn btn-block btn-primary">Add</button>
+          <button type="submit" class="btn btn-block btn-primary">Add</button>
         </div>
       </div>
-    </div>
+    </form>
   </div>
 </template>
 
@@ -62,8 +50,8 @@ export default {
   methods: {
     fetchSiteLanguages: function () {
       let self = this
-      return axios.get('/api/site').then(response => {
-        self.siteLanguages = response.data.languages
+      return axios.get('/api/site/languages').then(response => {
+        self.siteLanguages = response.data
       })
     },
     fetchAllLanguages: function () {
@@ -75,12 +63,12 @@ export default {
     addLanguageToSiteLanguages: function (language) {
       axios({
         method: 'post',
-        url: '/api/languages',
+        url: '/api/site/languages',
         data: language
       }).then(response => {
-        if (response.data.status === 200) {
-          console.log('Succes post request')
-        }
+        /* setTimeout(() => {
+          location.reload(true)
+        }, 1000) */
       }).catch(error => {
         console.log(error)
       })

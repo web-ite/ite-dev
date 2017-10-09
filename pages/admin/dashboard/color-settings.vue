@@ -5,23 +5,30 @@
         <h4 class="page-header">Color Settings</h4>
       </div>
     </div>
-    <form class="form-horizontal w-100" @submit="saveColors(color)">
+     <div v-if="showAlert === 'warning' || showAlert === 'success'" class="row">
+      <div class="col-12">
+        <div class="alert" v-bind:class="{ 'alert-warning': showAlert === 'warning', 'alert-success': showAlert === 'success' }" role="alert">
+          {{ alertText }}
+        </div>
+      </div>
+    </div>
+    <form class="form-horizontal w-100" @submit.prevent="validateColors">
       <div class="form-group row">
         <label class="col-12 col-sm-4" for="input-main-color">Main color:</label>
         <div class="col-12 col-sm-8">
-          <input type="text" name="input-main-color" class="form-control" v-model="color.main" required/>
+          <input type="text" name="input-main-color" class="form-control" v-model="color.main" pattern="^#([A-Fa-f0-9]{6})$"/>
         </div>
       </div>
       <div class="form-group row">
         <label class="col-12 col-sm-4" for="input-secondary-color">Secondary color:</label>
         <div class="col-12 col-sm-8">
-          <input type="text" name="input-secondary-color" class="form-control" v-model="color.secondary" required/>
+          <input type="text" name="input-secondary-color" class="form-control" v-model="color.secondary" pattern="^#([A-Fa-f0-9]{6})$"/>
         </div>
       </div>
       <div class="form-group row">
         <label class="col-12 col-sm-4" for="input-third-color">Third color:</label>
         <div class="col-12 col-sm-8">
-          <input type="text" name="input-third-color" class="form-control" v-model="color.third" required/>
+          <input type="text" name="input-third-color" class="form-control" v-model="color.third" pattern="^#([A-Fa-f0-9]{6})$"/>
         </div>
       </div>
       <div class="form-buttons">
@@ -96,32 +103,56 @@ export default {
   components: {
     LogoComponent: LogoComponent
   },
+  data: function () {
+    return {
+      color: {},
+      showAlert: 'none',
+      alertText: ''
+    }
+  },
   methods: {
+    fetchColors: function () {
+      let self = this
+      return axios.get('/api/site/colors').then(response => {
+        self.color = response.data
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    validateColors: function () {
+      let self = this
+      if ((self.color.main === undefined) || (self.color.main === null) || (self.color.main === '')) {
+        self.showAlert = 'warning'
+        self.alertText = 'The main color field is required'
+      } else if ((self.color.secondary === undefined) || (self.color.secondary === null) || (self.color.secondary === '')) {
+        self.showAlert = 'warning'
+        self.alertText = 'The secondary color field is required'
+      } else if ((self.color.third === undefined) || (self.color.third === null) || (self.color.third === '')) {
+        self.showAlert = 'warning'
+        self.alertText = 'The third color field is required'
+      } else {
+        self.showAlert = 'success'
+        self.alertText = 'Success'
+        self.saveColors(self.color)
+      }
+    },
     saveColors: function (color) {
-      // Save values to style.json
       axios({
         method: 'post',
-        url: '/api/colors',
+        url: '/api/site/colors',
         data: color
       }).then(response => {
-        // Save values to global site.json
-        axios({
-          method: 'post',
-          url: '/api/site/colors',
-          data: color
-        }).then(response => {
-          console.log(response)
-        }).catch(error => {
-          console.log(error)
-        })
+        setTimeout(() => {
+          location.reload(true)
+        }, 1000)
       }).catch(error => {
         console.log(error)
       })
     }
   },
-  async asyncData () {
-    let { data } = await axios.get('/api/colors')
-    return { color: data }
+  created: function () {
+    let self = this
+    self.fetchColors()
   }
 }
 </script>

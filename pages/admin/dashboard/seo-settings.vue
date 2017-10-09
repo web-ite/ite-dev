@@ -5,26 +5,32 @@
         <h4 class="page-header">Site SEO Settings</h4>
       </div>
     </div>
+    <div v-if="showAlert === 'warning' || showAlert === 'success'" class="row">
+      <div class="col-12">
+        <div class="alert" v-bind:class="{ 'alert-warning': showAlert === 'warning', 'alert-success': showAlert === 'success' }" role="alert">
+          {{ alertText }}
+        </div>
+      </div>
+    </div>
     <form class="form-horizontal" @submit.prevent="validateMeta">
-      <div class="form-group row" :class="{ 'has-error': errors.has('meta.title') }">
+      <div class="form-group row">
         <label class="col-12 col-sm-4" for="input-seo-title">Title</label>
         <div class="col-12 col-sm-8">
-          <input type="text" name="input-seo-title" class="form-control" v-model="meta.title" v-validate="'required'"/>
-          <p class="text-danger" v-if="errors.has('meta.title')">{{ errors.first('meta.title') }}</p>
+          <input type="text" name="input-seo-title" class="form-control" v-model="meta.title"/>
+          <!--<p class="text-danger" v-if="error.title">The title is required</p>-->
         </div>
       </div>
-      <div class="form-group row" :class="{ 'has-error': errors.has('meta.description') }">
+      <div class="form-group row">
         <label class="col-12 col-sm-4" for="input-seo-description">Description</label>
         <div class="col-12 col-sm-8">
-          <textarea name="input-seo-description" class="form-control" rows="5" v-model="meta.description" v-validate="'required|max:200'"></textarea>
-          <p class="text-danger" v-if="errors.has('meta.description')">{{ errors.first('meta.description') }}</p>
+          <textarea name="input-seo-description" class="form-control" rows="5" v-model="meta.description"></textarea>
+          <!--<p class="text-danger" v-if="error.description">The description is required. Max length of the description is 200 symbols</p>-->
         </div>
       </div>
-      <div class="form-group row" :class="{ 'has-error': errors.has('meta.keywords') }">
+      <div class="form-group row">
         <label class="col-12 col-sm-4" for="input-seo-keywords">Keywords</label>
         <div class="col-12 col-sm-8">
-          <textarea name="input-seo-keywords" class="form-control" rows="5" v-model="meta.keywords" v-validate="'required'"></textarea>
-          <p class="text-danger" v-if="errors.has('meta.keywords')">{{ errors.first('meta.keywords') }}</p>
+          <textarea name="input-seo-keywords" class="form-control" rows="5" v-model="meta.keywords"></textarea>
         </div>
       </div>
       <div class="form-buttons row">
@@ -57,10 +63,6 @@
 
 <script>
 import axios from '~/plugins/axios'
-import Vue from 'vue'
-import VeeValidate from 'vee-validate'
-
-Vue.use(VeeValidate, { inject: false })
 
 export default {
   layout: 'admin_dashboard',
@@ -71,27 +73,33 @@ export default {
   },
   data: function () {
     return {
-      meta: {}
+      meta: {},
+      showAlert: 'none',
+      alertText: ''
     }
   },
   methods: {
     fetchMeta: function () {
       let self = this
-      return axios.get('/api/site').then(response => {
-        self.meta = response.data.settings.seo
+      return axios.get('/api/site/meta').then(response => {
+        self.meta = response.data
       }).catch(error => {
         console.log(error)
       })
     },
     validateMeta: function () {
       let self = this
-      self.$validator.validateAll().then((result) => {
-        if (result) {
-          alert('From Submitted!')
-          return
-        }
-        alert('Correct them errors!')
-      })
+      if ((self.meta.title === undefined) || (self.meta.title === null) || (self.meta.title === '')) {
+        self.showAlert = 'warning'
+        self.alertText = 'The title field is required'
+      } else if ((self.meta.description === undefined) || (self.meta.description === null) || (self.meta.description === '')) {
+        self.showAlert = 'warning'
+        self.alertText = 'The description field is required'
+      } else {
+        self.showAlert = 'success'
+        self.alertText = 'Success'
+        self.saveMeta(self.meta)
+      }
     },
     saveMeta: function (meta) {
       axios({
@@ -99,14 +107,17 @@ export default {
         url: '/api/site/meta',
         data: meta
       }).then(response => {
-        console.log('Success')
+        setTimeout(() => {
+          location.reload(true)
+        }, 1000)
       }).catch(error => {
         console.log(error)
       })
     }
   },
   created: function () {
-    this.fetchMeta()
+    let self = this
+    self.fetchMeta()
   }
 }
 </script>

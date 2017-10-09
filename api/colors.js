@@ -1,9 +1,8 @@
-import { Router } from 'express'
-import * as fs from 'fs'
+const Router = require('express').Router
+const fs = require('fs')
 
 const router = Router()
 
-/* GET color values form file. */
 router.get('/colors', function (req, res, next) {
   fs.readFile('static/css/style.json', 'utf8', (err, data) => {
     if (err) throw err
@@ -12,7 +11,6 @@ router.get('/colors', function (req, res, next) {
   });
 })
 
-/* Set color values to file. */
 router.post('/colors', function (req, res) {
   fs.writeFile('static/css/style.json', JSON.stringify(req.body), 'utf8', (err, data) => {
     if (err) throw err
@@ -20,4 +18,4 @@ router.post('/colors', function (req, res) {
   });
 })
 
-export default router
+module.exports = router

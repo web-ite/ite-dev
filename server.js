@@ -1,10 +1,11 @@
-import express from 'express'
-import passport from 'passport'
-import { BearerStrategy } from 'passport-azure-ad'
-import { Nuxt, Builder } from 'nuxt'
-import * as bodyParser from 'body-parser'
+const express = require('express')
+const passport = require('passport')
+const BearerStrategy = require('passport-azure-ad').BearerStrategy
+const Nuxt = require('nuxt').Nuxt
+const Builder = require('nuxt').Builder
+const bodyParser = require('body-parser')
 
-import api from './api'
+const api = require('./api')
 
 const app = express()
 const host = process.env.HOST || '0.0.0.0'
@@ -46,8 +47,6 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-// app.get('/admin/*', passport.authenticate('oauth-bearer', {session: false}))
-// Import API Routes
 app.use('/api', api)
 
 // Import and Set Nuxt.js options
@@ -68,4 +67,4 @@ app.use(nuxt.render)
 
 // Listen the server
 app.listen(port, host)
-console.log('Server listening on ' + host + ':' + port) // eslint-disable-line no-console
+console.log('Server listening on ' + host + ':' + port)
