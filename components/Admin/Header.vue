@@ -2,7 +2,7 @@
   <header class="adminHeaderSection">
     <ul class="list-inline ml-auto text-right p-4">
       <li class="list-inline-item">
-        <a href="#" class="btn btn-info">Sign out</a>
+        <nuxt-link to="/" class="btn btn-info">Sign out</nuxt-link>
       </li>
     </ul>
   </header>

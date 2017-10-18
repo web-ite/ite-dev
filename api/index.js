@@ -5,15 +5,17 @@ let pages = require('./pages')
 let languages = require('./languages')
 let templates = require('./templates')
 let site = require('./site')
-// let login = require('./login')
+let header = require('./header')
+let footer = require('./footer')
 
 const router = Router()
 
-// router.use(login)
 router.use(colors)
 router.use(pages)
 router.use(languages)
 router.use(templates)
 router.use(site)
+router.use(header)
+router.use(footer)
 
 module.exports = router

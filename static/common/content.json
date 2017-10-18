@@ -1,0 +1,33 @@
+{
+	"header": {
+		"title": "Международная выставка спортивного оборудования, инвентаря, одежды и аксессуаров",
+		"date": "12 января - 24 декабря",
+		"venue": "Москва, Выставочный центр"
+	},
+	"logotype": "logotype.gif",
+	"footer": {
+		"organizers": [{
+			"companyLogotype": "ite.png",
+			"companyName": "ITE Москва",
+			"companyPhone": "+7 (495) 935-73-50",
+			"companyEmail": "security@ite-expo.ru",
+			"companySite": "www.ite-expo.ru",
+			"order": 1
+		}, {
+			"companyLogotype": "ite.png",
+			"companyName": "ITE Москва",
+			"companyPhone": "+7 (495) 935-73-50",
+			"companyEmail": "security@ite-expo.ru",
+			"companySite": "www.ite-expo.ru",
+			"order": 2
+		}],
+		"supports": [{
+			"supportLogotype": "ite.png",
+			"supportName": "ITE Москва",
+			"supportPhone": "+7 (495) 935-73-50",
+			"supportEmail": "security@ite-expo.ru",
+			"supportSite": "www.ite-expo.ru",
+			"order": 1
+		}]
+	}
+}

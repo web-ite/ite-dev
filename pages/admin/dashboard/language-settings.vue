@@ -7,7 +7,7 @@
     </div>
     <div class="row">
       <div class="col-12 col-sm-12">
-        <h6 class="text-primary">Added languages</h6>
+        <h6 class="text-primary mb-4">Added languages</h6>
         <ul class="tag-list">
           <li class="tag-list-item" v-for="language in siteLanguages">{{ language.name }}</li>
         </ul>

@@ -82,10 +82,43 @@
         </ul>
       </div>
     </div>
-    <div class="footerSection__bottomRow">
+    <div class="footerSection__bottomRow" v-bind:class="{ 'd-relative': admin }">
+      <div v-if="admin" class="d-modal">
+        <button class="btn btn-primary btn-edit-mode" @click="footerBottomRowEdit = true">Edit</button>
+        <b-modal hide-header-close v-model="footerBottomRowEdit" title="Edit footer bootom row">
+          <div role="tablist">
+            <b-card no-body class="mb-1" v-for="organizer in organizers" :key="organizer.order">
+              <b-card-header header-tag="header" class="p-3 bg-dark text-white" role="tab" v-b-toggle="'organizer.companyName'">
+                {{ organizer.companyName }}
+              </b-card-header>
+              <b-collapse :id="organizer.companyName" accordion="my-accordion" role="tabpanel">
+                <b-card-body>
+                  <b-form>
+                    <b-form-group id="input-company-name-group" label="Company name:" label-for="input-company-name">
+                      <b-form-input id="input-company-name" type="text" v-model="organizer.companyName"></b-form-input>
+                    </b-form-group>
+                    <b-form-group id="input-company-phone-group" label="Company phone:" label-for="input-company-phone">
+                      <b-form-input id="input-company-phone" type="text" v-model="organizer.companyPhone"></b-form-input>
+                    </b-form-group>
+                    <b-form-group id="input-company-email-group" label="Company email:" label-for="input-company-email">
+                      <b-form-input id="input-company-email" type="text" v-model="organizer.companyEmail"></b-form-input>
+                    </b-form-group>
+                    <b-form-group id="input-company-site-group" label="Company site:" label-for="input-company-site">
+                      <b-form-input id="input-company-site" type="text" v-model="organizer.companySite"></b-form-input>
+                    </b-form-group>
+                    <b-form-group>
+                      <b-btn @click="saveOrganizers"></b-btn>
+                    </b-form-group>
+                  </b-form>
+                </b-card-body>
+              </b-collapse>
+            </b-card>
+          </div>
+        </b-modal>
+      </div>
       <div class="footerSection__organization">
         <h6>Организатор выставки</h6>
-        <ul class="list-inline">
+        <ul class="list-inline d-flex">
           <li class="list-inline-item">
             <img class="w-" src="~/static/images/ite.png" />
           </li>
@@ -106,19 +139,19 @@
       <div class="footerSection__social">
         <ul class="list-inline social">
           <li class="list-inline-item">
-            <a href="http://www.facebook.com/" target="_blank" rel="nofollow" style="background-image:url(~/static/images/facebook.png);">&nbsp;</a>
+            <a href="http://www.facebook.com/" target="_blank" rel="nofollow" style="background-image:url('/images/facebook.png');">&nbsp;</a>
           </li>
           <li class="list-inline-item">
-            <a href="http://www.linkedin.com/" target="_blank" rel="nofollow" style="background-image:url(~/static/images/linkedin.png);">&nbsp;</a>
+            <a href="http://www.linkedin.com/" target="_blank" rel="nofollow" style="background-image:url('/images/linkedin.png');">&nbsp;</a>
           </li>
           <li class="list-inline-item">
-            <a href="http://www.vk.com/" target="_blank" rel="nofollow" style="background-image:url(~/static/images/vkontakte.png);">&nbsp;</a>
+            <a href="http://www.vk.com/" target="_blank" rel="nofollow" style="background-image:url('/images/vkontakte.png');">&nbsp;</a>
           </li>
           <li class="list-inline-item">
-            <a href="https://twitter.com/" target="_blank" rel="nofollow" style="background-image:url(~/static/images/twitter.png);">&nbsp;</a>
+            <a href="https://twitter.com/" target="_blank" rel="nofollow" style="background-image:url('/images/twitter.png');">&nbsp;</a>
           </li>
           <li class="list-inline-item">
-            <a href="https://instagram.com/" target="_blank" rel="nofollow" style="background-image:url(/static/images/instagram.png)">&nbsp;</a>
+            <a href="https://instagram.com/" target="_blank" rel="nofollow" style="background-image:url('/images/instagram.png')">&nbsp;</a>
           </li>
         </ul>
       </div>
@@ -126,11 +159,58 @@
   </footer>
 </template>
 
+<script>
+  import axios from '~/plugins/axios'
+  
+  export default {
+    data: function () {
+      return {
+        admin: true,
+        organizers: [],
+        supports: [],
+        footerBottomRowEdit: false,
+        footerBottomRowEditAlertType: 'info',
+        footerBottomRowEditAlertText: 'Choose image 270x90 px'
+      }
+    },
+    methods: {
+      saveOrganizers: function () {
+        let self = this
+        axios({
+          method: 'post',
+          url: '/api/content/footer/organizers',
+          data: self.organizers
+        }).then((response) => {
+          console.log(response)
+        }).catch((error) => {
+          console.log(error)
+        })
+      },
+      fetchData: function () {
+        let self = this
+        axios({
+          method: 'get',
+          url: '/api/content/footer'
+        }).then((response) => {
+          self.organizers = response.data.organizers
+          self.supports = response.data.supports
+        }).catch((error) => {
+          console.log(error)
+        })
+      }
+    },
+    created: function () {
+      let self = this
+      self.fetchData()
+    }
+  }
+</script>
+
 <style>
   .footerSection
   {
     text-align: left;
-    padding: 0;
+    padding: 0 15px;
     border: none;
     margin-bottom: 20px;
   }

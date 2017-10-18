@@ -5,6 +5,7 @@ const Builder = require('nuxt').Builder
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const expressSession = require('express-session')
+const helmet = require('helmet')
 
 const passport = require('passport');                                 // npm install passport --save
 const oauthStrategy = require('passport-azure-ad-oauth2').Strategy;   // npm install passport-azure-ad-oauth2 --save
@@ -179,7 +180,9 @@ app.use(passport.session())
 // set the passport strategy to use
 passport.use(strategy)
 
+app.disable('x-powered-by')
 app.set('port', port)
+app.use(helmet())
 app.use(bodyParser.urlencoded({ extended : true }))
 app.use(bodyParser.json())
 app.use(cookieParser())
@@ -193,7 +196,7 @@ app.use(expressSession({
 app.use('/api', api)
 
 
-app.use('/login', passport.authorize)
+/* app.use('/login', passport.authorize)
 app.get('https://ite-dev-vtf.azurewebsites.net/.auth/login/aad/callback', passport.login(), function(req, res) {
   login(req, res)
 })
@@ -202,7 +205,7 @@ app.get('/login', login)
 
 function login (req, res) {
   res.redirect('/')
-}
+} */
 
 // Give nuxt middleware to express
 app.use(nuxt.render)

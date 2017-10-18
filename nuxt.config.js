@@ -16,18 +16,21 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+  plugins: [
+    { src: './plugins/bootstrap-vue', ssr: false }
+  ],
   /*
   ** Add axios globally
   */
   build: {
-    vendor: ['axios', 'jquery', 'bootstrap', 'vee-validate'],
+    vendor: ['axios', 'bootstrap-vue'],
     plugins: [
       // set shortcuts as global for bootstrap
-      new webpack.ProvidePlugin({
+      /* new webpack.ProvidePlugin({
         $: 'jquery',
         jQuery: 'jquery',
         'window.jQuery': 'jquery'
-      })
+      }) */
     ],
     /*
     ** Run ESLINT on save
@@ -53,6 +56,7 @@ module.exports = {
   css: [
     'bootstrap/dist/css/bootstrap.min.css',
     'font-awesome/css/font-awesome.min.css',
-    '~/assets/css/main.css'
+    '~/assets/css/main.css',
+    '~/assets/css/colors.css'
   ]
 }

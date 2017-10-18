@@ -36,7 +36,7 @@ router.post('/site/languages', function (req, res, next) {
     } else {
       let result = JSON.parse(data)
       result.languages.push(req.body)
-      fs.writeFile('static/common/site.json', JSON.stringify(result), 'utf-8', (err, data) => {
+      fs.writeFile('static/common/site.json', JSON.stringify(result), 'utf8', (err, data) => {
         if (err) {
           console.log(err)
           let date = new Date()
@@ -87,7 +87,7 @@ router.post('/site/meta', function (req, res, next) {
     } else {
       let result = JSON.parse(data)
       result.settings.seo = req.body
-      fs.writeFile('static/common/site.json', JSON.stringify(result), 'utf-8', (err, data) => {
+      fs.writeFile('static/common/site.json', JSON.stringify(result), 'utf8', (err, data) => {
         if (err) {
           console.log(err)
           let date = new Date()
@@ -138,7 +138,7 @@ router.post('/site/colors', function (req, res, next) {
     } else {
       let result = JSON.parse(data)
       result.settings.colors = req.body
-      fs.writeFile('static/common/site.json', JSON.stringify(result), 'utf-8', (err, data) => {
+      fs.writeFile('static/common/site.json', JSON.stringify(result), 'utf8', (err, data) => {
         if (err) {
           console.log(err)
           let date = new Date()
@@ -149,7 +149,21 @@ router.post('/site/colors', function (req, res, next) {
           })
           res.status(503).send('Could not write to file site.json colors data.')
         } else {
-          res.status(200).send({'status': 200})
+          let content = '.primary-text{color:' + req.body.main + ';}.secondary-text{color:' + req.body.secondary + ';}'
+          fs.writeFile('assets/css/colors.css', content, 'utf8', (err, data) => {
+            if (err) {
+              console.log(err)
+              let date = new Date()
+              fs.appendFile('static/error-log.txt', '[ ' + date + ' ] Error: ' + err + '\n', 'utf8', (err, data) => {
+                if (err) {
+                  console.error(err)
+                }
+              })
+              res.status(503).send('Could not write to file colors.css colors data.')
+            } else {
+              res.status(200).send({'status': 200})
+            }
+          })
         }
       })
     }
@@ -189,7 +203,7 @@ router.post('/site/counters', function (req, res, next) {
     } else {
       let result = JSON.parse(data)
       result.counters = req.body
-      fs.writeFile('static/common/site.json', JSON.stringify(result), 'utf-8', (err, data) => {
+      fs.writeFile('static/common/site.json', JSON.stringify(result), 'utf8', (err, data) => {
         if (err) {
           console.log(err)
           let date = new Date()

@@ -1,6 +1,6 @@
 <template>
-  <nav class="navbar navbar-light">
-    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+  <nav class="navbar navbar-light row">
+    <ul class="navbar-nav mt-2 mt-lg-0 col-sm-8 offset-sm-4">
       <li class="nav-item dropdown">
         <a class="nav-link" href="#" id="navlink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">О выставке</a>
         <div class="dropdown-menu" aria-labelledby="navlink1">
@@ -55,7 +55,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-left: 33.333%;
-    width: 64.666%;
+    padding-left: 15px;
+    margin-left: 33.33333%;
   }
 </style>

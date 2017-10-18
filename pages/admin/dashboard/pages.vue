@@ -11,9 +11,9 @@
           <sortable-tree :data="structure">
             <template scope="{item}">
               <!--<i class="fa fa-plus-square-o text-info pages__collapseBtn"></i>-->
-              <span class="pages__title">{{ item.name }}</span>
               <span v-on:click="editPage(item)" class="ml-2 fa fa-pencil text-primary pages__editBtn"></span>
               <span @click="addPage(item)"class="ml-2 fa fa-plus text-success pages__addBtn"></span>
+              <span class="pages__title" :title="item.name">{{ item.name }}</span>
             </template>
           </sortable-tree>
         </div>
@@ -65,6 +65,12 @@
               <div class="col-12 col-sm-8">
                 <input type="number" name="input-page-order" class="form-control" v-model="page.order"/>
               </div>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value="">
+                Hide page
+              </label>
             </div>
             <div class="form-buttons">
               <button v-if="formAddMode" @click="createPage(page)" class="btn btn-primary float-right">Create page</button> 
@@ -210,5 +216,12 @@ export default {
   .pages__title
   {
     margin-left: 10px;  
+    white-space: nowrap;
+  }
+  .pages__editBtn,
+  .pages__addBtn
+  {
+    display: inline;
+    cursor: pointer;
   }
 </style>

@@ -10,12 +10,37 @@ body
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 *, *:before, *:after
 {
   box-sizing: border-box;
   margin: 0;
+}
+
+.d-relative
+{
+  position: relative;
+}
+
+.d-modal
+{
+  display: none;
+}
+
+.d-relative:hover .d-modal
+{
+  position: absolute;
+  top: 0;
+  left: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(100% - 30px);
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 /* Font */
@@ -47,7 +72,6 @@ a
 a:hover,
 a:focus
 {
-  color: inherit;
   text-decoration: none;
 }
 
@@ -166,6 +190,7 @@ a:focus
   border-radius: .25rem;
   border: 1px solid #e2e2e2;
   background-color: #e5e5e5;
+  margin-bottom: .5rem;
 }
 
 .tag-list-item:hover,
@@ -188,6 +213,27 @@ a:focus
 }
 
 /* Buttons */
+
+.btn-edit-global
+{
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.btn-edit-mode
+{
+  border: none;
+  background-color: #fff;
+  color: #000;
+}
+
+.btn-edit-mode:hover,
+.btn-edit-mode:focus
+{
+  background-color: #ee7427;
+  color: #fff;
+}
 
 .button
 {
@@ -308,4 +354,31 @@ a:focus
   border: 1px solid #e5e5e5;
   border-radius: 2px;
   padding: 5px 10px;
+}
+
+/* Navigation */
+
+.navbar-nav .nav-item
+{
+  /* min-width: 20%; */
+}
+
+.navbar-nav .nav-item .nav-link
+{
+  color: #349b1d;
+  font-weight: 600;
+  padding: 7px 15px;
+  text-align: center;
+}
+
+.navbar-nav .nav-item .nav-link:not(:last-child)
+{
+  border-left: 1px solid #349b1d;
+}
+
+.navbar-nav .nav-item .nav-link:hover,
+.navbar-nav .nav-item .nav-link:focus
+{
+  background-color: #349b1d;
+  color: #fff;
 }
