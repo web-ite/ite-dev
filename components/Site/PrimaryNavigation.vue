@@ -54,7 +54,6 @@
   {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     padding-left: 15px;
     margin-left: 33.33333%;
   }

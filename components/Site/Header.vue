@@ -1,6 +1,9 @@
 <template>
   <header class="headerSection">
-    <button class="btn btn-secondary btn-edit-global" @click="admin = !admin"><i class="fa fa-edit"></i></button>
+    <div class="edit-section">
+      <button class="btn btn-secondary btn-edit-global" @click="admin = !admin"><i class="fa fa-edit"></i></button>
+      <a href="/admin" class="btn btn-secondary btn-edit-global"><i class="fa fa-user"></i></a>
+    </div>
     <div class="container">
       <div class="siteSwitchSection btn-group">
         <a href="#" class="siteSwitchSection__btn siteSwitchSection__btn-blue">Sport World Krasnodar</a>
@@ -19,48 +22,59 @@
       </div>
       <div class="exhibitionInfoSection row">
         <div class="col-12 col-sm-4 d-flex align-items-center" v-bind:class="{ 'd-relative': admin }">
-          <logo-component />
+          <!-- Exhibition logotype -->
+          <img class="exhibitionLogotype" :src="`/images/${ logotype }`">
+          <!-- Logotype editor -->
           <div v-if="admin" class="d-modal">
             <button class="btn btn-primary btn-edit-mode" @click="headerExhibitionLogotype = true">Edit</button>
             <b-modal hide-header-close v-model="headerExhibitionLogotype" title="Edit exhibition logotype">
               <b-alert :variant="headerExhibitionLogotypeAlertType" show>{{ headerExhibitionLogotypeAlertText }}</b-alert>
               <b-row>
-                <b-col cols="12" sm="6">
-                  <img class="exhibitionLogotype img-fluid" :src="`/images/${ logotype }`">
-                </b-col>
-                <b-col cols="12" sm="6">
-                  <b-form-file id="input-exhibition-logotype" v-model="newLogotype" choose-label="Choose"></b-form-file>
+                <b-col cols="12">
+                  <div class="dropbox">
+                    <b-form-file id="inputNewLogotype" v-model="newLogotype" @change="onNewLogotypeChange"></b-form-file>
+                    <p v-if="isInitial">Drag your file(s) here to begin or click to browse</p>
+                    <img v-if="!isInitial" :src="newLogotypePreview" />
+                    <a v-if="!isInitial" @click="removeNewLogotype" class="remove-btn"><i class="fa fa-trash"></i></a>
+                  </div>
                 </b-col>
               </b-row>
               <template slot="modal-footer">
                 <b-button @click="saveExhibitionLogotype" variant="primary">Submit</b-button>
-                <b-button @click="headerExhibitionLogotype = false" variant="secondary">Cancel</b-button>
               </template>
             </b-modal>
           </div>
+          <!-- End of logotype editor-->
         </div>
         <div class="col-12 col-sm-8" v-bind:class="{ 'd-relative': admin }">
-          <exhibition-title-component />
-          <exhibition-date-venue-component />
+          <!-- Exhibition title -->
+          <p class="exhibitionTitle text-center text-sm-left primary-text">{{ title }}</p>
+          <!-- Exhibition date and venue -->
+          <p class="exhibitionDateVenue text-center text-sm-left">
+            <span class="exhibitionDateVenue__date secondary-text">{{ date }}</span>
+            <span>•</span>
+            <span class="exhibitionDateVenue__venue">{{ venue }}</span>
+          </p>
+          <!-- Title, date and venue editor -->
           <div v-if="admin" class="d-modal">
-            <button class="btn btn-primary btn-edit-mode" @click="headerExhibitionText = true">Edit</button>
+            <button class="btn btn-primary btn-edit-mode" :class="{ 'active': headerExhibitionText === true }" @click="headerExhibitionText = true">Edit</button>
             <b-modal hide-header-close v-model="headerExhibitionText" title="Edit exhibition text information">
               <b-alert :variant="headerExhibitionTextAlertType" show>{{ headerExhibitionTextAlertText }}</b-alert>
               <b-form-group id="inputTitleGroup" label="Exhibition Title:" label-for="input-exhibition-title">
-                <b-form-textarea id="input-exhibition-title" v-model="title" :rows="2" :max-rows="2" required></b-form-textarea>
+                <b-form-textarea id="input-exhibition-title" v-model="title" :rows="3" :max-rows="3" required></b-form-textarea>
               </b-form-group>
               <b-form-group id="inputDateGroup" label="Exhibition Date:" label-for="input-exhibition-date">
                 <b-form-textarea id="input-exhibition-date" v-model="date" :rows="2" :max-rows="2" required></b-form-textarea>
               </b-form-group>
               <b-form-group id="inputVenueGroup" label="Exhibition Venue:" label-for="input-exhibition-venue">
-                <b-form-textarea id="input-exhibition-venue" v-model="venue" :rows="2" :max-rows="2" required></b-form-textarea>
+                <b-form-textarea id="input-exhibition-venue" v-model="venue" :rows="3" :max-rows="3" required></b-form-textarea>
               </b-form-group>
               <template slot="modal-footer">
                 <b-button @click="saveExhibitionText" variant="primary">Submit</b-button>
-                <b-button @click="headerExhibitionText = false" variant="secondary">Cancel</b-button>
               </template>
             </b-modal>
           </div>
+          <!-- End of title, date and venue editor -->
         </div>
       </div>
       <primary-navigation-component />
@@ -70,16 +84,10 @@
 
 <script>
   import axios from '~/plugins/axios'
-  import LogoComponent from '~/components/Site/Exhibition/Logo.vue'
-  import ExhibitionTitleComponent from '~/components/Site/Exhibition/ExhibitionTitle.vue'
-  import ExhibitionDateVenueComponent from '~/components/Site/Exhibition/ExhibitionDateVenue.vue'
   import PrimaryNavigationComponent from '~/components/Site/PrimaryNavigation.vue'
   
   export default {
     components: {
-      LogoComponent,
-      ExhibitionTitleComponent,
-      ExhibitionDateVenueComponent,
       PrimaryNavigationComponent
     },
     data: function () {
@@ -87,6 +95,8 @@
         admin: true,
         logotype: '',
         newLogotype: '',
+        newLogotypePreview: '',
+        isInitial: true,
         title: '',
         date: '',
         venue: '',
@@ -123,6 +133,29 @@
           self.headerExhibitionTextAlertText = 'Data was not saved. See error in console.'
           console.log(error)
         })
+      },
+      onNewLogotypeChange: function (e) {
+        let files = e.target.files || e.dataTransfer.files
+        if (!files.length) {
+          return
+        }
+        this.createNewLogotypePreview(files[0])
+      },
+      createNewLogotypePreview: function (file) {
+        // let newLogotypePreview = new Image()
+        let reader = new FileReader()
+        let self = this
+        self.isInitial = false
+        reader.onload = (e) => {
+          self.newLogotypePreview = e.target.result
+        }
+        reader.readAsDataURL(file)
+      },
+      removeNewLogotype: function (e) {
+        let self = this
+        self.newLogotypePreview = ''
+        self.newLogotype = ''
+        self.isInitial = true
       },
       saveExhibitionLogotype: function (e) {
         let self = this
@@ -166,19 +199,11 @@
         }).then((response) => {
           self.logotype = response.data
         })
-      },
-      /* Need to rewrite after authorization */
-      getCookies: function () {
-        let self = this
-        self.admin = true
-        if (self.admin) {
-          self.fetchData()
-        }
       }
     },
     created: function () {
       let self = this
-      self.getCookies()
+      self.fetchData()
     }
   }
 </script>
@@ -220,6 +245,52 @@
     text-align: right;
     border-bottom: 4px solid #349b1d;
     margin-bottom: 20px;
+  }
+  .dropbox
+  {
+    outline: 2px dashed grey;
+    outline-offset: -10px;
+    border-radius: .25rem;
+    background: lightcyan;
+    color: dimgray;
+    padding: 10px 10px;
+    min-height: 200px;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items:  center;
+  }
+  .dropbox:hover
+  {
+    background: lightblue;
+  }
+  .dropbox .custom-file
+  {
+    width: 100%;
+    height: 200px;
+  }
+  .dropbox #inputNewLogotype
+  {
+    opacity: 0;
+    width: 100%;
+    height: 200px;
+    position: absolute;
+    cursor: pointer;
+  }
+  .dropbox  #inputNewLogotype + span
+  {
+    display: none;
+  }
+  .dropbox p
+  {
+    position: absolute;
+    z-index: 999;
+    top: 35%;
+    left: 30%;
+    width: 40%;
+    text-align: center;
+    margin: 0;
   }
   @media(max-width: 456px)
   {
