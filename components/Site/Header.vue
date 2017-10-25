@@ -23,7 +23,7 @@
       <div class="exhibitionInfoSection row">
         <div class="col-12 col-sm-4 d-flex align-items-center" v-bind:class="{ 'd-relative': admin }">
           <!-- Exhibition logotype -->
-          <img class="exhibitionLogotype" :src="`/images/${ logotype }`">
+          <img class="exhibitionLogotype" :src="`images/${logotype}`" />
           <!-- Logotype editor -->
           <div v-if="admin" class="d-modal">
             <button class="btn btn-primary btn-edit-mode" @click="headerExhibitionLogotype = true">Edit</button>
@@ -50,11 +50,11 @@
           <!-- Exhibition title -->
           <p class="exhibitionTitle text-center text-sm-left primary-text">{{ title }}</p>
           <!-- Exhibition date and venue -->
-          <p class="exhibitionDateVenue text-center text-sm-left">
+          <div class="exhibitionDateVenue text-center text-sm-left">
             <span class="exhibitionDateVenue__date secondary-text">{{ date }}</span>
             <span>•</span>
             <span class="exhibitionDateVenue__venue">{{ venue }}</span>
-          </p>
+          </div>
           <!-- Title, date and venue editor -->
           <div v-if="admin" class="d-modal">
             <button class="btn btn-primary btn-edit-mode" :class="{ 'active': headerExhibitionText === true }" @click="headerExhibitionText = true">Edit</button>

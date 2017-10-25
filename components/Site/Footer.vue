@@ -129,7 +129,7 @@
           <h6>Организатор выставки</h6>
           <ul class="list-inline d-flex">
             <li class="list-inline-item">
-              <img class="w-" src="~/static/images/ite.png" />
+              <img src="~/static/images/ite.png" />
             </li>
             <li class="list-inline-item">
               ITE Москва<br />
@@ -142,7 +142,7 @@
         <div class="footerSection__support">
           <h6>При поддержке</h6>
           <a href="http://www.ufi.org/" rel="nofollow" target="_blank">
-            <img src="~/static/images/ufi.png">
+            <img src="~/static/images/ufi.png" />
           </a>
         </div>
         <div class="footerSection__social">

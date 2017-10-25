@@ -18,21 +18,14 @@ module.exports = {
     ]
   },
   plugins: [
-    { src: './plugins/bootstrap-vue', ssr: false }
+    { src: './plugins/bootstrap-vue', ssr: true }
   ],
   /*
   ** Add axios globally
   */
   build: {
     vendor: ['axios', 'bootstrap-vue'],
-    plugins: [
-      // set shortcuts as global for bootstrap
-      /* new webpack.ProvidePlugin({
-        $: 'jquery',
-        jQuery: 'jquery',
-        'window.jQuery': 'jquery'
-      }) */
-    ],
+    plugins: [],
     /*
     ** Run ESLINT on save
     */
