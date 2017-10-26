@@ -88,13 +88,14 @@
     </div>
     <div class="row">
       <div class="footerSection__bottomRow col-12" v-bind:class="{ 'd-relative': $store.state.admin }">
+        
         <!-- Footer bottom row organizers -->       
         <div class="footerSection__organisers">
           <div class="organiser" v-for="organiser in organisers">
             <h6>Организатор выставки</h6>
             <ul class="list-inline d-flex">
               <li class="list-inline-item">
-                <img :src="`images/${organiser.companyLogotype}`" />
+                <img :src="`images/footer/${organiser.companyLogotype}`" />
               </li>
               <li class="list-inline-item">
                 {{ organiser.companyName }}<br />
@@ -105,12 +106,13 @@
             </ul>
           </div>
         </div>
+        
         <!-- Footer bottom row supports -->
         <div class="footerSection__supports">
           <div class="support" v-for="support in supports">
             <h6>При поддержке</h6>
             <a href="http://www.ufi.org/" rel="nofollow" target="_blank">
-              <img :src="`images/${support.companyLogotype}`" />
+              <img :src="`images/footer/${support.companyLogotype}`" />
             </a>
           </div>
         </div>
@@ -133,6 +135,7 @@
             </li>
           </ul>
         </div>
+        
         <!-- Footer bottom row editor -->
         <div v-if="$store.state.admin" class="d-modal">
           
@@ -140,6 +143,7 @@
           
           <b-modal hide-header-close v-model="footerBottomRowEdit" title="Edit footer bootom row">
             <div role="tablist">
+              
               <b-card no-body class="mb-2">
                 <b-card-header header-tag="header" class="p-3 bg-info text-white header-title" role="tab" v-b-toggle.exhibitionOrganisers>
                   <div class="header-left">
@@ -155,45 +159,28 @@
                     <div class="header-title exhibitionOrganiser" v-for="organiser in organisers">
                       <div class="header-left">{{ organiser.companyName }}</div>
                       <div class="header-right">
-                        <i class="fa fa-edit"></i>
+                        <i class="fa fa-edit" @click="editOrganiser(organiser.$index)"></i>
                         <i class="fa fa-arrow-down"></i>
                         <i class="fa fa-arrow-up"></i>
                       </div>
                     </div>
                     
-                    <!--<div class="exhibitionOrganiser" v-for="organiser in organisers">
-                      <b-form>
-                        <b-form-group id="input-company-logotype-group" label="Logotype:" label-for="input-company-logotype">
-                          <img v-if="organiser.companyLogotype && organiser.companyLogotype !== ''" :src="`images/${organiser.companyLogotype}`" /><br/>
-                          <a v-if="organiser.companyLogotype && organiser.companyLogotype !== ''" class="btn btn-primary" @click="chooseNewLogotype(organiser)">Choose another file</a>
-                          <div v-if="!organiser.companyLogotype && organiser.companyLogotype === ''" class="dropbox">
-                            <b-form-file class="inputNewLogotype" v-model="organiser.companyLogotype" @change="onNewLogotypeChange(organiser.companyLogotype)"></b-form-file>
-                            <p>Drag your file(s) here to begin or click to browse</p>
-                          </div>
-                        </b-form-group>
-                        <b-form-group id="input-company-name-group" label="Company name:" label-for="input-company-name">
-                          <b-form-input id="input-company-name" type="text" v-model="organiser.companyName"></b-form-input>
-                        </b-form-group>
-                        <b-form-group id="input-company-phone-group" label="Company phone:" label-for="input-company-phone">
-                          <b-form-input id="input-company-phone" type="text" v-model="organiser.companyPhone"></b-form-input>
-                        </b-form-group>
-                        <b-form-group id="input-company-email-group" label="Company email:" label-for="input-company-email">
-                          <b-form-input id="input-company-email" type="text" v-model="organiser.companyEmail"></b-form-input>
-                        </b-form-group>
-                        <b-form-group id="input-company-site-group" label="Company site:" label-for="input-company-site">
-                          <b-form-input id="input-company-site" type="text" v-model="organiser.companySite"></b-form-input>
-                        </b-form-group>
-                      </b-form>
-                    </div>-->
                   </b-card-body>
                 </b-collapse>
               </b-card>
+              
               <b-card no-body class="mb-2">
-                <b-card-header header-tag="header" class="p-3 bg-info text-white" role="tab" v-b-toggle.exhibitionSupports>
-                  Exhibition supports
+                <b-card-header header-tag="header" class="p-3 bg-info text-white header-title" role="tab" v-b-toggle.exhibitionSupports>
+                  <div class="header-left">
+                    Exhibition supports
+                  </div>
+                  <div class="header-right">
+                    <i class="fa fa-plus"></i>
+                  </div>
                 </b-card-header>
                 <b-collapse id="exhibitionSupports" visible accordion="my-accordion" role="tabpanel">
                   <b-card-body>
+                  
                     <!--<div class="exhibitionSupport" v-for="support in supports">
                       <b-form>
                         <b-form-group id="input-support-logotype-group" label="Logotype:" label-for="input-support-logotype">
@@ -218,13 +205,14 @@
                         </b-form-group>
                       </b-form>
                     </div>-->
+                    
                   </b-card-body>
                 </b-collapse>
               </b-card>
             </div>
             
             <template slot="modal-footer">
-              <b-button @click="saveData" variant="primary">Submit</b-button>
+              <b-button @click="footerBottomRowEdit = false" variant="secondary">Close</b-button>
             </template>
             
           </b-modal>
@@ -238,7 +226,6 @@
                   <img v-if="!organiserCard.isInitial" :src="organiserCard.companyLogotypePreview" class="logotype-preview"/>
                   <a v-if="!organiserCard.isInitial" @click="organiserCard__removeNewLogotype" class="remove-btn"><i class="fa fa-trash"></i></a>
                 </div>
-                <b-button @click="organiserCardSave" variant="primary">Upload</b-button>
               </b-col>
             </b-row>
             <b-row>
@@ -257,6 +244,9 @@
                 </b-form-group>
               </b-col>
             </b-row>
+            <template slot="modal-footer">
+              <b-button @click="organiserCard__save" variant="primary">Add</b-button>
+            </template>
           </b-modal>
           
         </div>
@@ -296,9 +286,6 @@
           companySite: ''
         }
       },
-      organiserCard__chooseNewLogotype: function (organiser) {
-        organiser.companyLogotype = ''
-      },
       organiserCard__onNewLogotypeChange: function (e) {
         let files = e.target.files || e.dataTransfer.files
         if (!files.length) {
@@ -307,24 +294,56 @@
         this.organiserCard__createNewLogotype(files[0])
       },
       organiserCard__createNewLogotype: function (file) {
+        let self = this
         let reader = new FileReader()
         self.organiserCard.isInitial = false
         reader.onload = (e) => {
-          self.organiserCard.companyLogotype = e.target.result
+          self.organiserCard.companyLogotypePreview = e.target.result
         }
         reader.readAsDataURL(file)
       },
-      saveData: function () {
+      organiserCard__removeNewLogotype: function () {
         let self = this
+        self.organiserCard.companyLogotype = ''
+        self.organiserCard.companyLogotypePreview = ''
+        self.organiserCard.isInitial = true
+      },
+      organiserCard__save: function () {
+        let self = this
+        let data = new FormData()
+        data.append('image', self.organiserCard.companyLogotype)
+        data.append('name', self.organiserCard.companyName)
+        data.append('phone', self.organiserCard.companyPhone)
+        data.append('email', self.organiserCard.companyEmail)
+        data.append('site', self.organiserCard.companySite)
         axios({
           method: 'post',
-          url: '/api/content/footer',
-          data: {'organisers': self.organisers, 'supports': self.supports}
+          url: '/api/content/footer/organisers',
+          data: data,
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
         }).then((response) => {
           console.log(response)
+          self.fetchData()
+          self.$refs.organiserCardModal.hide()
         }).catch((error) => {
           console.log(error)
         })
+      },
+      editOrganiser: function (index) {
+        let self = this
+        self.$refs.organiserCardModal.show()
+        self.organiserCard = {
+          title: 'Edit organiser',
+          isInitial: false,
+          companyLogotype: '',
+          companyLogotypePreview: self.organiser[index].companyLogotype,
+          companyName: self.organiser[index].companyName,
+          companyPhone: self.organiser[index].companyPhone,
+          companyEmail: self.organiser[index].companyEmail,
+          companySite: self.organiser[index].companySite
+        }
       },
       fetchData: function () {
         let self = this

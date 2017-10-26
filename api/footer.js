@@ -83,7 +83,8 @@ router.get('/content/footer/organisers', function (req, res) {
     if (err) {
       console.error(err)
       let date = new Date()
-      fs.appendFile('static/error-log.txt', '[ ' + date + ' ] Error: ' + err + '\n', 'utf8', (err, data) => {
+      let errText = '[' + date + '] Error: ' + err + '\n'
+      fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
         if (err) {
           console.error(err)
         }
@@ -99,73 +100,65 @@ router.get('/content/footer/organisers', function (req, res) {
 
 // Post organizers
 
-/* router.post('/content/footer/organizers', function (req, res) {
-  fs.readFile('static/common/content.json', 'utf8', (err, data) => {
+router.post('/content/footer/organisers', function (req, res) {
+  upload(req, res, (err) => {
     if (err) {
       console.error(err)
       let date = new Date()
-      fs.appendFile('static/error-log.txt', '[ ' + date + ' ] Error: ' + err + '\n', 'utf8', (err, data) => {
+      let errText = '[' + date + '] Error: ' + err + '\n'
+      fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
         if (err) {
           console.error(err)
         }
       })
-      res.status(503).send('Could not read file content.json and fetch footer organizers data.')
+      res.status(503).send('Could not upload new organiser logotype data.')
     } else {
-      let result = JSON.parse(data)
-      result.header.title = req.body
-      fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf-8', (err, data) => {
+      console.log(req)
+      let filename = req.file.originalname
+      let name = req.body.name
+      let phone = req.body.phone
+      let email = req.body.email
+      let site = req.body.site
+      fs.readFile('static/common/content.json', 'utf8', (err, data) => {
         if (err) {
-          console.log(err)
+          console.error(err)
           let date = new Date()
-          fs.appendFile('static/error-log.txt', '[ ' + date + ' ] Error: ' + err + '\n', 'utf8', (err, data) => {
+          let errText = '[' + date + '] Error: ' + err + '\n'
+          fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
             if (err) {
               console.error(err)
             }
           })
-          res.status(503).send('Could not write to file content.json header title data.')
+          res.status(503).send('Could not read file content.json and fetch footer organisers data.')
         } else {
-          res.status(200).send({'status': 200})
+          let result = JSON.parse(data)
+          result.footer.organisers.push({
+            companyLogotype: filename,
+            companyName: name,
+            companyPhone: phone,
+            companyEmail: email,
+            companySite: site
+          })
+          fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf-8', (err, data) => {
+            if (err) {
+              console.log(err)
+              let date = new Date()
+              let errText = '[' + date + '] Error: ' + err + '\n'
+              fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
+                if (err) {
+                  console.error(err)
+                }
+              })
+              res.status(503).send('Could not write to file content.json footer new organiser data.')
+            } else {
+              res.status(200).send({'status': 200})
+            }
+          })
         }
       })
     }
   })
 })
-
-router.post('/content/footer/organizers', function (req, res) {
-  upload(req, res, (err) => {
-    if (err) throw err
-    let filename = req.file.originalname
-    fs.readFile('static/common/content.json', 'utf8', (err, data) => {
-      if (err) {
-        console.error(err)
-        let date = new Date()
-        fs.appendFile('static/error-log.txt', '[ ' + date + ' ] Error: ' + err + '\n', 'utf8', (err, data) => {
-          if (err) {
-            console.error(err)
-          }
-        })
-        res.status(503).send('Could not read file content.json and fetch header logotype data.')
-      } else {
-        let result = JSON.parse(data)
-        result.logotype = filename
-        fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf-8', (err, data) => {
-          if (err) {
-            console.log(err)
-            let date = new Date()
-            fs.appendFile('static/error-log.txt', '[ ' + date + ' ] Error: ' + err + '\n', 'utf8', (err, data) => {
-              if (err) {
-                console.error(err)
-              }
-            })
-            res.status(503).send('Could not write to file content.json header logotype data.')
-          } else {
-            res.status(200).send({'status': 200})
-          }
-        })
-      }
-    })
-  })
-}) */
 
 // Get supports
 
