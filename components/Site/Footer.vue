@@ -86,64 +86,33 @@
         </div>
       </div>
     </div>
-   <div class="row">
-     <div class="footerSection__bottomRow col-12" v-bind:class="{ 'd-relative': admin }">
-        <div v-if="admin" class="d-modal">
-          <button class="btn btn-primary btn-edit-mode" @click="footerBottomRowEdit = true">Edit</button>
-          <b-modal hide-header-close v-model="footerBottomRowEdit" title="Edit footer bootom row">
-            <div role="tablist">
-              <b-card no-body class="mb-1" v-for="organizer in organizers" :key="organizer.order">
-                <b-card-header header-tag="header" class="p-3 bg-dark text-white" role="tab" v-b-toggle="organizer.companyName">
-                  {{ organizer.companyName }}
-                </b-card-header>
-                <b-collapse :id="organizer.companyName" accordion="my-accordion" role="tabpanel">
-                  <b-card-body>
-                    <b-form>
-                      <b-form-group id="input-company-logotype-group" label="Logotype:" label-for="input-company-logotype">
-                        <b-form-file id="file_input1" v-model="organizer.companyLogotype"></b-form-file>
-                        <br> Selected file: {{organizer.companyLogotype && organizer.companyLogotype.name}}
-                      </b-form-group>
-                      <b-form-group id="input-company-name-group" label="Company name:" label-for="input-company-name">
-                        <b-form-input id="input-company-name" type="text" v-model="organizer.companyName"></b-form-input>
-                      </b-form-group>
-                      <b-form-group id="input-company-phone-group" label="Company phone:" label-for="input-company-phone">
-                        <b-form-input id="input-company-phone" type="text" v-model="organizer.companyPhone"></b-form-input>
-                      </b-form-group>
-                      <b-form-group id="input-company-email-group" label="Company email:" label-for="input-company-email">
-                        <b-form-input id="input-company-email" type="text" v-model="organizer.companyEmail"></b-form-input>
-                      </b-form-group>
-                      <b-form-group id="input-company-site-group" label="Company site:" label-for="input-company-site">
-                        <b-form-input id="input-company-site" type="text" v-model="organizer.companySite"></b-form-input>
-                      </b-form-group>
-                    </b-form>
-                  </b-card-body>
-                </b-collapse>
-              </b-card>
-            </div>
-            <template slot="modal-footer">
-              <b-button @click="saveOrganizers" variant="primary">Submit</b-button>
-            </template>
-          </b-modal>
+    <div class="row">
+      <div class="footerSection__bottomRow col-12" v-bind:class="{ 'd-relative': $store.state.admin }">
+        <!-- Footer bottom row organizers -->       
+        <div class="footerSection__organisers">
+          <div class="organiser" v-for="organiser in organisers">
+            <h6>Организатор выставки</h6>
+            <ul class="list-inline d-flex">
+              <li class="list-inline-item">
+                <img :src="`images/${organiser.companyLogotype}`" />
+              </li>
+              <li class="list-inline-item">
+                {{ organiser.companyName }}<br />
+                {{ organiser.companyPhone }}<br />
+                <a href="#">{{ organiser.companyEmail }}</a><br />
+                <a href="#" :title="organiser.companySite">{{ organiser.companySite }}</a>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div class="footerSection__organization">
-          <h6>Организатор выставки</h6>
-          <ul class="list-inline d-flex">
-            <li class="list-inline-item">
-              <img src="~/static/images/ite.png" />
-            </li>
-            <li class="list-inline-item">
-              ITE Москва<br />
-              +7 (495) 935-73-50<br />
-              <a href="mailto:security@ite-expo.ru">security@ite-expo.ru</a><br />
-              <a href="http://www.ite-expo.ru/" target="_blank" title="www.ite-expo.ru">www.ite-expo.ru</a>
-            </li>
-          </ul>
-        </div>
-        <div class="footerSection__support">
-          <h6>При поддержке</h6>
-          <a href="http://www.ufi.org/" rel="nofollow" target="_blank">
-            <img src="~/static/images/ufi.png" />
-          </a>
+        <!-- Footer bottom row supports -->
+        <div class="footerSection__supports">
+          <div class="support" v-for="support in supports">
+            <h6>При поддержке</h6>
+            <a href="http://www.ufi.org/" rel="nofollow" target="_blank">
+              <img :src="`images/${support.companyLogotype}`" />
+            </a>
+          </div>
         </div>
         <div class="footerSection__social">
           <ul class="list-inline social">
@@ -164,6 +133,134 @@
             </li>
           </ul>
         </div>
+        <!-- Footer bottom row editor -->
+        <div v-if="$store.state.admin" class="d-modal">
+          
+          <button class="btn btn-primary btn-edit-mode" @click="footerBottomRowEdit = true">Edit</button>
+          
+          <b-modal hide-header-close v-model="footerBottomRowEdit" title="Edit footer bootom row">
+            <div role="tablist">
+              <b-card no-body class="mb-2">
+                <b-card-header header-tag="header" class="p-3 bg-info text-white header-title" role="tab" v-b-toggle.exhibitionOrganisers>
+                  <div class="header-left">
+                    Exhibition organisers
+                  </div>
+                  <div class="header-right">
+                    <i class="fa fa-plus" @click="addOrganiser"></i>
+                  </div>
+                </b-card-header>
+                <b-collapse id="exhibitionOrganisers" visible accordion="my-accordion" role="tabpanel">
+                  <b-card-body>
+                    
+                    <div class="header-title exhibitionOrganiser" v-for="organiser in organisers">
+                      <div class="header-left">{{ organiser.companyName }}</div>
+                      <div class="header-right">
+                        <i class="fa fa-edit"></i>
+                        <i class="fa fa-arrow-down"></i>
+                        <i class="fa fa-arrow-up"></i>
+                      </div>
+                    </div>
+                    
+                    <!--<div class="exhibitionOrganiser" v-for="organiser in organisers">
+                      <b-form>
+                        <b-form-group id="input-company-logotype-group" label="Logotype:" label-for="input-company-logotype">
+                          <img v-if="organiser.companyLogotype && organiser.companyLogotype !== ''" :src="`images/${organiser.companyLogotype}`" /><br/>
+                          <a v-if="organiser.companyLogotype && organiser.companyLogotype !== ''" class="btn btn-primary" @click="chooseNewLogotype(organiser)">Choose another file</a>
+                          <div v-if="!organiser.companyLogotype && organiser.companyLogotype === ''" class="dropbox">
+                            <b-form-file class="inputNewLogotype" v-model="organiser.companyLogotype" @change="onNewLogotypeChange(organiser.companyLogotype)"></b-form-file>
+                            <p>Drag your file(s) here to begin or click to browse</p>
+                          </div>
+                        </b-form-group>
+                        <b-form-group id="input-company-name-group" label="Company name:" label-for="input-company-name">
+                          <b-form-input id="input-company-name" type="text" v-model="organiser.companyName"></b-form-input>
+                        </b-form-group>
+                        <b-form-group id="input-company-phone-group" label="Company phone:" label-for="input-company-phone">
+                          <b-form-input id="input-company-phone" type="text" v-model="organiser.companyPhone"></b-form-input>
+                        </b-form-group>
+                        <b-form-group id="input-company-email-group" label="Company email:" label-for="input-company-email">
+                          <b-form-input id="input-company-email" type="text" v-model="organiser.companyEmail"></b-form-input>
+                        </b-form-group>
+                        <b-form-group id="input-company-site-group" label="Company site:" label-for="input-company-site">
+                          <b-form-input id="input-company-site" type="text" v-model="organiser.companySite"></b-form-input>
+                        </b-form-group>
+                      </b-form>
+                    </div>-->
+                  </b-card-body>
+                </b-collapse>
+              </b-card>
+              <b-card no-body class="mb-2">
+                <b-card-header header-tag="header" class="p-3 bg-info text-white" role="tab" v-b-toggle.exhibitionSupports>
+                  Exhibition supports
+                </b-card-header>
+                <b-collapse id="exhibitionSupports" visible accordion="my-accordion" role="tabpanel">
+                  <b-card-body>
+                    <!--<div class="exhibitionSupport" v-for="support in supports">
+                      <b-form>
+                        <b-form-group id="input-support-logotype-group" label="Logotype:" label-for="input-support-logotype">
+                          <img v-if="support.companyLogotype && support.companyLogotype !== ''" :src="`images/${support.companyLogotype}`" /><br/>
+                          <a v-if="support.companyLogotype && support.companyLogotype !== ''" class="btn btn-primary" @click="chooseNewLogotype(support)">Choose another file</a>
+                          <div v-if="!support.companyLogotype && support.companyLogotype === ''" class="dropbox">
+                            <b-form-file class="inputNewLogotype" v-model="support.companyLogotype" @change="onNewLogotypeChange(support.companyLogotype)"></b-form-file>
+                            <p>Drag your file(s) here to begin or click to browse</p>
+                          </div>
+                        </b-form-group>
+                        <b-form-group id="input-support-name-group" label="Company name:" label-for="input-support-name">
+                          <b-form-input id="input-support-name" type="text" v-model="support.companyName"></b-form-input>
+                        </b-form-group>
+                        <b-form-group id="input-support-phone-group" label="Company phone:" label-for="input-support-phone">
+                          <b-form-input id="input-support-phone" type="text" v-model="support.companyPhone"></b-form-input>
+                        </b-form-group>
+                        <b-form-group id="input-support-email-group" label="Company email:" label-for="input-support-email">
+                          <b-form-input id="input-support-email" type="text" v-model="support.companyEmail"></b-form-input>
+                        </b-form-group>
+                        <b-form-group id="input-support-site-group" label="Company site:" label-for="input-support-site">
+                          <b-form-input id="input-support-site" type="text" v-model="support.companySite"></b-form-input>
+                        </b-form-group>
+                      </b-form>
+                    </div>-->
+                  </b-card-body>
+                </b-collapse>
+              </b-card>
+            </div>
+            
+            <template slot="modal-footer">
+              <b-button @click="saveData" variant="primary">Submit</b-button>
+            </template>
+            
+          </b-modal>
+          
+          <b-modal ref="organiserCardModal" hide-header-close :title="organiserCard.title">
+            <b-row>
+              <b-col cols="12">
+                <div class="dropbox">
+                  <b-form-file v-show="organiserCard.isInitial" id="inputNewLogotype" v-model="organiserCard.companyLogotype" @change="organiserCard__onNewLogotypeChange"></b-form-file>
+                  <p v-if="organiserCard.isInitial">Drag your file(s) here to begin or click to browse</p>
+                  <img v-if="!organiserCard.isInitial" :src="organiserCard.companyLogotypePreview" class="logotype-preview"/>
+                  <a v-if="!organiserCard.isInitial" @click="organiserCard__removeNewLogotype" class="remove-btn"><i class="fa fa-trash"></i></a>
+                </div>
+                <b-button @click="organiserCardSave" variant="primary">Upload</b-button>
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col cols="12">
+                <b-form-group id="input-company-name-group" label="Company name:" label-for="input-company-name">
+                  <b-form-input id="input-company-name" type="text" v-model="organiserCard.companyName"></b-form-input>
+                </b-form-group>
+                <b-form-group id="input-company-phone-group" label="Company phone:" label-for="input-company-phone">
+                  <b-form-input id="input-company-phone" type="text" v-model="organiserCard.companyPhone"></b-form-input>
+                </b-form-group>
+                <b-form-group id="input-company-email-group" label="Company email:" label-for="input-company-email">
+                  <b-form-input id="input-company-email" type="text" v-model="organiserCard.companyEmail"></b-form-input>
+                </b-form-group>
+                <b-form-group id="input-company-site-group" label="Company site:" label-for="input-company-site">
+                  <b-form-input id="input-company-site" type="text" v-model="organiserCard.companySite"></b-form-input>
+                </b-form-group>
+              </b-col>
+            </b-row>
+          </b-modal>
+          
+        </div>
+        <!-- End of footer bottom row editor -->
      </div>
    </div>
     
@@ -176,8 +273,8 @@
   export default {
     data: function () {
       return {
-        admin: true,
-        organizers: [],
+        organisers: [],
+        organiserCard: {},
         supports: [],
         footerBottomRowEdit: false,
         footerBottomRowEditAlertType: 'info',
@@ -185,12 +282,44 @@
       }
     },
     methods: {
-      saveOrganizers: function () {
+      addOrganiser: function () {
+        let self = this
+        self.$refs.organiserCardModal.show()
+        self.organiserCard = {
+          title: 'Add new organiser',
+          isInitial: true,
+          companyLogotype: '',
+          companyLogotypePreview: '',
+          companyName: '',
+          companyPhone: '',
+          companyEmail: '',
+          companySite: ''
+        }
+      },
+      organiserCard__chooseNewLogotype: function (organiser) {
+        organiser.companyLogotype = ''
+      },
+      organiserCard__onNewLogotypeChange: function (e) {
+        let files = e.target.files || e.dataTransfer.files
+        if (!files.length) {
+          return
+        }
+        this.organiserCard__createNewLogotype(files[0])
+      },
+      organiserCard__createNewLogotype: function (file) {
+        let reader = new FileReader()
+        self.organiserCard.isInitial = false
+        reader.onload = (e) => {
+          self.organiserCard.companyLogotype = e.target.result
+        }
+        reader.readAsDataURL(file)
+      },
+      saveData: function () {
         let self = this
         axios({
           method: 'post',
-          url: '/api/content/footer/organizers',
-          data: self.organizers
+          url: '/api/content/footer',
+          data: {'organisers': self.organisers, 'supports': self.supports}
         }).then((response) => {
           console.log(response)
         }).catch((error) => {
@@ -203,7 +332,7 @@
           method: 'get',
           url: '/api/content/footer'
         }).then((response) => {
-          self.organizers = response.data.organizers
+          self.organisers = response.data.organisers
           self.supports = response.data.supports
         }).catch((error) => {
           console.log(error)
@@ -244,25 +373,55 @@
     flex-direction: row;
     flex-wrap: wrap;
   }
+  .footerSection__organisers,
+  .footerSection__supports
+  {
+    display: flex;
+    flex-direction: row;
+    margin-right: 10px;
+  }
+  .organiser:not(:last-child),
+  .support:not(:last-child)
+  {
+    margin-right: 10px;
+  }
   .footerSection__social
   {
     text-align: right;
   }
-  
+  .exhibitionOrganiser
+  {
+    padding: 1rem;
+    background-color: #aaa;
+    color: #fff;
+  }
+  .header-title
+  {
+    display: flex;
+  }
+  .header-title .header-left
+  {
+    width: 60%;
+    text-align: left;
+  }
+  .header-title .header-right
+  {
+    width: 40%;
+    text-align: right;
+  }
+  .exhibitionOrganiser:not(:last-child)
+  {
+    margin-bottom: 10px;
+  }
+  .exhibitionOrganiser .fa:not(:last-child)
+  {
+    margin-right: 10px;
+  }
   @media(max-width: 456px)
   {
     .footerSection__topRow-flex
     {
       flex-direction: column;
-    }
-    .footerSection__organization,
-    .footerSection__support
-    {
-      width: 50%;
-    }
-    .footerSection__social
-    {
-      width: 100%;
     }
   }
   @media(min-width: 457px)
@@ -270,15 +429,6 @@
     .footerSection__topRow-flex
     {
       flex-direction: row;
-    }
-    .footerSection__organization,
-    .footerSection__support
-    {
-      width: 20%;
-    }
-    .footerSection__social
-    {
-      width: 60%;
     }
   }
 </style>

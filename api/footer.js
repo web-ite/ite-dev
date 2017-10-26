@@ -38,9 +38,47 @@ router.get('/content/footer', function (req, res) {
   })
 })
 
+// Post footer
+
+router.post('/content/footer', function (req, res) {
+  let organisers = req.body.organisers
+  let supports = req.body.supports
+  fs.readFile('static/common/content.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error(err)
+      let date = new Date()
+      let errText = '[' + date + '] Error: ' + err + '\n'
+      fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
+        if (err) {
+          console.error(err)
+        }
+      })
+      res.status(503).send('Could not read file content.json to fetch footer data.')
+    } else {
+      let result = JSON.parse(data)
+      result.footer.organisers = organisers
+      result.footer.supports = supports
+      fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf8', (err, data) => {
+        if (err) {
+          console.error(err)
+          let date = new Date()
+          let errText = '[' + date + '] Error: ' + err + '\n'
+          fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
+            if (err) {
+              console.error(err)
+            }
+          }) 
+        } else {
+          res.status(200).json({'status': 200})
+        }
+      })
+    }
+  })
+})
+
 // Get organizers
 
-router.get('/content/footer/organizers', function (req, res) {
+router.get('/content/footer/organisers', function (req, res) {
   fs.readFile('static/common/content.json', 'utf8', (err, data) => {
     if (err) {
       console.error(err)
@@ -50,10 +88,10 @@ router.get('/content/footer/organizers', function (req, res) {
           console.error(err)
         }
       })
-      res.status(503).send('Could not read file content.json and fetch footer organizers data.')
+      res.status(503).send('Could not read file content.json and fetch footer organisers data.')
     } else {
       let result = JSON.parse(data)
-      result = result.footer.organizers
+      result = result.footer.organisers
       res.status(200).json(result)
     }
   })
