@@ -92,10 +92,8 @@ router.get('/content/header/logotype', function (req, res) {
 // Post logotype
 
 router.post('/content/header/logotype', function (req, res) {
-  // console.log(req.body.filename)
   upload(req, res, (err) => {
     if (err) throw err
-    // console.log(res)
     let filename = req.file.originalname
     fs.readFile('static/common/content.json', 'utf8', (err, data) => {
       if (err) {

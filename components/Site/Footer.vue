@@ -91,10 +91,10 @@
         
         <!-- Footer bottom row organizers -->       
         <div class="footerSection__organisers">
-          <div class="organiser" v-for="organiser in organisers">
+          <div class="organiser" v-for="organiser in organisers" :key="organiser.order">
             <h6>Организатор выставки</h6>
             <ul class="list-inline d-flex">
-              <li class="list-inline-item">
+              <li v-if="organiser.companyLogotype" class="list-inline-item">
                 <img :src="`images/footer/${organiser.companyLogotype}`" />
               </li>
               <li class="list-inline-item">
@@ -159,7 +159,7 @@
                     <div class="header-title exhibitionOrganiser" v-for="organiser in organisers">
                       <div class="header-left">{{ organiser.companyName }}</div>
                       <div class="header-right">
-                        <i class="fa fa-edit" @click="editOrganiser(organiser.$index)"></i>
+                        <i class="fa fa-edit" @click="editOrganiser(organiser)"></i>
                         <i class="fa fa-arrow-down"></i>
                         <i class="fa fa-arrow-up"></i>
                       </div>
@@ -223,7 +223,9 @@
                 <div class="dropbox">
                   <b-form-file v-show="organiserCard.isInitial" id="inputNewLogotype" v-model="organiserCard.companyLogotype" @change="organiserCard__onNewLogotypeChange"></b-form-file>
                   <p v-if="organiserCard.isInitial">Drag your file(s) here to begin or click to browse</p>
-                  <img v-if="!organiserCard.isInitial" :src="organiserCard.companyLogotypePreview" class="logotype-preview"/>
+                  <img v-if="!organiserCard.isInitial && organiserCard.mode == 'add'" :src="organiserCard.companyLogotypePreview" class="logotype-preview"/>
+                  <img v-if="!organiserCard.isInitial && organiserCard.companyLogotype ==='' && organiserCard.mode == 'edit'" :src="`images/footer/${organiserCard.companyLogotypePreview}`" class="logotype-preview"/>
+                  <img v-if="!organiserCard.isInitial && organiserCard.companyLogotype !=='' && organiserCard.mode == 'edit'" :src="organiserCard.companyLogotypePreview" class="logotype-preview"/>
                   <a v-if="!organiserCard.isInitial" @click="organiserCard__removeNewLogotype" class="remove-btn"><i class="fa fa-trash"></i></a>
                 </div>
               </b-col>
@@ -242,10 +244,13 @@
                 <b-form-group id="input-company-site-group" label="Company site:" label-for="input-company-site">
                   <b-form-input id="input-company-site" type="text" v-model="organiserCard.companySite"></b-form-input>
                 </b-form-group>
+                <b-form-group id="input-company-sort-group" label="Sort order:" label-for="input-company-sort">
+                  <b-form-input id="input-company-sort" type="number" v-model="organiserCard.order"></b-form-input>
+                </b-form-group>
               </b-col>
             </b-row>
             <template slot="modal-footer">
-              <b-button @click="organiserCard__save" variant="primary">Add</b-button>
+              <b-button @click="organiserCard__save" variant="primary">{{ organiserCard.action }}</b-button>
             </template>
           </b-modal>
           
@@ -276,6 +281,7 @@
         let self = this
         self.$refs.organiserCardModal.show()
         self.organiserCard = {
+          mode: 'add',
           title: 'Add new organiser',
           isInitial: true,
           companyLogotype: '',
@@ -283,7 +289,9 @@
           companyName: '',
           companyPhone: '',
           companyEmail: '',
-          companySite: ''
+          companySite: '',
+          order: '0',
+          action: 'Add'
         }
       },
       organiserCard__onNewLogotypeChange: function (e) {
@@ -311,38 +319,64 @@
       organiserCard__save: function () {
         let self = this
         let data = new FormData()
-        data.append('image', self.organiserCard.companyLogotype)
+        console.log(self.organiserCard)
+        if ((self.organiserCard.companyLogotype !== null) && (self.organiserCard.companyLogotype !== undefined) && (self.organiserCard.companyLogotype !== '')) {
+          data.append('image', self.organiserCard.companyLogotype)
+        }
         data.append('name', self.organiserCard.companyName)
         data.append('phone', self.organiserCard.companyPhone)
         data.append('email', self.organiserCard.companyEmail)
         data.append('site', self.organiserCard.companySite)
-        axios({
-          method: 'post',
-          url: '/api/content/footer/organisers',
-          data: data,
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }).then((response) => {
-          console.log(response)
-          self.fetchData()
-          self.$refs.organiserCardModal.hide()
-        }).catch((error) => {
-          console.log(error)
-        })
+        data.append('order', self.organiserCard.order)
+        console.log(data)
+        if (self.organiserCard.mode === 'add') {
+          axios({
+            method: 'post',
+            url: '/api/content/footer/organisers',
+            data: data,
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }).then((response) => {
+            console.log(response)
+            self.fetchData()
+            self.$refs.organiserCardModal.hide()
+          }).catch((error) => {
+            console.log(error)
+          })
+        } else if (self.organiserCard.mode === 'edit') {
+          console.log(data)
+          axios({
+            method: 'put',
+            url: '/api/content/footer/organisers',
+            data: data,
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }).then((response) => {
+            console.log(response)
+            self.fetchData()
+            self.$refs.organiserCardModal.hide()
+          }).catch((error) => {
+            console.log(error)
+          })
+        }
       },
-      editOrganiser: function (index) {
+      editOrganiser: function (organiser) {
         let self = this
         self.$refs.organiserCardModal.show()
         self.organiserCard = {
+          mode: 'edit',
           title: 'Edit organiser',
           isInitial: false,
           companyLogotype: '',
-          companyLogotypePreview: self.organiser[index].companyLogotype,
-          companyName: self.organiser[index].companyName,
-          companyPhone: self.organiser[index].companyPhone,
-          companyEmail: self.organiser[index].companyEmail,
-          companySite: self.organiser[index].companySite
+          companyLogotypePreview: organiser.companyLogotype === undefined ? '' : organiser.companyLogotype,
+          companyName: organiser.companyName,
+          companyPhone: organiser.companyPhone,
+          companyEmail: organiser.companyEmail,
+          companySite: organiser.companySite,
+          order: organiser.order,
+          action: 'Save'
         }
       },
       fetchData: function () {

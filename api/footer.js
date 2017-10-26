@@ -113,12 +113,11 @@ router.post('/content/footer/organisers', function (req, res) {
       })
       res.status(503).send('Could not upload new organiser logotype data.')
     } else {
-      console.log(req)
-      let filename = req.file.originalname
       let name = req.body.name
       let phone = req.body.phone
       let email = req.body.email
       let site = req.body.site
+      let order = req.body.order
       fs.readFile('static/common/content.json', 'utf8', (err, data) => {
         if (err) {
           console.error(err)
@@ -132,13 +131,187 @@ router.post('/content/footer/organisers', function (req, res) {
           res.status(503).send('Could not read file content.json and fetch footer organisers data.')
         } else {
           let result = JSON.parse(data)
-          result.footer.organisers.push({
-            companyLogotype: filename,
+          let newOrganiser = {
+            id: result.footer.organisers.length + 1,
+            companyLogotype: req.file ? req.file.originalname : '',
             companyName: name,
             companyPhone: phone,
             companyEmail: email,
-            companySite: site
+            companySite: site,
+            order: order
+          }
+          result.footer.organisers.push(newOrganiser)
+          fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf-8', (err, data) => {
+            if (err) {
+              console.log(err)
+              let date = new Date()
+              let errText = '[' + date + '] Error: ' + err + '\n'
+              fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
+                if (err) {
+                  console.error(err)
+                }
+              })
+              res.status(503).send('Could not write to file content.json footer new organiser data.')
+            } else {
+              res.status(200).send({'status': 200})
+            }
           })
+        }
+      })
+    }
+  })
+})
+
+/* router.post('/content/footer/organisers', function (req, res) {
+  if (req.file) {
+    upload(req, res, (err) => {
+      if (err) {
+        console.error(err)
+        let date = new Date()
+        let errText = '[' + date + '] Error: ' + err + '\n'
+        fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
+          if (err) {
+            console.error(err)
+          }
+        })
+        res.status(503).send('Could not upload new organiser logotype data.')
+      } else {
+        let filename = req.file.originalname
+        let name = req.body.name
+        let phone = req.body.phone
+        let email = req.body.email
+        let site = req.body.site
+        let order = req.body.order
+        fs.readFile('static/common/content.json', 'utf8', (err, data) => {
+          if (err) {
+            console.error(err)
+            let date = new Date()
+            let errText = '[' + date + '] Error: ' + err + '\n'
+            fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
+              if (err) {
+                console.error(err)
+              }
+            })
+            res.status(503).send('Could not read file content.json and fetch footer organisers data.')
+          } else {
+            let result = JSON.parse(data)
+            result.footer.organisers.push({
+              id: result.footer.organisers.length + 1,
+              companyLogotype: filename,
+              companyName: name,
+              companyPhone: phone,
+              companyEmail: email,
+              companySite: site,
+              order: order
+            })
+            fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf-8', (err, data) => {
+              if (err) {
+                console.log(err)
+                let date = new Date()
+                let errText = '[' + date + '] Error: ' + err + '\n'
+                fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
+                  if (err) {
+                    console.error(err)
+                  }
+                })
+                res.status(503).send('Could not write to file content.json footer new organiser data.')
+              } else {
+                res.status(200).send({'status': 200})
+              }
+            })
+          }
+        })
+      }
+    })
+  } else {
+    let name = req.body.name
+    let phone = req.body.phone
+    let email = req.body.email
+    let site = req.body.site
+    let order = req.body.order
+    fs.readFile('static/common/content.json', 'utf8', (err, data) => {
+      if (err) {
+        console.error(err)
+        let date = new Date()
+        let errText = '[' + date + '] Error: ' + err + '\n'
+        fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
+          if (err) {
+            console.error(err)
+          }
+        })
+        res.status(503).send('Could not read file content.json and fetch footer organisers data.')
+      } else {
+        let result = JSON.parse(data)
+        result.footer.organisers.push({
+          id: result.footer.organisers.length + 1,
+          companyName: name,
+          companyPhone: phone,
+          companyEmail: email,
+          companySite: site,
+          order: order
+        })
+        fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf-8', (err, data) => {
+          if (err) {
+            console.log(err)
+            let date = new Date()
+            let errText = '[' + date + '] Error: ' + err + '\n'
+            fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
+              if (err) {
+                console.error(err)
+              }
+            })
+            res.status(503).send('Could not write to file content.json footer new organiser data.')
+          } else {
+            res.status(200).send({'status': 200})
+          }
+        })
+      }
+    })
+  }
+}) */
+
+// Update organisers
+
+router.put('/content/footer/organisers', function (req, res) {
+  upload(req, res, (err) => {
+    if (err) {
+      console.error(err)
+      let date = new Date()
+      let errText = '[' + date + '] Error: ' + err + '\n'
+      fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
+        if (err) {
+          console.error(err)
+        }
+      })
+      res.status(503).send('Could not upload new organiser logotype data.')
+    } else {
+      let id = req.body.id
+      let name = req.body.name
+      let phone = req.body.phone
+      let email = req.body.email
+      let site = req.body.site
+      let order = req.body.order
+      fs.readFile('static/common/content.json', 'utf8', (err, data) => {
+        if (err) {
+          console.error(err)
+          let date = new Date()
+          let errText = '[' + date + '] Error: ' + err + '\n'
+          fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
+            if (err) {
+              console.error(err)
+            }
+          })
+          res.status(503).send('Could not read file content.json and fetch footer organisers data.')
+        } else {
+          let result = JSON.parse(data)
+          if (req.body.originalname) {
+            result.footer.organisers[id].companyLogotype = req.body.originalname
+          }
+          result.footer.organisers[id].companyName = name
+          result.footer.organisers[id].companyPhone = phone
+          result.footer.organisers[id].companyEmail = email
+          result.footer.organisers[id].companySite = site
+          result.footer.organisers[id].order = order
           fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf-8', (err, data) => {
             if (err) {
               console.log(err)

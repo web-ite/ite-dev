@@ -16,8 +16,8 @@ const port = process.env.PORT || 8080
 app.disable('x-powered-by')
 app.set('port', port)
 app.use(helmet())
-app.use(bodyParser.urlencoded({ extended : true }))
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended : true }))
 app.use(cookieParser())
 app.use(expressSession({
   secret: 'keyboard cat',
