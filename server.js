@@ -9,6 +9,7 @@ const helmet = require('helmet')
 const app = express()
 
 const api = require('./api')
+const auth = require('./api/auth')
 
 const host = process.env.HOST || '0.0.0.0'
 const port = process.env.PORT || 8080
@@ -25,6 +26,14 @@ app.use(expressSession({
   saveUninitialized: false
 }))
 app.use('/api', api)
+app.use(auth.passport.initialize())
+app.use(auth.passport.session())
+
+app.get('/admin', auth.passport.authenticate('provider', { successRedirect: '/admin/dashboard' }))
+app.get('/cb', 
+    auth.passport.authenticate('provider', { 
+    successRedirect: '/admin/dashboard', 
+    failureRedirect: '/admin' }), function (req, res) { res.redirect('/'); })
 
 // Import and Set Nuxt.js options
 let config = require('./nuxt.config.js')
