@@ -40,8 +40,10 @@ router.put('/content/slider/order', function (req, res, next) {
             if (result[section][subSection][i].order === object.order - 1) {
               result[section][subSection][i].order += 1
             }
+            if (result[section][subSection][i].id === object.id) {
+              result[section][subSection][i][i].order -= 1
+            }
           }
-          result[section][subSection][object.id - 1].order -= 1
         }
       } else if (action === 'decremention') {
         if (result[section][subSection][object.id - 1].order < result[section][subSection].length) {
@@ -49,8 +51,10 @@ router.put('/content/slider/order', function (req, res, next) {
             if (result[section][subSection][i].order === object.order + 1) {
               result[section][subSection][i].order -= 1
             }
+            if (result[section][subSection][i].id === object.id) {
+              result[section][subSection][i][i].order += 1
+            }
           }
-          result[section][subSection][object.id - 1].order += 1
         }
       }
       fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf-8', (err, data) => {

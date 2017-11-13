@@ -240,8 +240,6 @@ router.put('/content/footer/organisers', function (req, res) {
 /* Update order in organisers */
 
 router.put('/content/footer/organisers/order', function (req, res, next) {
-  let action = req.body.typeOfAction
-  let object = req.body.object
   fs.readFile('static/common/content.json', 'utf8', (err, data) => {
     if (err) {
       console.error(err)
@@ -254,14 +252,18 @@ router.put('/content/footer/organisers/order', function (req, res, next) {
       res.status(503).send('Could not read file content.json and fetch data.')
     } else {
       let result = JSON.parse(data)
+      let action = req.body.typeOfAction
+      let object = req.body.object
       if (action ===  'incremention') {
         if (result.footer.organisers[object.id - 1].order > 1) {
           for (var i = 0; i < result.footer.organisers.length; i++) {
             if (result.footer.organisers[i].order === object.order - 1) {
               result.footer.organisers[i].order += 1
             }
+            if (result.footer.organisers[i].id === object.id) {
+              result.footer.organisers[i].order -= 1
+            }
           }
-          result.footer.organisers[object.id - 1].order -= 1
         }
       } else if (action === 'decremention') {
         if (result.footer.organisers[object.id - 1].order < result.footer.organisers.length) {
@@ -269,8 +271,10 @@ router.put('/content/footer/organisers/order', function (req, res, next) {
             if (result.footer.organisers[i].order === object.order + 1) {
               result.footer.organisers[i].order -= 1
             }
+            if (result.footer.organisers[i].id === object.id) {
+              result.footer.organisers[i].order += 1
+            }
           }
-          result.footer.organisers[object.id - 1].order += 1
         }
       }
       fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf-8', (err, data) => {

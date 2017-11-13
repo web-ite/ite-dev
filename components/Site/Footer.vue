@@ -157,7 +157,7 @@
                   <b-card-body>
                     
                     <div class="header-title exhibitionOrganiser" v-for="organiser in organisers">
-                      <div class="header-left">{{ organiser.companyName }}</div>
+                      <div class="header-left">{{ organiser.organiserTitle }}</div>
                       <div class="header-right">
                         <i class="fa fa-edit" @click="editOrganiser(organiser)"></i>
                         <i class="fa fa-arrow-down" @click="changeOrderDown(organiser)"></i>
@@ -180,6 +180,15 @@
                 </b-card-header>
                 <b-collapse id="exhibitionSupports" visible accordion="my-accordion" role="tabpanel">
                   <b-card-body>
+                    
+                    <!--<div class="header-title exhibitionOrganiser" v-for="support in supports">
+                      <div class="header-left">{{ organiser.organiserTitle }}</div>
+                      <div class="header-right">
+                        <i class="fa fa-edit" @click="editOrganiser(organiser)"></i>
+                        <i class="fa fa-arrow-down" @click="changeOrderDown(organiser)"></i>
+                        <i class="fa fa-arrow-up" @click="changeOrderUp(organiser)"></i>
+                      </div>
+                    </div>-->
                     
                   </b-card-body>
                 </b-collapse>
@@ -239,6 +248,7 @@
 
 <script>
   import axios from '~/plugins/axios'
+  import _ from 'lodash'
   
   export default {
     data: function () {
@@ -407,7 +417,8 @@
           method: 'get',
           url: '/api/content/footer'
         }).then((response) => {
-          self.organisers = response.data.organisers
+          let _organisers = _.orderBy(response.data.organisers, 'order', 'asc')
+          self.organisers = _organisers
           self.supports = response.data.supports
         }).catch((error) => {
           console.log(error)
