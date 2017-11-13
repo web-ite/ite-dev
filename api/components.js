@@ -44,9 +44,13 @@ router.put('/content/slider/order', function (req, res, next) {
           result[section][subSection][object.id - 1].order -= 1
         }
       } else if (action === 'decremention') {
-        if (result[section][subSection][object.order - 1].order < result[section][subSection].length) {
-          result[section][subSection][object.order - 1].order += 1
-          result[section][subSection][object.order].order -= 1
+        if (result[section][subSection][object.id - 1].order < result[section][subSection].length) {
+          for (var i = 0; i < result[section][subSection].length; i++) {
+            if (result[section][subSection][i].order === object.order + 1) {
+              result[section][subSection][i].order -= 1
+            }
+          }
+          result[section][subSection][object.id - 1].order += 1
         }
       }
       fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf-8', (err, data) => {
@@ -105,7 +109,7 @@ router.post('/components/slider', function (req, res) {
     } else {
       let title = req.body.title
       let text = req.body.text
-      let order = req.body.order
+      let link = req.body.link
       fs.readFile('static/common/content.json', 'utf8', (err, data) => {
         if (err) {
           console.error(err)
@@ -119,14 +123,21 @@ router.post('/components/slider', function (req, res) {
           res.status(503).send('Could not read file content.json and fetch main page main slider data.')
         } else {
           let result = JSON.parse(data)
-          let newOrganiser = {
-            id: result.mainPage.mainSlider.length + 1,
+          let id = result.mainPage.mainSlider[0].id
+          for (var i = 0; i < result.mainPage.mainSlider.length; i++) {
+            if (result.mainPage.mainSlider[i].id > id) {
+              id = result.mainPage.mainSlider[i].id
+            }
+          }
+          let newSlide = {
+            id: id + 1,
             slideImg: req.file ? req.file.originalname : '',
             slideTitle: title,
             slideText: text,
-            order: order
+            slideLink: link,
+            order: result.mainPage.mainSlider.length + 1
           }
-          result.footer.organisers.push(newOrganiser)
+          result.mainPage.mainSlider.push(newSlide)
           fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf-8', (err, data) => {
             if (err) {
               console.log(err)
@@ -166,6 +177,7 @@ router.put('/components/slider', function (req, res) {
       let id = req.body.id
       let title = req.body.title
       let text = req.body.text
+      let link = req.body.link
       let order = req.body.order
       fs.readFile('static/common/content.json', 'utf8', (err, data) => {
         if (err) {
@@ -180,13 +192,18 @@ router.put('/components/slider', function (req, res) {
           res.status(503).send('Could not read file content.json and fetch main slider data.')
         } else {
           let result = JSON.parse(data)
-          if (req.body.originalname) {
-            result.mainPage.mainSlider[id].slideImg = req.body.originalname
+          for (var i = 0; i < result.mainPage.mainSlider.length; i++) {
+            if (result.mainPage.mainSlider[i].id === id) {
+              if (req.body.originalname) {
+                result.mainPage.mainSlider[i].slideImg = req.body.originalname
+              }
+              result.mainPage.mainSlider[i].slideTitle = title
+              result.mainPage.mainSlider[i].slideText = text
+              result.mainPage.mainSlider[i].slideLink = link
+              result.footer.organisers[i].order = order
+            }
           }
-          result.mainPage.mainSlider[id].slideTitle = title
-          result.mainPage.mainSlider[id].slideText = text
-          result.footer.organisers[id].order = order
-          fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf-8', (err, data) => {
+          fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf8', (err, data) => {
             if (err) {
               console.log(err)
               let date = new Date()

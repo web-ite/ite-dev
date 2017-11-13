@@ -9,9 +9,10 @@
 		"mainSlider": [{
 			"id": 1,
 			"slideImg": "main-slider-1.jpg",
-			"slideTitle": "Выставка SportWorld Moscow",
+			"slideTitle": "Выставка SportWorld Moscow Third",
 			"slideText": "это эффективный инструмент продвижения современных спортивного оборудования, инвентаря, одежды и аксессуаров на российском рынке",
 			"slideLink": "/page-three",
+			"tabIndex": 0,
 			"order": 2
 		}, {
 			"id": 2,
@@ -19,11 +20,27 @@
 			"slideTitle": "Выставка SportWorld Moscow Second",
 			"slideText": "это эффективный инструмент продвижения современных спортивного оборудования, инвентаря, одежды и аксессуаров на российском рынке",
 			"slideLink": "/page-three",
+			"tabIndex": 1,
 			"order": 1
+		}, {
+			"id": 3,
+			"slideImg": "6.jpg",
+			"slideTitle": "Spring exhibition \"Sport World Moscow\"",
+			"slideText": "is one of the largest events held in Russia covering all aspects in the field of manufacturing of sport goods, clothes and sport accessories.",
+			"slideLink": "/",
+			"tabIndex": 2,
+			"order": 3
+		}, {
+			"id": 4,
+			"slideImg": "6.jpg",
+			"slideTitle": "Spring exhibition \"Sport World Moscow\"",
+			"slideText": "is one of the largest events held in Russia covering all aspects in the field of manufacturing of sport goods, clothes and sport accessories.",
+			"slideLink": "/page-three",
+			"order": 4
 		}],
 		"mainBanner": {
 			"bannerType": "video",
-			"bannerImg": "main-banner.jpg",
+			"bannerImg": "",
 			"bannerVideo": "https://www.youtube.com/embed/FNz1ebKJj2Y",
 			"bannerTitle": "",
 			"bannerText": "",
@@ -89,21 +106,6 @@
 			"companyEmail": "security@ite-expo.ru",
 			"companySite": "www.ite-expo.ru",
 			"order": 2
-		}, {
-			"id": 3,
-			"companyLogotype": "icons8-Circle Filled-100.png",
-			"companyName": "12",
-			"companyPhone": "12",
-			"companyEmail": "12",
-			"companySite": "12",
-			"order": "12"
-		}, {
-			"id": 4,
-			"companyName": "11",
-			"companyPhone": "11",
-			"companyEmail": "11",
-			"companySite": "11",
-			"order": "11"
 		}],
 		"supports": [{
 			"id": 1,

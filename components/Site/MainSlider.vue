@@ -1,7 +1,7 @@
 <template>
   <div class="mainSliderContainer" v-bind:class="{ 'd-relative': $store.state.admin }">
     
-    <div id="mainSlider" class="carousel slide" data-ride="carousel">
+    <!--<div id="mainSlider" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item" v-for="slide in mainSlider" :key="slide.order" v-bind:class="{ 'active': slide.order === 1}">
           <img class="d-block w-100" :src="`images/slider/${slide.slideImg}`">
@@ -19,7 +19,21 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
       </a>
-    </div>
+    </div>-->
+    
+    <b-carousel id="mainSlider"
+                :interval="1000"
+                img-width="1024"
+                img-height="480"
+                v-model="slide"
+                @sliding-start="onSlideStart"
+                @sliding-end="onSlideEnd"
+    >
+      <b-carousel-slide v-for="slide in mainSlider" :key="slide.order" :caption="slide.slideTitle"  v-bind:class="{ 'active': slide.order === 1}"
+                        :text="slide.slideText"
+                        :img-src="`images/slider/${slide.slideImg}`"
+      ></b-carousel-slide>
+    </b-carousel>
     
     <div v-if="$store.state.admin" class="d-modal">
       <button class="btn btn-primary btn-edit-mode" @click="mainSliderModal = true">Edit</button>
@@ -46,6 +60,7 @@
       </b-modal>
       
       <b-modal ref="slideModelModal" hide-header-close :title="slideModel.title">
+        <b-alert :show="slideAlert" :variant="slideAlertType">{{ slideAlertText }}</b-alert>
         <b-row>
           <b-col cols="12">
             <div class="dropbox">
@@ -72,7 +87,7 @@
           </b-col>
         </b-row>
         <template slot="modal-footer">
-          <b-button @click="slideModel__save" variant="primary">{{ slideModel.action }}</b-button>
+          <b-button @click="slideModel__save(slideModel)" variant="primary">{{ slideModel.action }}</b-button>
         </template>
       </b-modal>
     </div>
@@ -87,9 +102,13 @@
   export default {
     data: function () {
       return {
+        slide: 0,
         mainSliderModal: false,
         mainSlider: {},
-        slideModel: {}
+        slideModel: {},
+        slideAlert: false,
+        slideAlertType: '',
+        slideAlertText: ''
       }
     },
     methods: {
@@ -107,6 +126,23 @@
           slideLink: '',
           order: '0',
           action: 'Add'
+        }
+      },
+      editSlide: function (slide) {
+        let self = this
+        self.$refs.slideModelModal.show()
+        self.slideModel = {
+          mode: 'edit',
+          title: 'Edit slide',
+          isInitial: false,
+          id: slide.id,
+          slideImg: '',
+          slideImgPreview: slide.slideImg === '' ? '' : slide.slideImg,
+          slideTitle: slide.slideTitle,
+          slideText: slide.slideText,
+          slideLink: slide.slideLink,
+          order: slide.order,
+          action: 'Save'
         }
       },
       slideModel__onNewLogotypeChange: function (e) {
@@ -131,73 +167,87 @@
         self.slideModel.slideImgPreview = ''
         self.slideModel.isInitial = true
       },
-      slideModel__save: function () {
+      slideModel__save: function (slide) {
         let self = this
-        let data = new FormData()
-        console.log(self.slideModel)
-        if ((self.slideModel.slideImg !== null) && (self.slideModel.slideImg !== undefined) && (self.slideModel.slideImg !== '')) {
-          data.append('image', self.slideModel.slideImg)
-        }
-        data.append('title', self.slideModel.slideTitle)
-        data.append('text', self.slideModel.slideText)
-        data.append('link', self.slideModel.slideLink)
-        data.append('id', self.slideModel.id)
-        data.append('order', self.slideModel.order)
-        console.log(data)
-        if (self.slideModel.mode === 'add') {
-          axios({
-            method: 'post',
-            url: '/api/components/slider',
-            data: data,
-            headers: {
-              'Content-Type': 'multipart/form-data'
+        if (((slide.slideImgPreview !== null) && (slide.slideImgPreview !== undefined) && (slide.slideImgPreview !== '')) || ((slide.slideImg !== null) && (slide.slideImg !== undefined) && (slide.slideImg !== ''))) {
+          let formData
+          if ((slide.slideImg !== null) && (slide.slideImg !== undefined) && (slide.slideImg !== '')) {
+            console.log('Image already set')
+            formData = new FormData()
+            formData.append('image', slide.slideImg)
+            formData.append('title', slide.slideTitle)
+            formData.append('text', slide.slideText)
+            formData.append('link', slide.slideLink)
+            if (slide.mode === 'edit') {
+              formData.append('id', slide.id)
+              formData.append('order', slide.order)
             }
-          }).then((response) => {
-            console.log(response)
-            self.fetchData()
-            self.$refs.slideModelModal.hide()
-          }).catch((error) => {
-            console.log(error)
-          })
-        } else if (self.slideModel.mode === 'edit') {
-          console.log(data)
-          axios({
-            method: 'put',
-            url: '/api/components/slider',
-            data: data,
-            headers: {
-              'Content-Type': 'multipart/form-data'
+          } else {
+            formData = {
+              title: slide.slideTitle,
+              text: slide.slideText,
+              link: slide.slideLink
             }
-          }).then((response) => {
-            console.log(response)
-            self.fetchData()
-            self.$refs.slideModelModal.hide()
-          }).catch((error) => {
-            console.log(error)
-          })
-        }
-      },
-      editSlide: function (slide) {
-        let self = this
-        self.$refs.slideModelModal.show()
-        self.slideModel = {
-          mode: 'edit',
-          title: 'Edit slide',
-          isInitial: false,
-          id: slide.id,
-          slideImg: '',
-          slideImgPreview: slide.slideImg === undefined ? '' : slide.slideImg,
-          slideTitle: slide.slideTitle,
-          slideText: slide.slideText,
-          slideLink: slide.slideLink,
-          order: slide.order,
-          action: 'Save'
+            if (slide.mode === 'edit') {
+              formData.id = slide.id
+              formData.order = slide.order
+            }
+          }
+          console.log(formData)
+          if (slide.mode === 'add') {
+            axios({
+              method: 'post',
+              url: '/api/components/slider',
+              data: formData
+            }).then((response) => {
+              console.log(response)
+              self.fetchData()
+              self.$refs.slideModelModal.hide()
+            }).catch((error) => {
+              console.log(error)
+            })
+          } else if (slide.mode === 'edit') {
+            console.log(formData)
+            axios({
+              method: 'put',
+              url: '/api/components/slider',
+              data: formData
+            }).then((response) => {
+              console.log(response)
+              self.fetchData()
+              self.$refs.slideModelModal.hide()
+            }).catch((error) => {
+              console.log(error)
+            })
+          }
+        } else {
+          self.slideAlert = true
+          self.slideAlertType = 'danger'
+          self.slideAlertText = 'Please insert image in slide!'
         }
       },
       changeOrderUp: function (object) {
         let self = this
         let data = {
           typeOfAction: 'incremention',
+          typeOfObject: 'mainSlider',
+          section: 'mainPage',
+          object: object
+        }
+        console.log(data)
+        axios({
+          method: 'put',
+          url: '/api/content/slider/order',
+          data: data
+        }).then((response) => {
+          console.log(response)
+          self.fetchData()
+        })
+      },
+      changeOrderDown: function (object) {
+        let self = this
+        let data = {
+          typeOfAction: 'decremention',
           typeOfObject: 'mainSlider',
           section: 'mainPage',
           object: object
