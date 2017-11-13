@@ -98,7 +98,7 @@ router.get('/content/footer/organisers', function (req, res) {
   })
 })
 
-// Post organizers
+/* Post organizers */
 
 router.post('/content/footer/organisers', function (req, res) {
   upload(req, res, (err) => {
@@ -113,11 +113,6 @@ router.post('/content/footer/organisers', function (req, res) {
       })
       res.status(503).send('Could not upload new organiser logotype data.')
     } else {
-      let name = req.body.name
-      let phone = req.body.phone
-      let email = req.body.email
-      let site = req.body.site
-      let order = req.body.order
       fs.readFile('static/common/content.json', 'utf8', (err, data) => {
         if (err) {
           console.error(err)
@@ -131,14 +126,25 @@ router.post('/content/footer/organisers', function (req, res) {
           res.status(503).send('Could not read file content.json and fetch footer organisers data.')
         } else {
           let result = JSON.parse(data)
+          let id = result.footer.organisers[0].id
+          for (var i = 0; i< result.footer.organisers.length; i++) {
+            if (result.footer.organisers[i].id > id) {
+              id = result.footer.organisers[id].id
+            }
+          }
+          let name = req.body.name
+          let title = req.body.title
+          let phone = req.body.phone
+          let email = req.body.email
+          let site = req.body.site
           let newOrganiser = {
-            id: result.footer.organisers.length + 1,
+            id: id + 1,
             companyLogotype: req.file ? req.file.originalname : '',
             companyName: name,
             companyPhone: phone,
             companyEmail: email,
             companySite: site,
-            order: order
+            order: result.footer.organisers.length + 1
           }
           result.footer.organisers.push(newOrganiser)
           fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf-8', (err, data) => {
@@ -162,114 +168,6 @@ router.post('/content/footer/organisers', function (req, res) {
   })
 })
 
-/* router.post('/content/footer/organisers', function (req, res) {
-  if (req.file) {
-    upload(req, res, (err) => {
-      if (err) {
-        console.error(err)
-        let date = new Date()
-        let errText = '[' + date + '] Error: ' + err + '\n'
-        fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
-          if (err) {
-            console.error(err)
-          }
-        })
-        res.status(503).send('Could not upload new organiser logotype data.')
-      } else {
-        let filename = req.file.originalname
-        let name = req.body.name
-        let phone = req.body.phone
-        let email = req.body.email
-        let site = req.body.site
-        let order = req.body.order
-        fs.readFile('static/common/content.json', 'utf8', (err, data) => {
-          if (err) {
-            console.error(err)
-            let date = new Date()
-            let errText = '[' + date + '] Error: ' + err + '\n'
-            fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
-              if (err) {
-                console.error(err)
-              }
-            })
-            res.status(503).send('Could not read file content.json and fetch footer organisers data.')
-          } else {
-            let result = JSON.parse(data)
-            result.footer.organisers.push({
-              id: result.footer.organisers.length + 1,
-              companyLogotype: filename,
-              companyName: name,
-              companyPhone: phone,
-              companyEmail: email,
-              companySite: site,
-              order: order
-            })
-            fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf-8', (err, data) => {
-              if (err) {
-                console.log(err)
-                let date = new Date()
-                let errText = '[' + date + '] Error: ' + err + '\n'
-                fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
-                  if (err) {
-                    console.error(err)
-                  }
-                })
-                res.status(503).send('Could not write to file content.json footer new organiser data.')
-              } else {
-                res.status(200).send({'status': 200})
-              }
-            })
-          }
-        })
-      }
-    })
-  } else {
-    let name = req.body.name
-    let phone = req.body.phone
-    let email = req.body.email
-    let site = req.body.site
-    let order = req.body.order
-    fs.readFile('static/common/content.json', 'utf8', (err, data) => {
-      if (err) {
-        console.error(err)
-        let date = new Date()
-        let errText = '[' + date + '] Error: ' + err + '\n'
-        fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
-          if (err) {
-            console.error(err)
-          }
-        })
-        res.status(503).send('Could not read file content.json and fetch footer organisers data.')
-      } else {
-        let result = JSON.parse(data)
-        result.footer.organisers.push({
-          id: result.footer.organisers.length + 1,
-          companyName: name,
-          companyPhone: phone,
-          companyEmail: email,
-          companySite: site,
-          order: order
-        })
-        fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf-8', (err, data) => {
-          if (err) {
-            console.log(err)
-            let date = new Date()
-            let errText = '[' + date + '] Error: ' + err + '\n'
-            fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
-              if (err) {
-                console.error(err)
-              }
-            })
-            res.status(503).send('Could not write to file content.json footer new organiser data.')
-          } else {
-            res.status(200).send({'status': 200})
-          }
-        })
-      }
-    })
-  }
-}) */
-
 // Update organisers
 
 router.put('/content/footer/organisers', function (req, res) {
@@ -285,12 +183,6 @@ router.put('/content/footer/organisers', function (req, res) {
       })
       res.status(503).send('Could not upload new organiser logotype data.')
     } else {
-      let id = req.body.id
-      let name = req.body.name
-      let phone = req.body.phone
-      let email = req.body.email
-      let site = req.body.site
-      let order = req.body.order
       fs.readFile('static/common/content.json', 'utf8', (err, data) => {
         if (err) {
           console.error(err)
@@ -304,15 +196,27 @@ router.put('/content/footer/organisers', function (req, res) {
           res.status(503).send('Could not read file content.json and fetch footer organisers data.')
         } else {
           let result = JSON.parse(data)
-          if (req.body.originalname) {
-            result.footer.organisers[id].companyLogotype = req.body.originalname
+          let id = req.body.id
+          let title = req.body.title
+          let name = req.body.name
+          let phone = req.body.phone
+          let email = req.body.email
+          let site = req.body.site
+          let order = req.body.order
+          for (var i = 0; i < result.footer.organisers.length; i++) {
+            if (result.footer.organisers[i].id === id) {
+              if (req.body.originalname) {
+                result.footer.organisers[i].companyLogotype = req.body.originalname
+              }
+              result.footer.organisers[i].companyName = name
+              result.footer.organisers[i].companyPhone = phone
+              result.footer.organisers[i].companyEmail = email
+              result.footer.organisers[i].companySite = site
+              result.footer.organisers[i].order = order
+              result.footer.organisers[i].organiserTitle = title
+            }
           }
-          result.footer.organisers[id].companyName = name
-          result.footer.organisers[id].companyPhone = phone
-          result.footer.organisers[id].companyEmail = email
-          result.footer.organisers[id].companySite = site
-          result.footer.organisers[id].order = order
-          fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf-8', (err, data) => {
+          fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf8', (err, data) => {
             if (err) {
               console.log(err)
               let date = new Date()
@@ -327,6 +231,60 @@ router.put('/content/footer/organisers', function (req, res) {
               res.status(200).send({'status': 200})
             }
           })
+        }
+      })
+    }
+  })
+})
+
+/* Update order in organisers */
+
+router.put('/content/footer/organisers/order', function (req, res, next) {
+  let action = req.body.typeOfAction
+  let object = req.body.object
+  fs.readFile('static/common/content.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error(err)
+      let error = '[ ' + new Date() + ' ] Error: ' + err + '\n'
+      fs.appendFile('static/common/error-log.txt', error, 'utf8', (err, data) => {
+        if (err) {
+          console.error(err)
+        }
+      })
+      res.status(503).send('Could not read file content.json and fetch data.')
+    } else {
+      let result = JSON.parse(data)
+      if (action ===  'incremention') {
+        if (result.footer.organisers[object.id - 1].order > 1) {
+          for (var i = 0; i < result.footer.organisers.length; i++) {
+            if (result.footer.organisers[i].order === object.order - 1) {
+              result.footer.organisers[i].order += 1
+            }
+          }
+          result.footer.organisers[object.id - 1].order -= 1
+        }
+      } else if (action === 'decremention') {
+        if (result.footer.organisers[object.id - 1].order < result.footer.organisers.length) {
+          for (var i = 0; i < result.footer.organisers.length; i++) {
+            if (result.footer.organisers[i].order === object.order + 1) {
+              result.footer.organisers[i].order -= 1
+            }
+          }
+          result.footer.organisers[object.id - 1].order += 1
+        }
+      }
+      fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf-8', (err, data) => {
+        if (err) {
+          console.log(err)
+          let error = '[' + new Date() + '] Error: ' + err + '\n'
+          fs.appendFile('static/error-log.txt', error, 'utf8', (err, data) => {
+            if (err) {
+              console.error(err)
+            }
+          })
+          res.status(503).send('Could not write to file content.json data.')
+        } else {
+          res.status(200).send({'status': 200})
         }
       })
     }

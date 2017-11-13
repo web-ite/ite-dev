@@ -92,7 +92,7 @@
         <!-- Footer bottom row organizers -->       
         <div class="footerSection__organisers">
           <div class="organiser" v-for="organiser in organisers" :key="organiser.order">
-            <h6>Организатор выставки</h6>
+            <h6>{{ organiser.organiserTitle }}</h6>
             <ul class="list-inline d-flex">
               <li v-if="organiser.companyLogotype" class="list-inline-item">
                 <img :src="`images/footer/${organiser.companyLogotype}`" />
@@ -160,8 +160,8 @@
                       <div class="header-left">{{ organiser.companyName }}</div>
                       <div class="header-right">
                         <i class="fa fa-edit" @click="editOrganiser(organiser)"></i>
-                        <i class="fa fa-arrow-down"></i>
-                        <i class="fa fa-arrow-up"></i>
+                        <i class="fa fa-arrow-down" @click="changeOrderDown(organiser)"></i>
+                        <i class="fa fa-arrow-up" @click="changeOrderUp(organiser)"></i>
                       </div>
                     </div>
                     
@@ -180,31 +180,6 @@
                 </b-card-header>
                 <b-collapse id="exhibitionSupports" visible accordion="my-accordion" role="tabpanel">
                   <b-card-body>
-                  
-                    <!--<div class="exhibitionSupport" v-for="support in supports">
-                      <b-form>
-                        <b-form-group id="input-support-logotype-group" label="Logotype:" label-for="input-support-logotype">
-                          <img v-if="support.companyLogotype && support.companyLogotype !== ''" :src="`images/${support.companyLogotype}`" /><br/>
-                          <a v-if="support.companyLogotype && support.companyLogotype !== ''" class="btn btn-primary" @click="chooseNewLogotype(support)">Choose another file</a>
-                          <div v-if="!support.companyLogotype && support.companyLogotype === ''" class="dropbox">
-                            <b-form-file class="inputNewLogotype" v-model="support.companyLogotype" @change="onNewLogotypeChange(support.companyLogotype)"></b-form-file>
-                            <p>Drag your file(s) here to begin or click to browse</p>
-                          </div>
-                        </b-form-group>
-                        <b-form-group id="input-support-name-group" label="Company name:" label-for="input-support-name">
-                          <b-form-input id="input-support-name" type="text" v-model="support.companyName"></b-form-input>
-                        </b-form-group>
-                        <b-form-group id="input-support-phone-group" label="Company phone:" label-for="input-support-phone">
-                          <b-form-input id="input-support-phone" type="text" v-model="support.companyPhone"></b-form-input>
-                        </b-form-group>
-                        <b-form-group id="input-support-email-group" label="Company email:" label-for="input-support-email">
-                          <b-form-input id="input-support-email" type="text" v-model="support.companyEmail"></b-form-input>
-                        </b-form-group>
-                        <b-form-group id="input-support-site-group" label="Company site:" label-for="input-support-site">
-                          <b-form-input id="input-support-site" type="text" v-model="support.companySite"></b-form-input>
-                        </b-form-group>
-                      </b-form>
-                    </div>-->
                     
                   </b-card-body>
                 </b-collapse>
@@ -232,6 +207,9 @@
             </b-row>
             <b-row>
               <b-col cols="12">
+                <b-form-group id="input-organiser-title-group" label="Title:" label-for="input-organiser-title">
+                  <b-form-input id="input-organiser-title" type="text" v-model="organiserCard.organiserTitle"></b-form-input>
+                </b-form-group>
                 <b-form-group id="input-company-name-group" label="Company name:" label-for="input-company-name">
                   <b-form-input id="input-company-name" type="text" v-model="organiserCard.companyName"></b-form-input>
                 </b-form-group>
@@ -243,9 +221,6 @@
                 </b-form-group>
                 <b-form-group id="input-company-site-group" label="Company site:" label-for="input-company-site">
                   <b-form-input id="input-company-site" type="text" v-model="organiserCard.companySite"></b-form-input>
-                </b-form-group>
-                <b-form-group id="input-company-sort-group" label="Sort order:" label-for="input-company-sort">
-                  <b-form-input id="input-company-sort" type="number" v-model="organiserCard.order"></b-form-input>
                 </b-form-group>
               </b-col>
             </b-row>
@@ -290,7 +265,9 @@
           companyPhone: '',
           companyEmail: '',
           companySite: '',
-          order: '0',
+          order: 0,
+          id: 0,
+          organiserTitle: '',
           action: 'Add'
         }
       },
@@ -318,25 +295,39 @@
       },
       organiserCard__save: function () {
         let self = this
-        let data = new FormData()
+        let data
         console.log(self.organiserCard)
         if ((self.organiserCard.companyLogotype !== null) && (self.organiserCard.companyLogotype !== undefined) && (self.organiserCard.companyLogotype !== '')) {
+          data = new FormData()
           data.append('image', self.organiserCard.companyLogotype)
+          data.append('name', self.organiserCard.companyName)
+          data.append('phone', self.organiserCard.companyPhone)
+          data.append('email', self.organiserCard.companyEmail)
+          data.append('site', self.organiserCard.companySite)
+          data.append('title', self.organiserCard.organiserTitle)
+          if (self.organiserCard.mode === 'edit') {
+            data.append('order', self.organiserCard.order)
+            data.append('id', self.organiserCard.id)
+          }
+        } else {
+          data = {
+            name: self.organiserCard.companyName,
+            phone: self.organiserCard.companyPhone,
+            email: self.organiserCard.companyEmail,
+            site: self.organiserCard.companySite,
+            title: self.organiserCard.organiserTitle
+          }
+          if (self.organiserCard.mode === 'edit') {
+            data.id = self.organiserCard.id
+            data.order = self.organiserCard.order
+          }
         }
-        data.append('name', self.organiserCard.companyName)
-        data.append('phone', self.organiserCard.companyPhone)
-        data.append('email', self.organiserCard.companyEmail)
-        data.append('site', self.organiserCard.companySite)
-        data.append('order', self.organiserCard.order)
         console.log(data)
         if (self.organiserCard.mode === 'add') {
           axios({
             method: 'post',
             url: '/api/content/footer/organisers',
-            data: data,
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
+            data: data
           }).then((response) => {
             console.log(response)
             self.fetchData()
@@ -349,10 +340,7 @@
           axios({
             method: 'put',
             url: '/api/content/footer/organisers',
-            data: data,
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
+            data: data
           }).then((response) => {
             console.log(response)
             self.fetchData()
@@ -376,8 +364,42 @@
           companyEmail: organiser.companyEmail,
           companySite: organiser.companySite,
           order: organiser.order,
+          id: organiser.id,
+          organiserTitle: organiser.organiserTitle,
           action: 'Save'
         }
+      },
+      changeOrderUp: function (object) {
+        let self = this
+        let data = {
+          typeOfAction: 'incremention',
+          object: object
+        }
+        console.log(data)
+        axios({
+          method: 'put',
+          url: '/api/content/footer/organisers/order',
+          data: data
+        }).then((response) => {
+          console.log(response)
+          self.fetchData()
+        })
+      },
+      changeOrderDown: function (object) {
+        let self = this
+        let data = {
+          typeOfAction: 'decremention',
+          object: object
+        }
+        console.log(data)
+        axios({
+          method: 'put',
+          url: '/api/content/footer/organisers/order',
+          data: data
+        }).then((response) => {
+          console.log(response)
+          self.fetchData()
+        })
       },
       fetchData: function () {
         let self = this

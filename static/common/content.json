@@ -92,14 +92,16 @@
 	"footer": {
 		"organisers": [{
 			"id": 1,
+			"organiserTitle": "Организатор выставки",
 			"companyLogotype": "ite.png",
-			"companyName": "ITE Москва",
+			"companyName": "ITE Moscow",
 			"companyPhone": "+7 (495) 935-73-50",
 			"companyEmail": "security@ite-expo.ru",
 			"companySite": "www.ite-expo.ru",
 			"order": 1
 		}, {
 			"id": 2,
+			"organiserTitle": "Партнер выставки",
 			"companyLogotype": "ite.png",
 			"companyName": "ITE Москва",
 			"companyPhone": "+7 (495) 935-73-50",

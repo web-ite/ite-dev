@@ -245,6 +245,42 @@ router.get('/components/mainbanner', function (req, res, next) {
   })
 })
 
+/* Update main banner */
+
+router.put('/components/mainbanner', function (req, res, next) {
+  fs.readFile('static/common/content.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error(err)
+      let date = new Date()
+      fs.appendFile('static/error-log.txt', '[ ' + date + ' ] Error: ' + err + '\n', 'utf8', (err, data) => {
+        if (err) {
+          console.error(err)
+        }
+      })
+      res.status(503).send('Could not read file content.json and fetch main banner data.')
+    } else {
+      let result = JSON.parse(data)
+      let mainBanner = req.body 
+      result.mainPage.mainBanner = mainBanner
+      fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf8', (err, data) => {
+        if (err) {
+          console.log(err)
+          let date = new Date()
+          let errText = '[' + date + '] Error: ' + err + '\n'
+          fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
+            if (err) {
+              console.error(err)
+            }
+          })
+          res.status(503).send('Could not write to file content.json updated main banner in main page.')
+        } else {
+          res.status(200).send({'status': 200})
+        }
+      })
+    }
+  })
+})
+
 /* Read hot links */
 
 router.get('/components/hotlinks', function (req, res, next) {
@@ -262,6 +298,42 @@ router.get('/components/hotlinks', function (req, res, next) {
       let result = JSON.parse(data)
       result = result.mainPage.hotLinks
       res.status(200).json(result)
+    }
+  })
+})
+
+/* Update hot links */
+
+router.put('/components/hotlinks', function (req, res, next) {
+  fs.readFile('static/common/content.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error(err)
+      let date = new Date()
+      fs.appendFile('static/error-log.txt', '[ ' + date + ' ] Error: ' + err + '\n', 'utf8', (err, data) => {
+        if (err) {
+          console.error(err)
+        }
+      })
+      res.status(503).send('Could not read file content.json and fetch hot links data.')
+    } else {
+      let result = JSON.parse(data)
+      let hotLinks = req.body 
+      result.mainPage.hotLinks = hotLinks
+      fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf8', (err, data) => {
+        if (err) {
+          console.log(err)
+          let date = new Date()
+          let errText = '[' + date + '] Error: ' + err + '\n'
+          fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
+            if (err) {
+              console.error(err)
+            }
+          })
+          res.status(503).send('Could not write to file content.json updated hot links in main page.')
+        } else {
+          res.status(200).send({'status': 200})
+        }
+      })
     }
   })
 })

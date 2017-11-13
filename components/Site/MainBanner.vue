@@ -27,7 +27,7 @@
               <div class="dropbox">
                 <b-form-file v-show="mainBanner.isInitial" id="inputNewMainBanner" v-model="mainBanner.bannerImg" @change="mainBanner__onNewImgChange"></b-form-file>
                 <p v-if="mainBanner.isInitial">Drag your file(s) here to begin or click to browse</p>
-                <img v-if="!mainBanner.isInitial && mainBanner.bannerImg !==''" :src="mainBanner.bannerImgPreview" class="logotype-preview"/>
+                <img v-if="!mainBanner.isInitial && mainBanner.bannerImg !== ''" :src="mainBanner.bannerImgPreview" class="logotype-preview"/>
                 <a v-if="!mainBanner.isInitial" @click="mainBanner__removeNewImg" class="remove-btn"><i class="fa fa-trash"></i></a>
               </div>
             </b-col>
@@ -59,7 +59,7 @@
           </b-row>
         </div>
         <template slot="modal-footer">
-          <b-button variant="primary">Submit</b-button>
+          <b-button @click="saveMainBanner" variant="primary">Submit</b-button>
         </template>
       </b-modal>
     </div>
@@ -103,6 +103,20 @@
         self.mainBanner.bannerImgPreview = ''
         self.mainBanner.isInitial = true
       },
+      saveMainBanner: function () {
+        let self = this
+        axios({
+          method: 'put',
+          url: '/api/components/mainbanner',
+          data: self.mainBanner
+        }).then((response) => {
+          console.log(response)
+          self.fetchData()
+          self.mainBannerModal = false
+        }).catch((error) => {
+          console.log(error)
+        })
+      },
       fetchData: function () {
         let self = this
         axios({
@@ -136,12 +150,18 @@
   {
     height: 100%;
     padding-left: 15px;
-    padding-left: 15px;
+    padding-right: 15px;
   }
   .mainBanner iframe
   {
     height: 100%;
     padding-left: 15px;
     padding-right: 15px;
+  }
+  .mainBanner.card
+  {
+    margin: 0 15px;
+    border: none;
+    border-radius: 0;
   }
 </style>
