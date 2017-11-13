@@ -25,7 +25,6 @@ app.use(expressSession({
   resave: true,
   saveUninitialized: false
 }))
-app.use('/api', api)
 app.use(auth.passport.initialize())
 app.use(auth.passport.session())
 
@@ -34,6 +33,9 @@ app.get('/cb',
     auth.passport.authenticate('provider', { 
     successRedirect: '/admin/dashboard', 
     failureRedirect: '/admin' }), function (req, res) { res.redirect('/'); })
+    
+    
+app.use('/api', api)
 
 // Import and Set Nuxt.js options
 let config = require('./nuxt.config.js')

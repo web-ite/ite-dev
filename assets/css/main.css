@@ -41,11 +41,12 @@ body..modal-open
   align-items: center;
   width: calc(100% - 30px);
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 123, 255, 0.2);
+  outline: 1px dashed #007BFF;
 }
 .d-relative:hover .d-modal
 {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 123, 255, 0.7);
 }
 
 .btn-edit-mode
@@ -65,8 +66,8 @@ body..modal-open
 .d-relative:hover .d-modal .btn-edit-mode:focus,
 .btn-edit-mode.active:focus
 {
-  background-color: #ee7427;
-  color: #fff;
+  background-color: #ffc107;
+  color: #000;
 }
 
 .btn-edit-global
@@ -127,6 +128,16 @@ a:focus
 
 /* Main site sections and containers */
 
+.layer
+{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 20px;
+}
+
 .edit-section
 {
   position: fixed;
@@ -150,6 +161,7 @@ a:focus
 .mainSection
 {
   flex: 1;
+  margin-bottom: 20px;
 }
 
 .adminContainer
@@ -213,6 +225,16 @@ a:focus
 .w-30
 {
   width: 30%;
+}
+
+.w-33
+{
+  width: 33.33333%;
+}
+
+.w-66
+{
+  width: 66.66666%;
 }
 
 .w-70

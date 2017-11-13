@@ -1,1 +1,126 @@
-{"header":{"title":"Международная выставка спортивного оборудования, инвентаря, одежды и обуви","date":"12 января - 24 ноября","venue":"Москва, Выставочный центр"},"logotype":"logo-new.gif","footer":{"organisers":[{"id":1,"companyLogotype":"ite.png","companyName":"ITE Москва","companyPhone":"+7 (495) 935-73-50","companyEmail":"security@ite-expo.ru","companySite":"www.ite-expo.ru","order":1},{"id":2,"companyLogotype":"ite.png","companyName":"ITE Москва","companyPhone":"+7 (495) 935-73-50","companyEmail":"security@ite-expo.ru","companySite":"www.ite-expo.ru","order":2},{"id":3,"companyLogotype":"icons8-Circle Filled-100.png","companyName":"12","companyPhone":"12","companyEmail":"12","companySite":"12","order":"12"},{"id":4,"companyName":"11","companyPhone":"11","companyEmail":"11","companySite":"11","order":"11"}],"supports":[{"id":1,"companyLogotype":"ite.png","companyName":"ITE Москва","companyPhone":"+7 (495) 935-73-50","companyEmail":"security@ite-expo.ru","companySite":"www.ite-expo.ru","order":2},{"id":2,"companyLogotype":"ufi.png","companyName":"","companyPhone":"","companyEmail":"","companySite":"","order":1}]}}
+{
+	"header": {
+		"title": "Международная выставка спортивного оборудования, инвентаря, одежды и обуви",
+		"date": "12 января - 24 ноября",
+		"venue": "Москва, Выставочный центр"
+	},
+	"logotype": "logo-new.gif",
+	"mainPage": {
+		"mainSlider": [{
+			"id": 1,
+			"slideImg": "main-slider-1.jpg",
+			"slideTitle": "Выставка SportWorld Moscow",
+			"slideText": "это эффективный инструмент продвижения современных спортивного оборудования, инвентаря, одежды и аксессуаров на российском рынке",
+			"slideLink": "/page-three",
+			"order": 2
+		}, {
+			"id": 2,
+			"slideImg": "main-slider-2.jpg",
+			"slideTitle": "Выставка SportWorld Moscow Second",
+			"slideText": "это эффективный инструмент продвижения современных спортивного оборудования, инвентаря, одежды и аксессуаров на российском рынке",
+			"slideLink": "/page-three",
+			"order": 1
+		}],
+		"mainBanner": {
+			"bannerType": "video",
+			"bannerImg": "main-banner.jpg",
+			"bannerVideo": "https://www.youtube.com/embed/FNz1ebKJj2Y",
+			"bannerTitle": "",
+			"bannerText": "",
+			"bannerLink": "/page-three"
+		},
+		"hotLinks": [{
+			"id": 1,
+			"hotLinkTitle": "Получите электронный билет",
+			"hotLinkIcon": "hot-link-1.png",
+			"hotLinkLink": "/page-three",
+			"order": 1
+		}, {
+			"id": 2,
+			"hotLinkTitle": "Забронируйте стенд",
+			"hotLinkIcon": "hot-link-2.png",
+			"hotLinkLink": "/page-three",
+			"order": 2
+		}, {
+			"id": 3,
+			"hotLinkTitle": "Каталог продукции",
+			"hotLinkIcon": "hot-link-3.png",
+			"hotLinkLink": "/page-three",
+			"order": 3
+		}, {
+			"id": 4,
+			"hotLinkTitle": "Интерактивный план выставки",
+			"hotLinkIcon": "hot-link-3.png",
+			"hotLinkLink": "/page-three",
+			"order": 4
+		}],
+		"freeboxes": [{
+			"id": 1,
+			"freeboxTitle": "About exhibition",
+			"freeboxText": "SportWorld Moscow is the leading exhibition of security and fire protection equipment and products in Russia.",
+			"freeboxLink": "/page-three",
+			"freeboxBg": "ec",
+			"freeboxImg": "freebox-1.jpg",
+			"order": 1
+		}, {
+			"id": 2,
+			"freeboxTitle": "About exhibition",
+			"freeboxText": "SportWorld Moscow is the leading exhibition of security and fire protection equipment and products in Russia.",
+			"freeboxLink": "/page-three",
+			"freeboxBg": "f9",
+			"freeboxImg": "freebox-2.png",
+			"order": 2
+		}]
+	},
+	"footer": {
+		"organisers": [{
+			"id": 1,
+			"companyLogotype": "ite.png",
+			"companyName": "ITE Москва",
+			"companyPhone": "+7 (495) 935-73-50",
+			"companyEmail": "security@ite-expo.ru",
+			"companySite": "www.ite-expo.ru",
+			"order": 1
+		}, {
+			"id": 2,
+			"companyLogotype": "ite.png",
+			"companyName": "ITE Москва",
+			"companyPhone": "+7 (495) 935-73-50",
+			"companyEmail": "security@ite-expo.ru",
+			"companySite": "www.ite-expo.ru",
+			"order": 2
+		}, {
+			"id": 3,
+			"companyLogotype": "icons8-Circle Filled-100.png",
+			"companyName": "12",
+			"companyPhone": "12",
+			"companyEmail": "12",
+			"companySite": "12",
+			"order": "12"
+		}, {
+			"id": 4,
+			"companyName": "11",
+			"companyPhone": "11",
+			"companyEmail": "11",
+			"companySite": "11",
+			"order": "11"
+		}],
+		"supports": [{
+			"id": 1,
+			"companyLogotype": "ite.png",
+			"companyName": "ITE Москва",
+			"companyPhone": "+7 (495) 935-73-50",
+			"companyEmail": "security@ite-expo.ru",
+			"companySite": "www.ite-expo.ru",
+			"order": 2
+		}, {
+			"id": 2,
+			"companyLogotype": "ufi.png",
+			"companyName": "",
+			"companyPhone": "",
+			"companyEmail": "",
+			"companySite": "",
+			"order": 1
+		}]
+	}
+}

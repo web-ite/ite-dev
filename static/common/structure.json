@@ -1,16 +1,16 @@
 {
-	"name": "Main www",
+	"name": "Main page",
 	"status": true,
 	"order": 1,
 	"id": 1,
 	"parent": 0,
 	"alias": "",
-	"path": "main.vue",
-	"template": "site_main",
-	"mdescription": "Meta description",
-	"mkeywords": "Meta keywords",
+	"path": "index.vue",
+	"template": "site_first_level",
+	"mdescription": "Main page meta description",
+	"mkeywords": "Main page meta keywords",
 	"children": [{
-		"name": "About exhibition www",
+		"name": "About exhibition",
 		"status": true,
 		"order": 2,
 		"id": 2,
@@ -18,177 +18,120 @@
 		"alias": "about-exhibition",
 		"path": "about-exhibition.vue",
 		"template": "site_second_level",
-		"mdescription": "Meta description",
-		"mkeywords": "Meta keywords",
+		"mdescription": "About exhibition page meta description",
+		"mkeywords": "About exhibition page meta keywords",
 		"children": [{
 			"name": "Exhibition sections",
 			"status": true,
-			"order": 3,
+			"order": 21,
 			"id": 3,
 			"parent": 2,
 			"alias": "exhibition-sections",
 			"path": "exhibition-sections.vue",
 			"template": "site_second_level",
-			"mdescription": "Meta description",
-			"mkeywords": "Meta keywords"
+			"mdescription": "Exhibition sections meta description",
+			"mkeywords": "Exhibition sections meta keywords"
 		}, {
 			"name": "Product catalogue",
 			"status": true,
-			"order": 4,
+			"order": 22,
 			"id": 4,
 			"parent": 2,
 			"alias": "product-catalogue",
 			"path": "product-catalogue.vue",
 			"template": "site_second_level",
-			"mdescription": "Meta description",
-			"mkeywords": "Meta keywords",
-			"children": []
+			"mdescription": "Product catalogue meta description",
+			"mkeywords": "Product catalogue meta keywords"
 		}, {
 			"name": "Exhibitor list",
 			"status": true,
-			"order": 5,
+			"order": 23,
 			"id": 5,
 			"parent": 2,
 			"alias": "exhibitior-list",
 			"path": "exhibitior-list.vue",
 			"template": "site_second_level",
-			"mdescription": "Meta description",
-			"mkeywords": "Meta keywords"
+			"mdescription": "Exhibitor list meta description",
+			"mkeywords": "Exhibitor list meta keywords"
 		}]
 	}, {
 		"name": "Exhibit",
 		"status": true,
-		"order": 6,
+		"order": 3,
 		"id": 6,
 		"parent": 1,
 		"alias": "exhibitor",
 		"path": "exhibitior.vue",
 		"template": "site_second_level",
-		"mdescription": "Meta description",
-		"mkeywords": "Meta keywords",
+		"mdescription": "Exhibit meta description",
+		"mkeywords": "Exhibit meta keywords",
 		"children": [{
 			"name": "Book a stand",
 			"status": true,
-			"order": 7,
+			"order": 31,
 			"id": 7,
 			"parent": 6,
 			"alias": "book-a-stand",
 			"path": "book-a-stand.vue",
 			"template": "site_second_level",
-			"mdescription": "Meta description",
-			"mkeywords": "Meta keywords"
+			"mdescription": "Book a stand meta description",
+			"mkeywords": "Book a stand meta keywords"
 		}, {
 			"name": "Benefits of exhibiting",
 			"status": true,
-			"order": 8,
+			"order": 32,
 			"id": 8,
 			"parent": 6,
 			"alias": "benefits-of-exhibiting",
 			"path": "benefits-of-exhibiting.vue",
 			"template": "site_second_level",
-			"mdescription": "Meta description",
-			"mkeywords": "Meta keywords"
+			"mdescription": "Benefits of exhibiting meta description",
+			"mkeywords": "Benefits of exhibiting meta keywords"
 		}, {
 			"name": "Exhibitor account",
 			"status": true,
-			"order": 9,
+			"order": 33,
 			"id": 9,
 			"parent": 6,
 			"alias": "exhibitor-account",
 			"path": "exhibitor-account.vue",
 			"template": "site_second_level",
-			"mdescription": "Meta description",
-			"mkeywords": "Meta keywords"
+			"mdescription": "Exhibitor account meta description",
+			"mkeywords": "Exhibitor account meta keywords"
 		}]
 	}, {
-		"name": "Third Page",
+		"name": "Visit",
+		"status": true,
+		"order": 4,
+		"id": 10,
+		"parent": 1,
+		"alias": "visit",
+		"path": "visit.vue",
 		"template": "site_second_level",
-		"alias": "third-page",
-		"mdescription": "Meta",
-		"mkeywords": "Meta",
-		"order": "5",
-		"filePath": "third-page.vue",
-		"parent": 1
-	}, {
-		"name": "ryuyruyuy",
-		"template": "site_second_level",
-		"alias": "sdfsdf",
-		"mdescription": "sdfsdf",
-		"mkeywords": "sdfsdf",
-		"order": "3",
-		"filePath": "sdfsdf.vue",
-		"parent": 2
-	}, {
-		"name": "Fourthc",
-		"template": "site_second_level",
-		"alias": "fourth",
-		"mdescription": "dsgdf",
-		"mkeywords": "dfgdfg",
-		"order": "4",
-		"filePath": "fourth.vue",
-		"parent": 1
-	}, {
-		"name": "dfdfd",
-		"template": "site_second_level",
-		"alias": "dfdf",
-		"mdescription": "fdfdfd",
-		"mkeywords": "dfdfdf",
-		"order": "4",
-		"filePath": "dfdf.vue",
-		"parent": 1
-	}, {
-		"name": "dgdfg",
-		"template": "site_second_level",
-		"alias": "dfgdg",
-		"mdescription": "dfgdfg",
-		"mkeywords": "fgfg",
-		"order": "6",
-		"filePath": "dfgdg.vue",
-		"parent": 1
-	}, {
-		"name": "dsfds",
-		"template": "site_second_level",
-		"alias": "dfdf",
-		"mdescription": "fdfd",
-		"mkeywords": "dfdf",
-		"order": "5",
-		"filePath": "dfdf.vue",
-		"parent": 1
-	}, {
-		"name": "sdadas",
-		"template": "site_second_level",
-		"alias": "asdasd",
-		"mdescription": "asdasd",
-		"mkeywords": "asdasd",
-		"order": "5",
-		"filePath": "asdasd.vue",
-		"parent": 1
-	}, {
-		"name": "Page",
-		"template": "site_second_level",
-		"alias": "page",
-		"mdescription": "dsfdsdf",
-		"mkeywords": "sdfsdf",
-		"order": "5",
-		"filePath": "page.vue",
-		"parent": 1
-	}, {
-		"name": "Page two",
-		"template": "site_second_level",
-		"alias": "page-two",
-		"mdescription": "dfdf",
-		"mkeywords": "dfdfdf",
-		"order": "1",
-		"filePath": "page-two.vue",
-		"parent": 1
-	}, {
-		"name": "page-three",
-		"template": "site_second_level",
-		"alias": "page-three",
-		"mdescription": "page-three",
-		"mkeywords": "page-three",
-		"order": "4",
-		"filePath": "page-three.vue",
-		"parent": 1
+		"mdescription": "Visit meta description",
+		"mkeywords": "Visit meta keywords",
+		"children": [{
+			"name": "Benefits of visiting",
+			"status": true,
+			"order": 41,
+			"id": 11,
+			"parent": 10,
+			"alias": "benefits-of-visiting",
+			"path": "benefits-of-visiting.vue",
+			"template": "site_second_level",
+			"mdescription": "Benefits of visiting meta description",
+			"mkeywords": "Benefits of visiting meta keywords"
+		}, {
+			"name": "Benefits of visiting",
+			"status": true,
+			"order": 42,
+			"id": 12,
+			"parent": 10,
+			"alias": "benefits-of-visiting",
+			"path": "benefits-of-visiting.vue",
+			"template": "site_second_level",
+			"mdescription": "Benefits of visiting meta description",
+			"mkeywords": "Benefits of visiting meta keywords"
+		}]
 	}]
 }

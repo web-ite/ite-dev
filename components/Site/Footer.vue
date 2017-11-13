@@ -462,13 +462,17 @@
     width: 40%;
     text-align: right;
   }
+  .header-title .fa
+  {
+    font-size: 16px;
+  }
+  .header-title .fa:not(:last-child)
+  {
+    margin-right: 10px;
+  }
   .exhibitionOrganiser:not(:last-child)
   {
     margin-bottom: 10px;
-  }
-  .exhibitionOrganiser .fa:not(:last-child)
-  {
-    margin-right: 10px;
   }
   @media(max-width: 456px)
   {

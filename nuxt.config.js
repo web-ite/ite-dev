@@ -25,7 +25,15 @@ module.exports = {
   */
   build: {
     vendor: ['axios', 'bootstrap-vue'],
-    plugins: [],
+    plugins: [
+     // set shortcuts as global for bootstrap
+     new webpack.ProvidePlugin({
+       '_': 'lodash',
+       $: 'jquery',
+       jQuery: 'jquery',
+        'window.jQuery': 'jquery'
+      })
+    ],
     /*
     ** Run ESLINT on save
     */

@@ -1,7 +1,7 @@
 <template>
   <header class="headerSection">
     <div class="edit-section">
-      <button class="btn btn-secondary btn-edit-global" @click="$store.commit('adminMode')"><i class="fa fa-edit"></i></button>
+      <button class="btn btn-edit-global" @click="$store.commit('adminMode')" v-bind:class="{ 'btn-primary': $store.state.admin, 'btn-secondary': !$store.state.admin }"><i class="fa fa-edit"></i></button>
       <a href="/admin" class="btn btn-secondary btn-edit-global"><i class="fa fa-user"></i></a>
     </div>
     <div class="container">
@@ -23,7 +23,9 @@
       <div class="exhibitionInfoSection row">
         <div class="col-12 col-sm-4 d-flex align-items-center" v-bind:class="{ 'd-relative': $store.state.admin }">
           <!-- Exhibition logotype -->
-          <img v-if="" class="exhibitionLogotype" :src="`${logotype}`" />
+          <a href="/">
+            <img class="exhibitionLogotype" :src="`${logotype}`" />
+          </a>
           <!-- Logotype editor -->
           <div v-if="$store.state.admin" class="d-modal">
             <button class="btn btn-primary btn-edit-mode" @click="headerExhibitionLogotype = true">Edit</button>
@@ -228,6 +230,10 @@
 </script>
 
 <style>
+  .headerSection
+  {
+    margin-bottom: 20px;
+  }
   .siteSwitchSection
   {
     display: flex;
