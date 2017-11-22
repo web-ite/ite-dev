@@ -77,7 +77,7 @@
 
 <script>
   import axios from '~/plugins/axios'
-  import _ from 'lodash'
+  import _ from '~/plugins/lodash'
   
   export default {
     data: function () {
@@ -95,7 +95,6 @@
           paginationClickable: true,
           mousewheelControl: false,
           observeParents: true,
-          // loop: true,
           prevButton: '.swiper-button-prev',
           nextButton: '.swiper-button-next'
         }

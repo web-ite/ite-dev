@@ -27,12 +27,8 @@ module.exports = {
       'vue-awesome-swiper'
     ],
     plugins: [
-     // set shortcuts as global for bootstrap
      new webpack.ProvidePlugin({
        '_': 'lodash'
-       // $: 'jquery',
-       // jQuery: 'jquery',
-       // 'window.jQuery': 'jquery'
       }) 
     ],
     /*
@@ -55,7 +51,8 @@ module.exports = {
   },
   plugins: [
     // { src: '~/plugins/bootstrap-vue', ssr: false },
-    { src: '~/plugins/vue-awesome-swiper', ssr: false }
+    { src: '~/plugins/vue-awesome-swiper', ssr: false },
+    '~/plugins/lodash'
   ],
   modules: ['bootstrap-vue/nuxt'],
   /*
