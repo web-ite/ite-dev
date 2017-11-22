@@ -1,4 +1,6 @@
 import Vue from 'vue'
-import BootstrapVue from 'bootstrap-vue'
+import BootstrapVue from 'bootstrap-vue/dist/bootstrap-vue.common'
 
-Vue.use(BootstrapVue)
+if (process.BROWSER_BUILD) {
+  Vue.use(BootstrapVue)
+}

@@ -1,1 +1,182 @@
-{"header":{"title":"Международная выставка спортивного оборудования, инвентаря, одежды и обуви","date":"12 января - 24 ноября","venue":"Москва, Выставочный центр"},"logotype":"logo-new.gif","mainPage":{"mainSlider":[{"id":1,"slideImg":"main-slider-1.jpg","slideTitle":"Выставка SportWorld Moscow Third","slideText":"это эффективный инструмент продвижения современных спортивного оборудования, инвентаря, одежды и аксессуаров на российском рынке","slideLink":"/page-three","tabIndex":0,"order":2},{"id":2,"slideImg":"main-slider-2.jpg","slideTitle":"Выставка SportWorld Moscow Second","slideText":"это эффективный инструмент продвижения современных спортивного оборудования, инвентаря, одежды и аксессуаров на российском рынке","slideLink":"/page-three","tabIndex":1,"order":1},{"id":3,"slideImg":"6.jpg","slideTitle":"Spring exhibition \"Sport World Moscow\"","slideText":"is one of the largest events held in Russia covering all aspects in the field of manufacturing of sport goods, clothes and sport accessories.","slideLink":"/","tabIndex":2,"order":3},{"id":4,"slideImg":"6.jpg","slideTitle":"Spring exhibition \"Sport World Moscow\"","slideText":"is one of the largest events held in Russia covering all aspects in the field of manufacturing of sport goods, clothes and sport accessories.","slideLink":"/page-three","order":4}],"mainBanner":{"bannerType":"video","bannerImg":"","bannerVideo":"https://www.youtube.com/embed/FNz1ebKJj2Y","bannerTitle":"","bannerText":"","bannerLink":"/page-three"},"hotLinks":[{"id":1,"hotLinkTitle":"Получите электронный билет","hotLinkIcon":"hot-link-1.png","hotLinkLink":"/page-three","order":1},{"id":2,"hotLinkTitle":"Забронируйте стенд","hotLinkIcon":"hot-link-2.png","hotLinkLink":"/page-three","order":2},{"id":3,"hotLinkTitle":"Каталог продукции","hotLinkIcon":"hot-link-3.png","hotLinkLink":"/page-three","order":3},{"id":4,"hotLinkTitle":"Интерактивный план выставки","hotLinkIcon":"hot-link-3.png","hotLinkLink":"/page-three","order":4}],"freeboxes":[{"id":1,"freeboxTitle":"About exhibition","freeboxText":"SportWorld Moscow is the leading exhibition of security and fire protection equipment and products in Russia.","freeboxLink":"/page-three","freeboxBg":"ec","freeboxImg":"freebox-1.jpg","order":1},{"id":2,"freeboxTitle":"About exhibition","freeboxText":"SportWorld Moscow is the leading exhibition of security and fire protection equipment and products in Russia.","freeboxLink":"/page-three","freeboxBg":"f9","freeboxImg":"freebox-2.png","order":2}]},"footer":{"organisers":[{"id":1,"organiserTitle":"Организатор выставки","companyLogotype":"ite.png","companyName":"ITE Moscow","companyPhone":"+7 (495) 935-73-50","companyEmail":"security@ite-expo.ru","companySite":"www.ite-expo.ru","order":1},{"id":2,"organiserTitle":"Партнер выставки","companyLogotype":"ite.png","companyName":"ITE Москва","companyPhone":"+7 (495) 935-73-50","companyEmail":"security@ite-expo.ru","companySite":"www.ite-expo.ru","order":2}],"supports":[{"id":1,"companyLogotype":"ite.png","companyName":"ITE Москва","companyPhone":"+7 (495) 935-73-50","companyEmail":"security@ite-expo.ru","companySite":"www.ite-expo.ru","order":2},{"id":2,"companyLogotype":"ufi.png","companyName":"","companyPhone":"","companyEmail":"","companySite":"","order":1}]}}
+{
+	"header": {
+		"title": "Международная выставка спортивного оборудования, инвентаря, одежды и обуви",
+		"date": "12 января - 24 ноября",
+		"venue": "Москва, Выставочный центр"
+	},
+	"logotype": "logo-new.gif",
+	"mainPage": {
+		"mainSlider": [{
+			"id": 1,
+			"slideImg": "main-slider-1.jpg",
+			"slideTitle": "Выставка SportWorld Moscow Third",
+			"slideText": "это эффективный инструмент продвижения современных спортивного оборудования, инвентаря, одежды и аксессуаров на российском рынке",
+			"slideLink": "/page-three",
+			"tabIndex": 0,
+			"order": 1
+		}, {
+			"id": 2,
+			"slideImg": "main-slider-2.jpg",
+			"slideTitle": "Выставка SportWorld Moscow Second",
+			"slideText": "это эффективный инструмент продвижения современных спортивного оборудования, инвентаря, одежды и аксессуаров на российском рынке",
+			"slideLink": "/page-three",
+			"tabIndex": 1,
+			"order": 3
+		}, {
+			"id": 3,
+			"slideImg": "6.jpg",
+			"slideTitle": "Spring exhibition \"Sport World Moscow\"",
+			"slideText": "is one of the largest events held in Russia covering all aspects in the field of manufacturing of sport goods, clothes and sport accessories.",
+			"slideLink": "/",
+			"tabIndex": 2,
+			"order": 2
+		}, {
+			"id": 4,
+			"slideImg": "6.jpg",
+			"slideTitle": "Spring exhibition \"Sport World Moscow\"",
+			"slideText": "is one of the largest events held in Russia covering all aspects in the field of manufacturing of sport goods, clothes and sport accessories.",
+			"slideLink": "/page-three",
+			"order": 4
+		}],
+		"mainBanner": {
+			"bannerType": "image",
+			"bannerImg": "",
+			"bannerVideo": "https://www.youtube.com/embed/FNz1ebKJj2Y",
+			"bannerTitle": "Main Banner title",
+			"bannerText": "Main Banner text some text some text",
+			"bannerLink": "/page-three",
+			"isInitial": true,
+			"bannerImgPreview": ""
+		},
+		"hotLinks": [{
+			"id": 2,
+			"hotLinkTitle": "Забронируйте стенд пожалуйста",
+			"hotLinkIcon": "hot-link-2.png",
+			"hotLinkLink": "/page-three",
+			"order": 1
+		}, {
+			"id": 3,
+			"hotLinkTitle": "Каталог продукции",
+			"hotLinkIcon": "hot-link-3.png",
+			"hotLinkLink": "/page-three",
+			"order": 2
+		}, {
+			"id": 4,
+			"hotLinkTitle": "Интерактивный план выставки",
+			"hotLinkIcon": "hot-link-3.png",
+			"hotLinkLink": "/page-three",
+			"order": 3
+		}, {
+			"id": 1,
+			"hotLinkTitle": "Получите электронный билет",
+			"hotLinkIcon": "hot-link-1.png",
+			"hotLinkLink": "/page-three",
+			"order": 4
+		}],
+		"freeboxes": [{
+			"id": 1,
+			"freeboxTitle": "About exhibition",
+			"freeboxText": "SportWorld Moscow is the leading exhibition of security and fire protection equipment and products in Russia.",
+			"freeboxLink": "/page-three",
+			"freeboxBg": "ec",
+			"freeboxImg": "freebox-1.jpg",
+			"order": 1
+		}, {
+			"id": 2,
+			"freeboxTitle": "About exhibition",
+			"freeboxText": "SportWorld Moscow is the leading exhibition of security and fire protection equipment and products in Russia.",
+			"freeboxLink": "/page-three",
+			"freeboxBg": "f9",
+			"freeboxImg": "freebox-2.png",
+			"order": 2
+		}],
+		"banners": [{
+		  "id": 1,
+		  "bannerImg": "banner-1.png",
+		  "bannerLink": "/page-three",
+		  "bannerAlt": "Page Three",
+		  "bannerType": "small",
+		  "order": 1
+		}, {
+		  "id": 2,
+		  "bannerImg": "banner-2.png",
+		  "bannerLink": "/page-three",
+		  "bannerAlt": "Page Three",
+		  "bannerType": "small",
+		  "order": 2
+		}, {
+		  "id": 3,
+		  "bannerImg": "banner-3.png",
+		  "bannerLink": "/page-three",
+		  "bannerAlt": "Page Three",
+		  "bannerType": "small",
+		  "order": 3
+		}, {
+		  "id": 4,
+		  "bannerImg": "banner-4.png",
+		  "bannerLink": "/page-three",
+		  "bannerAlt": "Page Three",
+		  "bannerType": "big",
+		  "order": 4
+		}, {
+		  "id": 5,
+		  "bannerImg": "banner-5.png",
+		  "bannerLink": "/page-three",
+		  "bannerAlt": "Page Three",
+		  "bannerType": "small",
+		  "order": 5
+		}, {
+		  "id": 6,
+		  "bannerImg": "banner-6.png",
+		  "bannerLink": "/page-three",
+		  "bannerAlt": "Page Three",
+		  "bannerType": "small",
+		  "order": 6
+		}, {
+		  "id": 7,
+		  "bannerImg": "banner-7.png",
+		  "bannerLink": "/page-three",
+		  "bannerAlt": "Page Three",
+		  "bannerType": "small",
+		  "order": 7
+		}]
+	},
+	"footer": {
+		"organisers": [{
+			"id": 1,
+			"organiserTitle": "Партнер выставки",
+			"companyLogotype": "ite.png",
+			"companyName": "ITE Moscow",
+			"companyPhone": "+7 (495) 935-73-50",
+			"companyEmail": "security@ite-expo.ru",
+			"companySite": "www.ite-expo.ru",
+			"order": 2
+		}, {
+			"id": 2,
+			"organiserTitle": "Организатор выставки",
+			"companyLogotype": "ite.png",
+			"companyName": "ITE Москва",
+			"companyPhone": "+7 (495) 935-73-50",
+			"companyEmail": "security@ite-expo.ru",
+			"companySite": "www.ite-expo.ru",
+			"order": 1
+		}],
+		"supports": [{
+			"id": 1,
+			"companyLogotype": "ite.png",
+			"companyName": "ITE Москва",
+			"companyPhone": "+7 (495) 935-73-50",
+			"companyEmail": "security@ite-expo.ru",
+			"companySite": "www.ite-expo.ru",
+			"order": 2
+		}, {
+			"id": 2,
+			"companyLogotype": "ufi.png",
+			"companyName": "",
+			"companyPhone": "",
+			"companyEmail": "",
+			"companySite": "",
+			"order": 1
+		}]
+	}
+}

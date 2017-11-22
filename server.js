@@ -29,10 +29,7 @@ app.use(auth.passport.initialize())
 app.use(auth.passport.session())
 
 app.get('/admin', auth.passport.authenticate('provider', { successRedirect: '/admin/dashboard' }))
-app.get('/cb', 
-    auth.passport.authenticate('provider', { 
-    successRedirect: '/admin/dashboard', 
-    failureRedirect: '/admin' }), function (req, res) { res.redirect('/'); })
+app.get('/admin/callback', auth.passport.authenticate('provider', {failureRedirect: '/admin' }), function (req, res) { res.redirect('/'); })
     
     
 app.use('/api', api)

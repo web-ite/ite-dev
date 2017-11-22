@@ -47,6 +47,10 @@ router.post('/site/languages', function (req, res, next) {
           })
           res.status(503).send('Could not write to file site.json languages data.')
         } else {
+          let dir = 'pages/' + req.body.code
+          if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir)
+          }
           res.status(200).send({'status': 200})
         }
       })

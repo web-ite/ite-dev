@@ -6,6 +6,7 @@
         <div class="card-img-overlay">
           <h4 class="card-title">{{ mainBanner.bannerTitle }}</h4>
           <p class="card-text">{{ mainBanner.bannerText }}</p>
+          <span class="mainBanner-link"></span>
         </div>
       </a>
     </div>
@@ -126,6 +127,8 @@
           self.mainBanner = response.data
           if ((self.mainBanner.bannerImg === undefined) || (self.mainBanner.bannerImg === null) || (self.mainBanner.bannerImg === '')) {
             self.mainBanner.isInitial = true
+            self.mainBanner.bannerImgPreview = ''
+            self.mainBanner.bannerImg = ''
           } else {
             self.mainBanner.isInitial = false
           }
@@ -163,5 +166,33 @@
     margin: 0 15px;
     border: none;
     border-radius: 0;
+  }
+  .mainBanner .card-title
+  {
+    font-size: 16px;
+    color: #fff;
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+  .mainBanner .card-text
+  {
+    font-size: 12px;
+  }
+  .mainBanner:hover a,
+  .mainBanner:focus a
+  {
+    cursor: pointer;
+    color: #fff;  
+  }
+  .mainBanner-link
+  {
+    content: "";
+    position: absolute;
+    background-image: url('/static/images/arrow_next_big.png');
+    width: 45px;
+    background-repeat: no-repeat;
+    height: 45px;
+    bottom: 15px;
+    right: 15px;
   }
 </style>

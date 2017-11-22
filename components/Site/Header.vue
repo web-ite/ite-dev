@@ -1,8 +1,8 @@
 <template>
   <header class="headerSection">
     <div class="edit-section">
-      <button class="btn btn-edit-global" @click="$store.commit('adminMode')" v-bind:class="{ 'btn-primary': $store.state.admin, 'btn-secondary': !$store.state.admin }"><i class="fa fa-edit"></i></button>
-      <a href="/admin" class="btn btn-secondary btn-edit-global"><i class="fa fa-user"></i></a>
+      <button class="btn btn-edit-global" @click="$store.commit('adminMode')" v-bind:class="{ 'btn-primary': $store.state.admin, 'btn-warning': !$store.state.admin }"><i class="fa fa-edit"></i></button>
+      <a href="/admin" class="btn btn-warning btn-edit-global"><i class="fa fa-user"></i></a>
     </div>
     <div class="container">
       <div class="siteSwitchSection btn-group">
@@ -12,19 +12,16 @@
       </div>
       <div class="languageSwitchSection">
         <ul class="list-inline">
-          <li class="list-inline-item">
-            <a href="#"><img src="~/static/images/en-GB.png"> English</a>
-          </li>
-          <li class="list-inline-item">
-            <a href="#"><img src="~/static/images/ru-RU.png"> Русский</a>
+          <li class="list-inline-item" v-for="language in languages">
+            <a :href="`/${language.code}`"> {{ language.name }}</a>
           </li>
         </ul>
       </div>
       <div class="exhibitionInfoSection row">
         <div class="col-12 col-sm-4 d-flex align-items-center" v-bind:class="{ 'd-relative': $store.state.admin }">
           <!-- Exhibition logotype -->
-          <a href="/">
-            <img class="exhibitionLogotype" :src="`${logotype}`" />
+          <a :href="`/`">
+            <img class="exhibitionLogotype" :src="`/${logotype}`" />
           </a>
           <!-- Logotype editor -->
           <div v-if="$store.state.admin" class="d-modal">
@@ -94,6 +91,7 @@
     },
     data: function () {
       return {
+        languages: [],
         logotype: '',
         newLogotype: '',
         newLogotypePreview: '',
@@ -219,10 +217,17 @@
         }).then((response) => {
           self.logotype = 'images/' + response.data
         })
+      },
+      fetchLanguagesData: function () {
+        let self = this
+        axios.get('/api/site/languages').then(response => {
+          self.languages = response.data
+        })
       }
     },
     created: function () {
       let self = this
+      self.fetchLanguagesData()
       self.fetchTextData()
       self.fetchLogotypeData()
     }

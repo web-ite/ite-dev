@@ -15,67 +15,11 @@ let storage = multer.diskStorage({
 
 let upload = multer({ storage: storage }).single('image')
 
-/* Order action content */
+/* ---------------- CRUD components ---------------- */
 
-router.put('/content/slider/order', function (req, res, next) {
-  let action = req.body.typeOfAction
-  let section = req.body.section
-  let subSection = req.body.typeOfObject
-  let object = req.body.object
-  fs.readFile('static/common/content.json', 'utf8', (err, data) => {
-    if (err) {
-      console.error(err)
-      let error = '[ ' + new Date() + ' ] Error: ' + err + '\n'
-      fs.appendFile('static/common/error-log.txt', error, 'utf8', (err, data) => {
-        if (err) {
-          console.error(err)
-        }
-      })
-      res.status(503).send('Could not read file content.json and fetch data.')
-    } else {
-      let result = JSON.parse(data)
-      if (action ===  'incremention') {
-        if (result[section][subSection][object.id - 1].order > 1) {
-          for (var i = 0; i < result[section][subSection].length; i++) {
-            if (result[section][subSection][i].order === object.order - 1) {
-              result[section][subSection][i].order += 1
-            }
-            if (result[section][subSection][i].id === object.id) {
-              result[section][subSection][i][i].order -= 1
-            }
-          }
-        }
-      } else if (action === 'decremention') {
-        if (result[section][subSection][object.id - 1].order < result[section][subSection].length) {
-          for (var i = 0; i < result[section][subSection].length; i++) {
-            if (result[section][subSection][i].order === object.order + 1) {
-              result[section][subSection][i].order -= 1
-            }
-            if (result[section][subSection][i].id === object.id) {
-              result[section][subSection][i][i].order += 1
-            }
-          }
-        }
-      }
-      fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf-8', (err, data) => {
-        if (err) {
-          console.log(err)
-          let error = '[' + new Date() + '] Error: ' + err + '\n'
-          fs.appendFile('static/error-log.txt', error, 'utf8', (err, data) => {
-            if (err) {
-              console.error(err)
-            }
-          })
-          res.status(503).send('Could not write to file content.json data.')
-        } else {
-          res.status(200).send({'status': 200})
-        }
-      })
-    }
-  })
-})
+/* ---------------- Slider section ---------------- */
 
-/* Read slides in Main Slider */
+/* Read mainslider */
 
 router.get('/components/slider', function (req, res, next) {
   fs.readFile('static/common/content.json', 'utf8', (err, data) => {
@@ -96,7 +40,7 @@ router.get('/components/slider', function (req, res, next) {
   })
 })
 
-/* Create slide in Main Slider */
+/* Post mainslider */
 
 router.post('/components/slider', function (req, res) {
   upload(req, res, (err) => {
@@ -163,7 +107,7 @@ router.post('/components/slider', function (req, res) {
   })
 })
 
-/* Update slide in Main Slider */
+/* Update mainslider */
 
 router.put('/components/slider', function (req, res) {
   upload(req, res, (err) => {
@@ -228,7 +172,69 @@ router.put('/components/slider', function (req, res) {
   })
 })
 
-/* Read main banner */
+/* Order mainslider */
+
+router.put('/components/slider/order', function (req, res, next) {
+  let action = req.body.typeOfAction
+  let section = req.body.section
+  let subSection = req.body.typeOfObject
+  let object = req.body.object
+  fs.readFile('static/common/content.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error(err)
+      let error = '[ ' + new Date() + ' ] Error: ' + err + '\n'
+      fs.appendFile('static/common/error-log.txt', error, 'utf8', (err, data) => {
+        if (err) {
+          console.error(err)
+        }
+      })
+      res.status(503).send('Could not read file content.json and fetch data.')
+    } else {
+      let result = JSON.parse(data)
+      if (action ===  'incremention') {
+        if (result[section][subSection][object.id - 1].order > 1) {
+          for (var i = 0; i < result[section][subSection].length; i++) {
+            if (result[section][subSection][i].order === object.order - 1) {
+              result[section][subSection][i].order += 1
+            }
+            if (result[section][subSection][i].id === object.id) {
+              result[section][subSection][i].order -= 1
+            }
+          }
+        }
+      } else if (action === 'decremention') {
+        if (result[section][subSection][object.id - 1].order < result[section][subSection].length) {
+          for (var i = 0; i < result[section][subSection].length; i++) {
+            if (result[section][subSection][i].order === object.order + 1) {
+              result[section][subSection][i].order -= 1
+            }
+            if (result[section][subSection][i].id === object.id) {
+              result[section][subSection][i].order += 1
+            }
+          }
+        }
+      }
+      fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf-8', (err, data) => {
+        if (err) {
+          console.log(err)
+          let error = '[' + new Date() + '] Error: ' + err + '\n'
+          fs.appendFile('static/error-log.txt', error, 'utf8', (err, data) => {
+            if (err) {
+              console.error(err)
+            }
+          })
+          res.status(503).send('Could not write to file content.json data.')
+        } else {
+          res.status(200).send({'status': 200})
+        }
+      })
+    }
+  })
+})
+
+/* ---------------- Mainbanner section ---------------- */
+
+/* Read mainbanner */
 
 router.get('/components/mainbanner', function (req, res, next) {
   fs.readFile('static/common/content.json', 'utf8', (err, data) => {
@@ -249,7 +255,7 @@ router.get('/components/mainbanner', function (req, res, next) {
   })
 })
 
-/* Update main banner */
+/* Update mainbanner */
 
 router.put('/components/mainbanner', function (req, res, next) {
   fs.readFile('static/common/content.json', 'utf8', (err, data) => {
@@ -285,9 +291,69 @@ router.put('/components/mainbanner', function (req, res, next) {
   })
 })
 
-/* Read hot links */
+/* ---------------- Hotlink section ---------------- */
 
-router.get('/components/hotlinks', function (req, res, next) {
+/* Order hotlink */
+
+router.put('/components/hotlink/order', function (req, res, next) {
+  fs.readFile('static/common/content.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error(err)
+      let error = '[ ' + new Date() + ' ] Error: ' + err + '\n'
+      fs.appendFile('static/common/error-log.txt', error, 'utf8', (err, data) => {
+        if (err) {
+          console.error(err)
+        }
+      })
+      res.status(503).send('Could not read file content.json and fetch data.')
+    } else {
+      let result = JSON.parse(data)
+      let action = req.body.typeOfAction
+      let object = req.body.object
+      if (action ===  'incremention') {
+        if (result.mainPage.hotLinks[object.id - 1].order > 1) {
+          for (var i = 0; i < result.mainPage.hotLinks.length; i++) {
+            if (result.mainPage.hotLinks[i].order === object.order - 1) {
+              result.mainPage.hotLinks[i].order += 1
+            }
+            if (result.mainPage.hotLinks[i].id === object.id) {
+              result.mainPage.hotLinks[i].order -= 1
+            }
+          }
+        }
+      } else if (action === 'decremention') {
+        if (result.mainPage.hotLinks[object.id - 1].order < result.mainPage.hotLinks.length) {
+          for (var i = 0; i < result.mainPage.hotLinks.length; i++) {
+            if (result.mainPage.hotLinks[i].order === object.order + 1) {
+              result.mainPage.hotLinks[i].order -= 1
+            }
+            if (result.mainPage.hotLinks[i].id === object.id) {
+              result.mainPage.hotLinks[i].order += 1
+            }
+          }
+        }
+      }
+      fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf-8', (err, data) => {
+        if (err) {
+          console.log(err)
+          let error = '[' + new Date() + '] Error: ' + err + '\n'
+          fs.appendFile('static/error-log.txt', error, 'utf8', (err, data) => {
+            if (err) {
+              console.error(err)
+            }
+          })
+          res.status(503).send('Could not write to file content.json data.')
+        } else {
+          res.status(200).send({'status': 200})
+        }
+      })
+    }
+  })
+})
+
+/* Read hotlink */
+
+router.get('/components/hotlink', function (req, res, next) {
   fs.readFile('static/common/content.json', 'utf8', (err, data) => {
     if (err) {
       console.error(err)
@@ -306,9 +372,9 @@ router.get('/components/hotlinks', function (req, res, next) {
   })
 })
 
-/* Update hot links */
+/* Update hotlink */
 
-router.put('/components/hotlinks', function (req, res, next) {
+router.put('/components/hotlink', function (req, res, next) {
   fs.readFile('static/common/content.json', 'utf8', (err, data) => {
     if (err) {
       console.error(err)
@@ -342,9 +408,11 @@ router.put('/components/hotlinks', function (req, res, next) {
   })
 })
 
-/* Read freeboxes */
+/* ---------------- Freebox section ---------------- */
 
-router.get('/components/freeboxes', function (req, res, next) {
+/* Read freebox */
+
+router.get('/components/freebox', function (req, res, next) {
   fs.readFile('static/common/content.json', 'utf8', (err, data) => {
     if (err) {
       console.error(err)
@@ -362,5 +430,129 @@ router.get('/components/freeboxes', function (req, res, next) {
     }
   })
 })
+
+/* Post freebox */ 
+
+router.post('/components/freebox', function (req, res, next) {
+  
+})
+
+/* Update freebox */
+
+router.put('/components/freebox', function (req, res, next) {
+  
+})
+
+/* Order freebox */
+
+router.post('/components/freebox/order', function (req, res, next) {
+  fs.readFile('static/common/content.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error(err)
+      let error = '[ ' + new Date() + ' ] Error: ' + err + '\n'
+      fs.appendFile('static/common/error-log.txt', error, 'utf8', (err, data) => {
+        if (err) {
+          console.error(err)
+        }
+      })
+      res.status(503).send('Could not read file content.json and fetch freebox data.')
+    } else {
+      let result = JSON.parse(data)
+      let action = req.body.typeOfAction
+      let object = req.body.object
+      if (action ===  'incremention') {
+        if (result.mainPage.freeboxes[object.id - 1].order > 1) {
+          for (var i = 0; i < result.mainPage.freeboxes.length; i++) {
+            if (result.mainPage.freeboxes[i].order === object.order - 1) {
+              result.mainPage.freeboxes[i].order += 1
+            }
+            if (result.mainPage.freeboxes[i].id === object.id) {
+              result.mainPage.freeboxes[i].order -= 1
+            }
+          }
+        }
+      } else if (action === 'decremention') {
+        if (result.mainPage.freeboxes[object.id - 1].order < result.mainPage.freeboxes.length) {
+          for (var i = 0; i < result.mainPage.freeboxes.length; i++) {
+            if (result.mainPage.freeboxes[i].order === object.order + 1) {
+              result.mainPage.freeboxes[i].order -= 1
+            }
+            if (result.mainPage.freeboxes[i].id === object.id) {
+              result.mainPage.freeboxes[i].order += 1
+            }
+          }
+        }
+      }
+      fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf-8', (err, data) => {
+        if (err) {
+          console.log(err)
+          let error = '[' + new Date() + '] Error: ' + err + '\n'
+          fs.appendFile('static/error-log.txt', error, 'utf8', (err, data) => {
+            if (err) {
+              console.error(err)
+            }
+          })
+          res.status(503).send('Could not write to file content.json freebox data.')
+        } else {
+          res.status(200).send({'status': 200})
+        }
+      })
+    }
+  })
+})
+
+/* ---------------- Banner section ---------------- */
+
+/* Read banner */
+
+router.get('/components/banner', function (req, res, next) {
+  
+})
+
+/* Post banner */
+
+router.post('/components/banner', function (req, res, next) {
+  
+})
+
+/* Update banner */
+
+router.put('/components/banner', function (req, res, next) {
+  
+})
+
+/* Order banner */
+
+router.put('/components/banner/order', function (req, res, next) {
+  
+})
+
+/* ---------------- Support section ---------------- */
+
+/* Read support */
+
+router.get('/components/support', function (req, res, next) {
+  
+})
+
+/* Post support */
+
+router.post('/components/support', function (req, res, next) {
+  
+})
+
+/* Update support */
+
+router.put('/components/support', function (req, res, next) {
+  
+})
+
+/* Order support */
+
+router.put('/components/support/order', function (req, res, next) {
+  
+})
+
+/* ---------------- End CRUD ---------------- */
 
 module.exports = router

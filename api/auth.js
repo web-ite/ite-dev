@@ -12,10 +12,7 @@ function AzureOAuthStrategy () {
 	  clientID: 'f8a798d8-2314-425e-80d7-5086efb1ae95',
 	  clientSecret: 'wQhBbuWavj3QI2x1ZcK9efA1WEdQEsP5gEOAUeiaxXY=',
 	  callbackURL: 'https://ite-dev-vtf.azurewebsites.net/.auth/login/aad/callback',
-	  resource: 'http://ite-dev-vtf.azurewebsites.net',
-	  tenant: '2727c6de-342b-49b9-a7fa-d7cc7afd58ec',
-	  prompt: 'login',
-	  state: false
+	  tenant: '2727c6de-342b-49b9-a7fa-d7cc7afd58ec'
 	},
 	function (accessToken, refreshtoken, params, profile, done) {
 	  var user = jwt.decode(params.id_token, '', true)

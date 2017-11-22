@@ -1,39 +1,20 @@
 <template>
   <div class="mainSliderContainer" v-bind:class="{ 'd-relative': $store.state.admin }">
-    
-    <!--<div id="mainSlider" class="carousel slide" data-ride="carousel">
-      <div class="carousel-inner">
-        <div class="carousel-item" v-for="slide in mainSlider" :key="slide.order" v-bind:class="{ 'active': slide.order === 1}">
-          <img class="d-block w-100" :src="`images/slider/${slide.slideImg}`">
-          <div class="carousel-caption d-none d-md-block">
-            <h3>{{ slide.slideTitle }}</h3>
+
+    <div v-swiper:mySwiper="swiperOption">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" v-for="slide in mainSlider" :key="slide.order">
+          <img class="slide-img" :src="`/images/slider/${mainSlider[0].slideImg}`">
+          <div class="slide-caption">
+            <h1>{{ slide.slideTitle }}</h1>
             <p>{{ slide.slideText }}</p>
           </div>
         </div>
       </div>
-      <a class="carousel-control-prev" href="#mainSlider" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#mainSlider" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
-    </div>-->
-    
-    <b-carousel id="mainSlider"
-                :interval="1000"
-                img-width="1024"
-                img-height="480"
-                v-model="slide"
-                @sliding-start="onSlideStart"
-                @sliding-end="onSlideEnd"
-    >
-      <b-carousel-slide v-for="slide in mainSlider" :key="slide.order" :caption="slide.slideTitle"  v-bind:class="{ 'active': slide.order === 1}"
-                        :text="slide.slideText"
-                        :img-src="`images/slider/${slide.slideImg}`"
-      ></b-carousel-slide>
-    </b-carousel>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-pagination swiper-pagination-bullets"></div>
+    </div>
     
     <div v-if="$store.state.admin" class="d-modal">
       <button class="btn btn-primary btn-edit-mode" @click="mainSliderModal = true">Edit</button>
@@ -55,7 +36,6 @@
           </div>
         </div>
         <template slot="modal-footer">
-          <b-button variant="primary">Submit</b-button>
         </template>
       </b-modal>
       
@@ -67,7 +47,7 @@
               <b-form-file v-show="slideModel.isInitial" id="inputNewLogotype" v-model="slideModel.slideImg" @change="slideModel__onNewLogotypeChange"></b-form-file>
               <p v-if="slideModel.isInitial">Drag your file(s) here to begin or click to browse</p>
               <img v-if="!slideModel.isInitial && slideModel.mode == 'add'" :src="slideModel.slideImgPreview" class="logotype-preview"/>
-              <img v-if="!slideModel.isInitial && slideModel.slideImg ==='' && slideModel.mode == 'edit'" :src="`images/slider/${slideModel.slideImgPreview}`" class="logotype-preview"/>
+              <img v-if="!slideModel.isInitial && slideModel.slideImg ==='' && slideModel.mode == 'edit'" :src="`/images/slider/${slideModel.slideImgPreview}`" class="logotype-preview"/>
               <img v-if="!slideModel.isInitial && slideModel.slideImg !=='' && slideModel.mode == 'edit'" :src="slideModel.slideImgPreview" class="logotype-preview"/>
               <a v-if="!slideModel.isInitial" @click="slideModel__removeNewLogotype" class="remove-btn"><i class="fa fa-trash"></i></a>
             </div>
@@ -102,13 +82,23 @@
   export default {
     data: function () {
       return {
-        slide: 0,
         mainSliderModal: false,
-        mainSlider: {},
+        mainSlider: [],
         slideModel: {},
         slideAlert: false,
         slideAlertType: '',
-        slideAlertText: ''
+        slideAlertText: '',
+        swiperOption: {
+          autoplay: 6000,
+          setWrapperSize: true,
+          pagination: '.swiper-pagination',
+          paginationClickable: true,
+          mousewheelControl: false,
+          observeParents: true,
+          // loop: true,
+          prevButton: '.swiper-button-prev',
+          nextButton: '.swiper-button-next'
+        }
       }
     },
     methods: {
@@ -268,17 +258,11 @@
           method: 'get',
           url: '/api/components/slider'
         }).then((response) => {
-          let data = _.orderBy(response.data, 'order', 'asc')
+          let data = _.orderBy(response.data, 'order')
           self.mainSlider = data
         }, (error) => {
           console.log(error)
         })
-      },
-      onSlideStart: function (slide) {
-        this.sliding = true
-      },
-      onSlideEnd: function (slide) {
-        this.sliding = false
       }
     },
     created: function () {
@@ -294,12 +278,18 @@
     margin-left: -15px;
     margin-right: -15px;
   }
-  #mainSlider
+  .swiper-container
   {
     padding-left: 15px;
     padding-right: 15px;
   }
-  .carousel-caption
+  .slide-img
+  {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .slide-caption
   {
     position: absolute;
     right: 30%;
@@ -311,19 +301,56 @@
     text-align: left;
     background-color: rgba(52, 155, 29, .7);
   }
-  .carousel-control-next,
-  .carousel-control-prev
+  .my-swiper
   {
-    bottom: 25px;
-    align-items: flex-end;
+    height: 100%;
+    width: 100%;
   }
-  .carousel-control-next-icon,
-  .carousel-control-prev-icon
+  .my-swiper .swiper-slide
   {
-    width: 50px;
-    height: 50px;
-    border: 2px solid #fff;
-    border-radius: 50%;
-    background-size: 50% 50%;
+    text-align: center;
+    font-size: 38px;
+    font-weight: 700;
+    background-color: #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .my-swiper .swiper-pagination > .swiper-pagination-bullet
+  {
+    background-color: red;
+  }
+  .swiper-slide
+  {
+    opacity: 0;
+  }
+  .swiper-slide.swiper-slide-active
+  {
+    opacity: 1;
+  }
+  .swiper-button-prev,
+  .swiper-button-next
+  {
+    background-size: contain;
+    width: 43px;
+    height: 43px;
+    top: auto;
+    bottom: 15px;
+  }
+  .swiper-button-prev,
+  .swiper-container-rtl .swiper-button-next
+  {
+    background-image: url("~/images/arrow_prev_big.png");
+    left: 30px;
+  }
+  .swiper-button-next,
+  .swiper-container-rtl .swiper-button-prev
+  {
+    background-image: url("~/images/arrow_next_big.png");
+    right: 30px;
+  }
+  .swiper-pagination-bullet-active
+  {
+    background: #fff;
   }
 </style>

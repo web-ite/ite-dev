@@ -12,7 +12,7 @@
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
   },
   "dependencies": {
-    "@nuxtjs/bootstrap-vue": "^2.0.2",
+    "@nuxtjs/bootstrap-vue": "^2.0.4",
     "adal-angular": "^1.0.15",
     "assert-plus": "^1.0.0",
     "axios": "^0.16.2",
@@ -44,6 +44,8 @@
     "source-map-support": "^0.4.15",
     "util": "^0.10.3",
     "vee-validate": "^2.0.0-beta.17",
+    "vue-awesome-swiper": "^2.6.7",
+    "vue-easy-slider": "^3.1.7",
     "vue-easy-toast": "^1.0.2",
     "vue-froala-wysiwyg": "^2.7.0",
     "vue-sortable-tree": "^1.0.26",

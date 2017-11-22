@@ -17,22 +17,23 @@ module.exports = {
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' }
     ]
   },
-  plugins: [
-    { src: './plugins/bootstrap-vue', ssr: true }
-  ],
   /*
   ** Add axios globally
   */
   build: {
-    vendor: ['axios', 'bootstrap-vue'],
+    vendor: [
+      'axios',
+      // 'bootstrap-vue/dist/bootstrap-vue.common',
+      'vue-awesome-swiper'
+    ],
     plugins: [
      // set shortcuts as global for bootstrap
      new webpack.ProvidePlugin({
-       '_': 'lodash',
-       $: 'jquery',
-       jQuery: 'jquery',
-        'window.jQuery': 'jquery'
-      })
+       '_': 'lodash'
+       // $: 'jquery',
+       // jQuery: 'jquery',
+       // 'window.jQuery': 'jquery'
+      }) 
     ],
     /*
     ** Run ESLINT on save
@@ -52,12 +53,18 @@ module.exports = {
       }
     }
   },
-    /*
+  plugins: [
+    // { src: '~/plugins/bootstrap-vue', ssr: false },
+    { src: '~/plugins/vue-awesome-swiper', ssr: false }
+  ],
+  modules: ['bootstrap-vue/nuxt'],
+  /*
   ** Global CSS
   */
   css: [
     'bootstrap/dist/css/bootstrap.min.css',
     'font-awesome/css/font-awesome.min.css',
+    'swiper/dist/css/swiper.css',
     '~/assets/css/main.css',
     '~/assets/css/colors.css'
   ]

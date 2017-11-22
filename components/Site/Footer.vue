@@ -3,7 +3,13 @@
     <div class="row">
       <div class="col-12">
          <div class="footerSection__topRow footerSection__topRow-flex">
-          <div class="footerSection__topColumn">
+          <div class="footerSection__topColumn" v-for="page in pages" :key="page.id">
+            <h6><a :href="`/${page.alias}`">{{ page.name }}</a></h6>
+            <ul class="list-unstyled">
+        			<li v-for="child in page.children" :key="child.id"><a :href="`/${page.alias}/${child.alias}`">{{ child.name }}</a></li>
+            </ul>
+          </div>
+          <!--<div class="footerSection__topColumn">
             <h6>О выставке</h6>
             <ul class="list-unstyled">
         			<li><a href="/ru-RU/about/sections.aspx" style="">Разделы выставки</a></li>
@@ -66,23 +72,7 @@
         			<li><a href="/ru-RU/about/contacts.aspx" style="">Контакты</a></li>
         			<li><a href="/ru-RU/about/exhibitions.aspx" style="">Выставки</a></li>
             </ul>
-          </div>
-          <div class="footerSection__topColumn">
-            <h6>О выставке</h6>
-            <ul class="list-unstyled">
-        			<li><a href="/ru-RU/about/sections.aspx" style="">Разделы выставки</a></li>
-        			<li><a href="/ru-RU/about/products.aspx">Каталог продукции</a></li>
-        			<li><a href="/ru-RU/about/exposition.aspx">Интерактивный план</a></li>
-        			<li><a href="/ru-RU/about/exhibitor-list.aspx">Список участников</a></li>
-        			<li><a href="/ru-RU/about/venue.aspx" style="">Место проведения</a></li>
-        			<li><a href="/ru-RU/about/support/official.aspx" style="">Поддержка</a></li>
-        			<li><a href="/ru-RU/about/sponsor/golden.aspx" style="">Спонсоры</a></li>
-        			<li><a href="/ru-RU/about/travel.aspx" style="">Организация поездки</a></li>
-        			<li><a href="/ru-RU/about/organizer.aspx" style="">Организатор</a></li>
-        			<li><a href="/ru-RU/about/contacts.aspx" style="">Контакты</a></li>
-        			<li><a href="/ru-RU/about/exhibitions.aspx" style="">Выставки</a></li>
-            </ul>
-          </div>
+          </div>-->
         </div>
       </div>
     </div>
@@ -95,7 +85,7 @@
             <h6>{{ organiser.organiserTitle }}</h6>
             <ul class="list-inline d-flex">
               <li v-if="organiser.companyLogotype" class="list-inline-item">
-                <img :src="`images/footer/${organiser.companyLogotype}`" />
+                <img :src="`/images/footer/${organiser.companyLogotype}`" />
               </li>
               <li class="list-inline-item">
                 {{ organiser.companyName }}<br />
@@ -112,7 +102,7 @@
           <div class="support" v-for="support in supports">
             <h6>При поддержке</h6>
             <a href="http://www.ufi.org/" rel="nofollow" target="_blank">
-              <img :src="`images/footer/${support.companyLogotype}`" />
+              <img :src="`/images/footer/${support.companyLogotype}`" />
             </a>
           </div>
         </div>
@@ -145,18 +135,17 @@
             <div role="tablist">
               
               <b-card no-body class="mb-2">
-                <b-card-header header-tag="header" class="p-3 bg-info text-white header-title" role="tab" v-b-toggle.exhibitionOrganisers>
+                <div class="p-3 bg-info text-white header-title" role="tab" v-b-toggle.exhibitionOrganisers>
                   <div class="header-left">
                     Exhibition organisers
                   </div>
                   <div class="header-right">
                     <i class="fa fa-plus" @click="addOrganiser"></i>
                   </div>
-                </b-card-header>
+                </div>
                 <b-collapse id="exhibitionOrganisers" visible accordion="my-accordion" role="tabpanel">
-                  <b-card-body>
                     
-                    <div class="header-title exhibitionOrganiser" v-for="organiser in organisers">
+                    <div class="bg-dark text-white header-title exhibitionOrganiser" v-for="organiser in organisers">
                       <div class="header-left">{{ organiser.organiserTitle }}</div>
                       <div class="header-right">
                         <i class="fa fa-edit" @click="editOrganiser(organiser)"></i>
@@ -164,12 +153,11 @@
                         <i class="fa fa-arrow-up" @click="changeOrderUp(organiser)"></i>
                       </div>
                     </div>
-                    
-                  </b-card-body>
+              
                 </b-collapse>
               </b-card>
               
-              <b-card no-body class="mb-2">
+              <!--<b-card no-body class="mb-2">
                 <b-card-header header-tag="header" class="p-3 bg-info text-white header-title" role="tab" v-b-toggle.exhibitionSupports>
                   <div class="header-left">
                     Exhibition supports
@@ -181,22 +169,21 @@
                 <b-collapse id="exhibitionSupports" visible accordion="my-accordion" role="tabpanel">
                   <b-card-body>
                     
-                    <!--<div class="header-title exhibitionOrganiser" v-for="support in supports">
+                    <div class="header-title exhibitionOrganiser" v-for="support in supports">
                       <div class="header-left">{{ organiser.organiserTitle }}</div>
                       <div class="header-right">
                         <i class="fa fa-edit" @click="editOrganiser(organiser)"></i>
                         <i class="fa fa-arrow-down" @click="changeOrderDown(organiser)"></i>
                         <i class="fa fa-arrow-up" @click="changeOrderUp(organiser)"></i>
                       </div>
-                    </div>-->
+                    </div>
                     
                   </b-card-body>
                 </b-collapse>
-              </b-card>
+              </b-card>-->
             </div>
             
             <template slot="modal-footer">
-              <b-button @click="footerBottomRowEdit = false" variant="secondary">Close</b-button>
             </template>
             
           </b-modal>
@@ -253,6 +240,7 @@
   export default {
     data: function () {
       return {
+        pages: [],
         organisers: [],
         organiserCard: {},
         supports: [],
@@ -411,6 +399,17 @@
           self.fetchData()
         })
       },
+      fetchPages: function () {
+        let self = this
+        axios({
+          method: 'get',
+          url: '/api/pages'
+        }).then((response) => {
+          self.pages = response.data.children
+        }, (error) => {
+          console.log(error)
+        })
+      },
       fetchData: function () {
         let self = this
         axios({
@@ -427,6 +426,7 @@
     },
     created: function () {
       let self = this
+      self.fetchPages()
       self.fetchData()
     }
   }
@@ -502,10 +502,6 @@
   .header-title .fa:not(:last-child)
   {
     margin-right: 10px;
-  }
-  .exhibitionOrganiser:not(:last-child)
-  {
-    margin-bottom: 10px;
   }
   @media(max-width: 456px)
   {

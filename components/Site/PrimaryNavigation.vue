@@ -1,14 +1,11 @@
 <template>
-  <nav class="navbar navbar-light row">
-    <ul class="navbar-nav mt-2 mt-lg-0 col-sm-8 offset-sm-4">
-      <li v-for="page in pages" :key="page.id" class="nav-item dropdown">
-        <a class="nav-link" :href="`/${page.alias}`" :id="`navlink-${page.id}`" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ page.name }}</a>
-        <div v-if="page.children && page.children.length > 0" class="dropdown-menu" :aria-labelledby="`navlink-${page.id}`">
-          <a v-for="child in page.children" :key="child.id" class="dropdown-item" :href="`/${page.alias}/${child.alias}`">{{ child.name }}</a>
-        </div>
-      </li>
-    </ul>
-  </nav>
+  <b-navbar type="light">
+    <b-navbar-nav class="mt-2 mt-lg-0">
+      <b-nav-item-dropdown v-for="page in pages" :key="page.id" :text="page.name" :href="`/${page.alias}`">
+        <b-dropdown-item v-for="child in page.children" :key="child.id" :href="`/${page.alias}/${child.alias}`">{{ child.name }}</b-dropdown-item>
+      </b-nav-item-dropdown>
+    </b-navbar-nav>
+  </b-navbar>
 </template>
 
 <script>
@@ -47,13 +44,30 @@
   }
   .navbar-nav
   {
+    list-style: none;
     display: flex;
     flex-direction: row;
     padding-left: 15px;
     margin-left: 33.33333%;
+    width: calc(66.66666% - 15px);
   }
-  .dropdown:hover > .dropdown-menu
+  .nav-item
   {
-    display: block;
+    border-left: 1px solid #349b1d;
+  }
+  .nav-link
+  {
+    color: #349b1d;
+    font-weight: 600;
+  }
+  .nav-item:hover,
+  .nav-item:focus
+  {
+    background-color: #349b1d;
+  }
+  .nav-item:hover .nav-link,
+  .nav-item:focus .nav-link
+  {
+    color: #fff;
   }
 </style>
