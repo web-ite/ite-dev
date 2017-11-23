@@ -1,5 +1,6 @@
 const Router = require('express').Router
 const fs = require('fs')
+const _ = require('lodash')
 
 const router = Router()
 
@@ -8,22 +9,30 @@ const router = Router()
 /* ---------------- Read content ---------------- */
 
 router.get('/page/content', function (req, res, next) {
-  fs.readFile('static/common/pages.json', 'utf8', (err, data) => {
+  let language = req.query.language
+  let pageId = req.query.pageId
+  let fileUrl = 'static/pages/' + language + '/data.json'
+  fs.readFile(fileUrl, 'utf8', (err, data) => {
     if (err) {
-      console.error(err)
-      let date = new Date()
-      fs.appendFile('static/error-log.txt', '[ ' + date + ' ] Error: ' + err + '\n', 'utf8', (err, data) => {
+      let errText = '[' + new Date() + '] Error: ' + err + '\n' + 
+                     'Could not read file \"' + language + '\/data.json\" and get page with id - \"' + pageId + '\".\n' 
+      fs.appendFile('static/error.txt', errText, 'utf8', (err, data) => {
         if (err) {
           console.error(err)
         }
       })
-      res.status(503).send('Could not read file pages.json and fetch pages content data.')
+      res.status(503).json({
+        code: 503,
+        message: 'Could not read file \"' + language + '\/data.json\" and get page with id - \"' + pageId + '\".\n'
+      })
     } else {
       let result = JSON.parse(data)
-      let id = req.body.id
-      let page = result.pages.filter()
-      result = result.pages
-      res.status(200).json(result)
+      let pagesContent = result.content
+      let pageContent = _.filter(pagesContent, {'pageId': parseInt(req.query.pageId)})
+      res.status(200).json({
+        code: 200,
+        data: pageContent[0].data
+      })
     }
   })
 })
@@ -31,7 +40,51 @@ router.get('/page/content', function (req, res, next) {
 /* ---------------- Post content ---------------- */
 
 router.post('/page/content', function (req, res, next) {
-  
+  let language = req.body.language
+  let pageId = req.body.pageId
+  let content = req.body.content
+  let fileUrl = 'static/pages/' + language + '/data.json'
+  fs.readFile(fileUrl, 'utf8', (err, data) => {
+    if (err) {
+      let errText = '[' + new Date() + '] Error: ' + err + '\n' + 
+                     'Could not read file \"' + language + '\/data.json\" and get page with id - \"' + pageId + '\".\n' 
+      fs.appendFile('static/error.txt', errText, 'utf8', (err, data) => {
+        if (err) {
+          console.error(err)
+        }
+      })
+      res.status(503).json({
+        code: 503,
+        message: 'Could not read file \"' + language + '\/data.json\" and get page with id - \"' + pageId + '\".\n'
+      })
+    } else {
+      let result = JSON.parse(data)
+      let pagesContent = result.content
+      let id = pagesContent.findIndex(el => el.pageId === parseInt(req.query.pageId))
+      pagesContent[id].data = content
+      result.content = pagesContent
+      fs.writeFile(fileUrl, JSON.stringify(result), 'utf8', (err, data) => {
+        if (err) {
+          let errText = '[' + new Date() + '] Error: ' + err + '\n' + 
+                     'Could not read file \"' + language + '\/data.json\" and get page with id - \"' + pageId + '\".\n' 
+          fs.appendFile('static/error.txt', errText, 'utf8', (err, data) => {
+            if (err) {
+              console.error(err)
+            }
+          })
+          res.status(503).json({
+            code: 503,
+            message: 'Could not read file \"' + language + '\/data.json\" and post page with id - \"' + pageId + '\".\n'
+          })
+        } else {
+          res.status(200).json({
+            code: 200,
+            message: 'Success'
+          })
+        }
+      })
+    }
+  })
 })
 
 /* ---------------- Update content ---------------- */

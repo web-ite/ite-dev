@@ -162,7 +162,12 @@ a
 {
   background-color: rgba(0, 123, 255, 0.7);
 }
-
+.d-modal .modal-title
+{
+  font-size: 24px;
+  line-height: 40px;
+  color: $primary-color;
+}
 
   .dropbox
   {

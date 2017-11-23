@@ -52,7 +52,8 @@ module.exports = {
   plugins: [
     // { src: '~/plugins/bootstrap-vue', ssr: false },
     { src: '~/plugins/vue-awesome-swiper', ssr: false },
-    '~/plugins/lodash'
+    '~/plugins/lodash',
+    { src: '~plugins/nuxt-quill-plugin.js', ssr: false }
   ],
   modules: ['bootstrap-vue/nuxt'],
   /*
@@ -63,6 +64,9 @@ module.exports = {
     'font-awesome/css/font-awesome.min.css',
     'swiper/dist/css/swiper.css',
     '~/assets/css/main.scss',
-    '~/assets/css/colors.scss'
+    '~/assets/css/colors.scss',
+    'quill/dist/quill.snow.css',
+  	'quill/dist/quill.bubble.css',
+  	'quill/dist/quill.core.css'
   ]
 }
