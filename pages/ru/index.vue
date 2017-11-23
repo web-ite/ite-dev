@@ -6,7 +6,7 @@
         <button class="btn btn-primary btn-edit-mode" @click="textBlockModal = true">Edit</button>
         <b-modal v-model="textBlockModal" hide-header-close title="Edit page text content">
           <div class="quill-editor" 
-               :content="content"
+               v-model="content"
                v-quill:myQuillEditor="editorOption">
           </div>
           <template slot="modal-footer">
@@ -48,7 +48,7 @@ export default {
     saveTextBlock: function () {
       let self = this
       axios({
-        method: 'post',
+        method: 'put',
         url: '/api/page/content',
         data: {
           pageId: 1,

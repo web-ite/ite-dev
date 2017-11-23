@@ -39,10 +39,11 @@ router.get('/page/content', function (req, res, next) {
 
 /* ---------------- Post content ---------------- */
 
-router.post('/page/content', function (req, res, next) {
+router.put('/page/content', function (req, res, next) {
   let language = req.body.language
   let pageId = req.body.pageId
-  let content = req.body.content
+  let content = req.body.data
+  console.log(content)
   let fileUrl = 'static/pages/' + language + '/data.json'
   fs.readFile(fileUrl, 'utf8', (err, data) => {
     if (err) {
@@ -60,8 +61,13 @@ router.post('/page/content', function (req, res, next) {
     } else {
       let result = JSON.parse(data)
       let pagesContent = result.content
-      let id = pagesContent.findIndex(el => el.pageId === parseInt(req.query.pageId))
-      pagesContent[id].data = content
+      console.log(pagesContent)
+      for (let i = 0; i < pagesContent.length; i++) {
+        if (pagesContent[i].pageId === parseInt(pageId)) {
+          pagesContent[i].data = content
+        }
+      }
+      console.log(pagesContent)
       result.content = pagesContent
       fs.writeFile(fileUrl, JSON.stringify(result), 'utf8', (err, data) => {
         if (err) {
