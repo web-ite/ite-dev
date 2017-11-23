@@ -3,10 +3,10 @@
     
     <div class="card freebox" v-for="freebox in freeboxes" :key="freebox.id" v-bind:class="freebox.freeboxBg">
       <div class="card-body">
-        <h4 class="card-title">
+        <h2 class="card-title">
           <span>→</span>
           {{ freebox.freeboxTitle }}
-        </h4>
+        </h2>
         <p class="card-text">{{ freebox.freeboxText }}</p>
       </div>
       <img class="card-img-bottom width-full" :src="`/images/freebox/${freebox.freeboxImg}`">
@@ -35,7 +35,7 @@
         </template>
       </b-modal>
       
-      <b-modal ref="freeboxModelModal" hide-header-close :title="freeboxModel.freeboxTitle">
+      <b-modal ref="freeboxModelModal" hide-header-close :title="freeboxModel.title">
         <b-alert :show="freeboxAlert" :variant="freeboxAlertType">{{ freeboxAlertText }}</b-alert>
         <b-row>
           <b-col cols="12">
@@ -151,7 +151,6 @@
         if (((freebox.freeboxImgPreview !== null) && (freebox.freeboxImgPreview !== undefined) && (freebox.freeboxImgPreview !== '')) || ((freebox.freeboxImg !== null) && (freebox.freeboxImg !== undefined) && (freebox.freeboxImg !== ''))) {
           let formData
           if ((freebox.freeboxImg !== null) && (freebox.freeboxImg !== undefined) && (freebox.freeboxImg !== '')) {
-            console.log('Image already set')
             formData = new FormData()
             formData.append('image', freebox.freeboxImg)
             formData.append('title', freebox.freeboxTitle)
@@ -163,6 +162,7 @@
               formData.append('order', freebox.order)
             }
           } else {
+            console.log('Image already set')
             formData = {
               title: freebox.freeboxTitle,
               text: freebox.freeboxText,
@@ -278,6 +278,10 @@
   .card-title span
   {
     float: right;
+  }
+  .card-img-bottom
+  {
+    border-radius: 0;
   }
   .ec
   {

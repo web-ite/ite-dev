@@ -7,7 +7,8 @@ let templates = require('./templates')
 let site = require('./site')
 let header = require('./header')
 let footer = require('./footer')
-let components = require('./components')
+let components = require('./_components')
+// let newComponents = require('./components')
 
 const router = Router()
 
@@ -19,5 +20,6 @@ router.use(site)
 router.use(header)
 router.use(footer)
 router.use(components)
+// router.use(newComponents)
 
 module.exports = router

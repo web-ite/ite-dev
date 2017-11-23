@@ -2,7 +2,7 @@
   <div class="mainBannerContainer" v-bind:class="{ 'd-relative': $store.state.admin }">
     <div v-if="mainBanner.bannerType === 'image'" class="mainBanner card bg-dark text-white">
       <a :href="mainBanner.bannerLink">
-      <img class="card-img" :src="`images/banners/${mainBanner.bannerImg}`">
+      <img class="card-img" :src="`/images/banner/${mainBanner.bannerImg}`">
         <div class="card-img-overlay">
           <h4 class="card-title">{{ mainBanner.bannerTitle }}</h4>
           <p class="card-text">{{ mainBanner.bannerText }}</p>

@@ -62,7 +62,7 @@ module.exports = {
     'bootstrap/dist/css/bootstrap.min.css',
     'font-awesome/css/font-awesome.min.css',
     'swiper/dist/css/swiper.css',
-    '~/assets/css/main.css',
-    '~/assets/css/colors.css'
+    '~/assets/css/main.scss',
+    '~/assets/css/colors.scss'
   ]
 }

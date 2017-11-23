@@ -1,82 +1,92 @@
 <template>
   <header class="headerSection">
     <div class="edit-section">
-      <button class="btn btn-edit-global" @click="$store.commit('adminMode')" v-bind:class="{ 'btn-primary': $store.state.admin, 'btn-warning': !$store.state.admin }"><i class="fa fa-edit"></i></button>
-      <a href="/admin" class="btn btn-warning btn-edit-global"><i class="fa fa-user"></i></a>
+      <button class="btn btn-edit-global" 
+              @click="$store.commit('adminMode')" 
+              v-bind:class="{ 'btn-primary': $store.state.admin, 'btn-warning': !$store.state.admin }">
+        <i class="fa fa-edit"></i>
+      </button>
+      <a href="/admin" class="btn btn-warning btn-edit-global">
+        <i class="fa fa-user"></i>
+      </a>
     </div>
     <div class="container">
-      <div class="siteSwitchSection btn-group">
-        <a href="#" class="siteSwitchSection__btn siteSwitchSection__btn-blue">Sport World Krasnodar</a>
-        <a href="#" class="siteSwitchSection__btn siteSwitchSection__btn-red">Sport World St. Petersburg</a>
-        <a href="#" class="siteSwitchSection__btn siteSwitchSection__btn-green">Sport World Novosibirsk</a>
-      </div>
+      <!--<div class="siteSwitchSection btn-group">
+        <nuxt-link to="/ru" class="siteSwitchSection__btn siteSwitchSection__btn-blue">Sport World Krasnodar</nuxt-link>
+        <nuxt-link to="/ru" class="siteSwitchSection__btn siteSwitchSection__btn-red">Sport World St. Petersburg</nuxt-link>
+        <nuxt-link to="/ru" class="siteSwitchSection__btn siteSwitchSection__btn-green">Sport World Novosibirsk</nuxt-link>
+      </div>-->
       <div class="languageSwitchSection">
         <ul class="list-inline">
           <li class="list-inline-item" v-for="language in languages">
-            <a :href="`/${language.code}`"> {{ language.name }}</a>
+            <a class="language-switcher" :href="`/${language.code}`"> {{ language.name }}</a>
           </li>
         </ul>
       </div>
-      <div class="exhibitionInfoSection row">
-        <div class="col-12 col-sm-4 d-flex align-items-center" v-bind:class="{ 'd-relative': $store.state.admin }">
-          <!-- Exhibition logotype -->
-          <a :href="`/`">
-            <img class="exhibitionLogotype" :src="`/${logotype}`" />
-          </a>
-          <!-- Logotype editor -->
-          <div v-if="$store.state.admin" class="d-modal">
-            <button class="btn btn-primary btn-edit-mode" @click="headerExhibitionLogotype = true">Edit</button>
-            <b-modal ref="headerExhibitionLogotypeRef" hide-header-close v-model="headerExhibitionLogotype" title="Edit exhibition logotype" @hidden="restoreExhibitionLogotypeModalState">
-              <b-alert :variant="headerExhibitionLogotypeAlertType" show>{{ headerExhibitionLogotypeAlertText }}</b-alert>
-              <b-row>
-                <b-col cols="12">
-                  <div class="dropbox">
-                    <b-form-file v-show="isInitial" id="inputNewLogotype" v-model="newLogotype" @change="onNewLogotypeChange"></b-form-file>
-                    <p v-if="isInitial">Drag your file(s) here to begin or click to browse</p>
-                    <img v-if="!isInitial" :src="newLogotypePreview" class="logotype-preview"/>
-                    <a v-if="!isInitial" @click="removeNewLogotype" class="remove-btn"><i class="fa fa-trash"></i></a>
-                  </div>
-                </b-col>
-              </b-row>
-              <template slot="modal-footer">
-                <b-button @click="saveExhibitionLogotype" variant="primary">Submit</b-button>
-              </template>
-            </b-modal>
+      <div class="exhibitionInfoSection">
+        <div class="row">
+          <div class="col-12 col-sm-4 d-flex align-items-center" v-bind:class="{ 'd-relative': $store.state.admin }">
+            <!-- Exhibition logotype -->
+            <a :href="`/`">
+              <img class="exhibitionLogotype" :src="`/${logotype}`" />
+            </a>
+            <!-- Logotype editor -->
+            <div v-if="$store.state.admin" class="d-modal">
+              <button class="btn btn-primary btn-edit-mode" @click="headerExhibitionLogotype = true">Edit</button>
+              <b-modal ref="headerExhibitionLogotypeRef" hide-header-close v-model="headerExhibitionLogotype" title="Edit exhibition logotype" @hidden="restoreExhibitionLogotypeModalState">
+                <b-alert :variant="headerExhibitionLogotypeAlertType" show>{{ headerExhibitionLogotypeAlertText }}</b-alert>
+                <b-row>
+                  <b-col cols="12">
+                    <div class="dropbox">
+                      <b-form-file v-show="isInitial" id="inputNewLogotype" v-model="newLogotype" @change="onNewLogotypeChange"></b-form-file>
+                      <p v-if="isInitial">Drag your file(s) here to begin or click to browse</p>
+                      <img v-if="!isInitial" :src="newLogotypePreview" class="logotype-preview"/>
+                      <a v-if="!isInitial" @click="removeNewLogotype" class="remove-btn"><i class="fa fa-trash"></i></a>
+                    </div>
+                  </b-col>
+                </b-row>
+                <template slot="modal-footer">
+                  <b-button @click="saveExhibitionLogotype" variant="primary">Submit</b-button>
+                </template>
+              </b-modal>
+            </div>
+            <!-- End of logotype editor-->
           </div>
-          <!-- End of logotype editor-->
-        </div>
-        <div class="col-12 col-sm-8" v-bind:class="{ 'd-relative': $store.state.admin }">
-          <!-- Exhibition title -->
-          <p class="exhibitionTitle text-center text-sm-left primary-text">{{ title }}</p>
-          <!-- Exhibition date and venue -->
-          <div class="exhibitionDateVenue text-center text-sm-left">
-            <span class="exhibitionDateVenue__date secondary-text">{{ date }}</span>
-            <span class="pl-3 pr-3">•</span>
-            <span class="exhibitionDateVenue__venue">{{ venue }}</span>
+          <div class="col-12 col-sm-8" v-bind:class="{ 'd-relative': $store.state.admin }">
+            <!-- Exhibition title -->
+            <p class="exhibitionTitle text-center text-sm-left primary-text">{{ title }}</p>
+            <!-- Exhibition date and venue -->
+            <div class="exhibitionDateVenue text-center text-sm-left">
+              <span class="exhibitionDateVenue__date secondary-text">{{ date }}</span>
+              <span class="pl-3 pr-3">•</span>
+              <span class="exhibitionDateVenue__venue">{{ venue }}</span>
+            </div>
+            <!-- Title, date and venue editor -->
+            <div v-if="$store.state.admin" class="d-modal">
+              <button class="btn btn-primary btn-edit-mode" :class="{ 'active': headerExhibitionText === true }" @click="headerExhibitionText = true">Edit</button>
+              <b-modal ref="headerExhibitionTextRef" hide-header-close v-model="headerExhibitionText" title="Edit exhibition text information" @hidden="restoreExhibitionTextModalState">
+                <b-alert :variant="headerExhibitionTextAlertType" show>{{ headerExhibitionTextAlertText }}</b-alert>
+                <b-form-group id="inputTitleGroup" label="Exhibition Title:" label-for="input-exhibition-title">
+                  <b-form-textarea id="input-exhibition-title" v-model="title" :rows="3" :max-rows="3" required></b-form-textarea>
+                </b-form-group>
+                <b-form-group id="inputDateGroup" label="Exhibition Date:" label-for="input-exhibition-date">
+                  <b-form-textarea id="input-exhibition-date" v-model="date" :rows="2" :max-rows="2" required></b-form-textarea>
+                </b-form-group>
+                <b-form-group id="inputVenueGroup" label="Exhibition Venue:" label-for="input-exhibition-venue">
+                  <b-form-textarea id="input-exhibition-venue" v-model="venue" :rows="3" :max-rows="3" required></b-form-textarea>
+                </b-form-group>
+                <template slot="modal-footer">
+                  <b-button @click="saveExhibitionText" variant="primary">Submit</b-button>
+                </template>
+              </b-modal>
+            </div>
+            <!-- End of title, date and venue editor -->
           </div>
-          <!-- Title, date and venue editor -->
-          <div v-if="$store.state.admin" class="d-modal">
-            <button class="btn btn-primary btn-edit-mode" :class="{ 'active': headerExhibitionText === true }" @click="headerExhibitionText = true">Edit</button>
-            <b-modal ref="headerExhibitionTextRef" hide-header-close v-model="headerExhibitionText" title="Edit exhibition text information" @hidden="restoreExhibitionTextModalState">
-              <b-alert :variant="headerExhibitionTextAlertType" show>{{ headerExhibitionTextAlertText }}</b-alert>
-              <b-form-group id="inputTitleGroup" label="Exhibition Title:" label-for="input-exhibition-title">
-                <b-form-textarea id="input-exhibition-title" v-model="title" :rows="3" :max-rows="3" required></b-form-textarea>
-              </b-form-group>
-              <b-form-group id="inputDateGroup" label="Exhibition Date:" label-for="input-exhibition-date">
-                <b-form-textarea id="input-exhibition-date" v-model="date" :rows="2" :max-rows="2" required></b-form-textarea>
-              </b-form-group>
-              <b-form-group id="inputVenueGroup" label="Exhibition Venue:" label-for="input-exhibition-venue">
-                <b-form-textarea id="input-exhibition-venue" v-model="venue" :rows="3" :max-rows="3" required></b-form-textarea>
-              </b-form-group>
-              <template slot="modal-footer">
-                <b-button @click="saveExhibitionText" variant="primary">Submit</b-button>
-              </template>
-            </b-modal>
-          </div>
-          <!-- End of title, date and venue editor -->
         </div>
       </div>
-      <primary-navigation-component />
+      <div class="primaryNavigationSection">
+        <primary-navigation-component />
+      </div>
     </div>
   </header>
 </template>
@@ -234,11 +244,14 @@
   }
 </script>
 
-<style>
+<style lang="scss">
+  @import "assets/css/colors.scss";
+  @import "assets/css/main.scss";
   .headerSection
   {
     margin-bottom: 20px;
-  }
+  } 
+  /* Site switcher */
   .siteSwitchSection
   {
     display: flex;
@@ -247,15 +260,17 @@
   }
   .siteSwitchSection__btn
   {
-    padding: .5rem .75rem;
+    padding: 8px 16px;
     color: #fff;
     text-align: center;
     font-size: 18px;
-  }
+  }    
   .siteSwitchSection__btn:hover,
-  .siteSwitchSection__btn:focus
+  .siteSwitchSection__btn:focus,
+  .siteSwitchSection__btn:visited
   {
     color: #fff;
+    text-decoration: none;
   }
   .siteSwitchSection__btn-blue
   {
@@ -269,92 +284,39 @@
   {
     background-color: #009b8f;
   }
+  /* Language switcher */
   .languageSwitchSection
   {
-    padding: .5rem 0;
-    text-align: right;
-    border-bottom: 4px solid #349b1d;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    border-bottom: 4px solid $primary-color;
     margin-bottom: 20px;
   }
+  .language-switcher
+  {
+    color: $text-color;
+  }
+  /* Site header */
   .exhibitionInfoSection
   {
     margin-bottom: 20px;
   }
   .exhibitionTitle
   {
-    font-size: 16px;
+    font-size: 20px;
+    color: $primary-color;
   }
   .exhibitionDateVenue__date
   {
     font-size: 16px;
+    color: $secondary-color;
   }
   .exhibitionDateVenue__venue
   {
     font-size: 16px;
-  }
-  .dropbox
-  {
-    outline: 2px dashed grey;
-    outline-offset: -10px;
-    border-radius: .25rem;
-    background: lightcyan;
-    color: dimgray;
-    padding: 10px 10px;
-    min-height: 200px;
-    position: relative;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items:  center;
-  }
-  .dropbox:hover
-  {
-    background: lightblue;
-  }
-  .dropbox .custom-file
-  {
-    width: 100%;
-    height: 200px;
-    opacity: 0;
-    z-index: 1;
-  }
-  .dropbox #inputNewLogotype
-  {
-    opacity: 0;
-    width: 100%;
-    height: 200px;
-    position: absolute;
-    cursor: pointer;
-  }
-  .dropbox  #inputNewLogotype + span
-  {
-    display: none;
-  }
-  .dropbox p
-  {
-    position: absolute;
-    z-index: 0;
-    top: 35%;
-    left: 30%;
-    width: 40%;
-    text-align: center;
-    margin: 0;
-  }
-  .dropbox .remove-btn
-  {
-    position: absolute;
-    z-index: 9999;
-    top: 8px;
-    left: 8px;
-    line-height: 1;
-    padding: 13px 15px;
-    border-radius: .25rem;
-    background-color: red;
-    color: #fff!important;
-  }
-  .dropbox .logotype-preview
-  {
-    max-height: 170px;
   }
   @media(max-width: 456px)
   {

@@ -276,11 +276,13 @@
   {
     margin-left: -15px;
     margin-right: -15px;
+    height: 100%;
   }
   .swiper-container
   {
     padding-left: 15px;
     padding-right: 15px;
+    height: 100%;
   }
   .slide-img
   {

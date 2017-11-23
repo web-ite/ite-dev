@@ -58,7 +58,7 @@
         </div>
         <div class="exhibitionInfoSection row">
           <div class="col-12 col-sm-4">
-            <logo-component />
+            
           </div>
           <div class="col-12 col-sm-8">
             <p class="exhibitionInfoSection__name" v-bind:style="{ color: color.main }">Международная выставка спортивного оборудования, инвентаря, одежды и аксессуаров</p>
@@ -91,7 +91,6 @@
 
 <script>
 import axios from '~/plugins/axios'
-import LogoComponent from '~/components/Site/Exhibition/Logo.vue'
 
 export default {
   layout: 'admin_dashboard',
@@ -99,9 +98,6 @@ export default {
     return {
       title: 'Color Settings'
     }
-  },
-  components: {
-    LogoComponent: LogoComponent
   },
   data: function () {
     return {

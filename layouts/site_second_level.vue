@@ -1,5 +1,5 @@
 <template>
-  <div class="siteSection">
+  <div class="siteSection container">
     <header-component />
     <nuxt />
     <footer-component />

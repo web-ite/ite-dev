@@ -39,7 +39,7 @@
 			"order": 4
 		}],
 		"mainBanner": {
-			"bannerType": "image",
+			"bannerType": "video",
 			"bannerImg": "",
 			"bannerVideo": "https://www.youtube.com/embed/FNz1ebKJj2Y",
 			"bannerTitle": "Main Banner title",
@@ -89,56 +89,64 @@
 			"freeboxBg": "f9",
 			"freeboxImg": "freebox-2.png",
 			"order": 2
+		}, {
+			"id": 3,
+			"freeboxImg": "freebox-3.png",
+			"freeboxTitle": "Business programme",
+			"freeboxText": "The exhibition business programme includes conferences seminars, round tables, presentations.",
+			"freeboxLink": "/en",
+			"freeboxBg": "f9",
+			"order": 3
 		}],
 		"banners": [{
-		  "id": 1,
-		  "bannerImg": "banner-1.png",
-		  "bannerLink": "/page-three",
-		  "bannerAlt": "Page Three",
-		  "bannerType": "small",
-		  "order": 1
+			"id": 1,
+			"bannerImg": "banner-1.png",
+			"bannerLink": "/page-three",
+			"bannerAlt": "Page Three",
+			"bannerType": "small",
+			"order": 1
 		}, {
-		  "id": 2,
-		  "bannerImg": "banner-2.png",
-		  "bannerLink": "/page-three",
-		  "bannerAlt": "Page Three",
-		  "bannerType": "small",
-		  "order": 2
+			"id": 2,
+			"bannerImg": "banner-2.png",
+			"bannerLink": "/page-three",
+			"bannerAlt": "Page Three",
+			"bannerType": "small",
+			"order": 2
 		}, {
-		  "id": 3,
-		  "bannerImg": "banner-3.png",
-		  "bannerLink": "/page-three",
-		  "bannerAlt": "Page Three",
-		  "bannerType": "small",
-		  "order": 3
+			"id": 3,
+			"bannerImg": "banner-3.png",
+			"bannerLink": "/page-three",
+			"bannerAlt": "Page Three",
+			"bannerType": "small",
+			"order": 3
 		}, {
-		  "id": 4,
-		  "bannerImg": "banner-4.png",
-		  "bannerLink": "/page-three",
-		  "bannerAlt": "Page Three",
-		  "bannerType": "big",
-		  "order": 4
+			"id": 4,
+			"bannerImg": "banner-4.png",
+			"bannerLink": "/page-three",
+			"bannerAlt": "Page Three",
+			"bannerType": "big",
+			"order": 4
 		}, {
-		  "id": 5,
-		  "bannerImg": "banner-5.png",
-		  "bannerLink": "/page-three",
-		  "bannerAlt": "Page Three",
-		  "bannerType": "small",
-		  "order": 5
+			"id": 5,
+			"bannerImg": "banner-5.png",
+			"bannerLink": "/page-three",
+			"bannerAlt": "Page Three",
+			"bannerType": "small",
+			"order": 5
 		}, {
-		  "id": 6,
-		  "bannerImg": "banner-6.png",
-		  "bannerLink": "/page-three",
-		  "bannerAlt": "Page Three",
-		  "bannerType": "small",
-		  "order": 6
+			"id": 6,
+			"bannerImg": "banner-6.png",
+			"bannerLink": "/page-three",
+			"bannerAlt": "Page Three",
+			"bannerType": "small",
+			"order": 6
 		}, {
-		  "id": 7,
-		  "bannerImg": "banner-7.png",
-		  "bannerLink": "/page-three",
-		  "bannerAlt": "Page Three",
-		  "bannerType": "small",
-		  "order": 7
+			"id": 7,
+			"bannerImg": "banner-7.png",
+			"bannerLink": "/page-three",
+			"bannerAlt": "Page Three",
+			"bannerType": "small",
+			"order": 7
 		}]
 	},
 	"footer": {
