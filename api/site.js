@@ -153,8 +153,8 @@ router.post('/site/colors', function (req, res, next) {
           })
           res.status(503).send('Could not write to file site.json colors data.')
         } else {
-          let content = '.primary-text{color:' + req.body.main + ';}.secondary-text{color:' + req.body.secondary + ';}'
-          fs.writeFile('assets/css/colors.css', content, 'utf8', (err, data) => {
+          let content = '$primary-color: ' + req.body.main + ';\n$secondary-color: ' + req.body.secondary + ';'
+          fs.writeFile('assets/css/colors.scss', content, 'utf8', (err, data) => {
             if (err) {
               console.log(err)
               let date = new Date()

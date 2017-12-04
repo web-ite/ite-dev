@@ -1,10 +1,10 @@
 <template>
   <div class="siteSection container">
     <header-component />
+    <div class="page-header siteSection__page-header">
+      Page not found
+    </div>
     <main class="mainSection container">
-      <div class="page-header siteSection__page-header">
-        Page not found
-      </div>
       <h1 class="title text-center">
       {{ error.statusCode }}
       </h1>
@@ -38,14 +38,12 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import "assets/css/colors.scss";
-
-.siteSection__page-header
-{
-  padding: 10px 15px;
-  background-color: $primary-color;
-  font-size: 24px;
-  color: #fff;
-}
+<style scoped>
+  .mainSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+  }
 </style>

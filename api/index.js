@@ -9,7 +9,7 @@ let header = require('./header')
 let footer = require('./footer')
 let components = require('./_components')
 let content = require('./content')
-// let newComponents = require('./components')
+let services = require('./services')
 
 const router = Router()
 
@@ -22,6 +22,6 @@ router.use(header)
 router.use(footer)
 router.use(components)
 router.use(content)
-// router.use(newComponents)
+router.use(services)
 
 module.exports = router

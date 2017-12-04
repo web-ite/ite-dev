@@ -20,3 +20,25 @@ Could not read file "undefined/data.json" and get page with id - "undefined".
 Could not read file "undefined/data.json" and get page with id - "undefined".
 [Thu Nov 23 2017 12:49:29 GMT+0000 (UTC)] Error: Error: ENOENT: no such file or directory, open 'static/pages/undefined/data.json'
 Could not read file "undefined/data.json" and get page with id - "undefined".
+[Mon Dec 04 2017 08:33:25 GMT+0000 (UTC)] Error: Error: ENOENT: no such file or directory, open 'static/pages/undefined/data.json'
+Could not read file "undefined/data.json" and get "news".
+[Mon Dec 04 2017 08:33:28 GMT+0000 (UTC)] Error: Error: ENOENT: no such file or directory, open 'static/pages/undefined/data.json'
+Could not read file "undefined/data.json" and get "news".
+[Mon Dec 04 2017 08:56:14 GMT+0000 (UTC)] Error: Error: ENOENT: no such file or directory, open 'static/pages/undefined/data.json'
+Could not read file "undefined/data.json" and get "news".
+[Mon Dec 04 2017 08:56:16 GMT+0000 (UTC)] Error: Error: ENOENT: no such file or directory, open 'static/pages/undefined/data.json'
+Could not read file "undefined/data.json" and get "news".
+[Mon Dec 04 2017 08:56:56 GMT+0000 (UTC)] Error: Error: ENOENT: no such file or directory, open 'static/pages/undefined/data.json'
+Could not read file "undefined/data.json" and get "news".
+[Mon Dec 04 2017 08:56:57 GMT+0000 (UTC)] Error: Error: ENOENT: no such file or directory, open 'static/pages/undefined/data.json'
+Could not read file "undefined/data.json" and get "news".
+[Mon Dec 04 2017 08:57:49 GMT+0000 (UTC)] Error: Error: ENOENT: no such file or directory, open 'static/pages/undefined/data.json'
+Could not read file "undefined/data.json" and get "news".
+[Mon Dec 04 2017 08:57:53 GMT+0000 (UTC)] Error: Error: ENOENT: no such file or directory, open 'static/pages/undefined/data.json'
+Could not read file "undefined/data.json" and get "news".
+[Mon Dec 04 2017 08:58:38 GMT+0000 (UTC)] Error: Error: ENOENT: no such file or directory, open 'static/pages/undefined/data.json'
+Could not read file "undefined/data.json" and get "news".
+[Mon Dec 04 2017 08:58:41 GMT+0000 (UTC)] Error: Error: ENOENT: no such file or directory, open 'static/pages/undefined/data.json'
+Could not read file "undefined/data.json" and get "news".
+[Mon Dec 04 2017 08:59:39 GMT+0000 (UTC)] Error: Error: ENOENT: no such file or directory, open 'static/pages/undefined/data.json'
+Could not read file "undefined/data.json" and get "news".

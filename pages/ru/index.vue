@@ -1,22 +1,19 @@
 <template>
-  <main class="mainSection container">
-    <div class="textBlock" v-bind:class="{ 'd-relative': $store.state.admin }">
-      <div v-html="content"></div>
-      <div v-if="$store.state.admin" class="d-modal">
-        <button class="btn btn-primary btn-edit-mode" @click="textBlockModal = true">Edit</button>
-        <b-modal v-model="textBlockModal" hide-header-close title="Edit page text content">
-          <div class="quill-editor" 
-               v-model="content"
-               v-quill:myQuillEditor="editorOption">
-          </div>
-          <template slot="modal-footer">
-            <b-button @click="saveTextBlock" variant="primary">Save</b-button>
-          </template>
-        </b-modal>
-      </div>
-      
+  <div class="textBlock" v-bind:class="{ 'd-relative': $store.state.admin }">
+    <div v-html="content"></div>
+    <div v-if="$store.state.admin" class="d-modal d-modal-full">
+      <button class="btn btn-primary btn-edit-mode" @click="textBlockModal = true">Edit</button>
+      <b-modal v-model="textBlockModal" hide-header-close title="Edit page text content">
+        <div class="quill-editor" 
+             v-model="content"
+             v-quill:myQuillEditor="editorOption">
+        </div>
+        <template slot="modal-footer">
+          <b-button @click="saveTextBlock" variant="primary">Save</b-button>
+        </template>
+      </b-modal>
     </div>
-  </main>
+  </div>
 </template>
 
 <script>

@@ -1,8 +1,11 @@
 const Router = require('express').Router
 const multer = require('multer')
 const fs = require('fs')
+const _ = require('lodash')
 
 const router = Router()
+
+/* ---------------- CRUD API routes of components on pages ---------------- */
 
 router.get('/page/components', (req, res, next) => {
   
@@ -12,7 +15,6 @@ router.get('/page/components', (req, res, next) => {
   
   fs.readFile('static/pages/' + language + '/data.json', 'utf8', (err, data) => {
     if (err) {
-      console.error(err)
       let errText = '[' + new Date() + '] Error: ' + err + '\n' + 
                      'Could not read file \"' + language + '\/data.json\" and get \"' + component + '\" from page \"' + page + '\".\n' 
       fs.appendFile('static/error.txt', errText, 'utf8', (err, data) => {
@@ -27,6 +29,7 @@ router.get('/page/components', (req, res, next) => {
     } else {
       let result = JSON.parse(data)
       result = result[language][component]
+      result = _.filter(result, 'order')
       res.status(200).json({
         code: 200,
         data: result
@@ -40,7 +43,7 @@ router.post('/page/components', (req, res, next) => {
   
   let storage = multer.diskStorage({
     destination: function (req, file, callback) {
-      callback(null, 'static/images')
+      callback(null, 'static/images/' + req.body.componentType)
     },
     filename: function (req, file, callback) {
       callback(null, file.originalname)
@@ -51,47 +54,52 @@ router.post('/page/components', (req, res, next) => {
   
   upload(req, res, (err) => {
     
-    let page = req.body.page
+    let pageId = req.body.pageId
     let component = req.body.component
+    let componentType = req.body.componentType
     let language = req.body.language
+    let fileUrl = 'static/pages/' + language + '/data.json'
     
     if (err) {
-      console.error(err)
       let errText = '[' + new Date() + '] Error: ' + err + '\n' + 
-                     'Could not read file \"' + language + '\/data.json\" and get \"' + component + '\" from page \"' + page + '\".\n' 
-      fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
+                     'Could not upload file - \"' + req.file.originalname + '\" to \"images\/' + componentType + '\".\n' 
+      fs.appendFile('static/error.txt', errText, 'utf8', (err, data) => {
         if (err) {
           console.error(err)
         }
       })
       res.status(503).json({
         code: 503,
-        message: 'Could not read file \"' + language + '\/data.json\" and get \"' + component + '\" from page \"' + page + '\".'
+        message: 'Could not upload file - \"' + req.file.originalname + '\" to \"images\/' + componentType + '\".\n'
       })
     } else {
-      let title = req.body.title
-      let text = req.body.text
-      let link = req.body.link
-      fs.readFile('static/common/content.json', 'utf8', (err, data) => {
+      
+      fs.readFile(fileUrl, 'utf8', (err, data) => {
         if (err) {
-          console.error(err)
-          let date = new Date()
-          let errText = '[' + date + '] Error: ' + err + '\n'
-          fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
+          let errText = '[' + new Date() + '] Error: ' + err + '\n' + 
+                     'Could not read file \"' + language + '\/data.json\" and get component \"' + componentType + '\" from page - \"' + pageId + '\".\n' 
+          fs.appendFile('static/error.txt', errText, 'utf8', (err, data) => {
             if (err) {
               console.error(err)
             }
           })
-          res.status(503).send('Could not read file content.json and fetch main page main slider data.')
+          res.status(503).json({
+            code: 503,
+            message: 'Could not read file \"' + language + '\/data.json\" and get component \"' + componentType + '\" from page - \"' + pageId + '\".\n' 
+          })
         } else {
+          
           let result = JSON.parse(data)
-          let id = result.mainPage.mainSlider[0].id
-          for (var i = 0; i < result.mainPage.mainSlider.length; i++) {
-            if (result.mainPage.mainSlider[i].id > id) {
-              id = result.mainPage.mainSlider[i].id
+          let components = result.components[componentType]
+          
+          let id = components[0].id
+          for (let i = 0; i < components.length; i++) {
+            if (components[i].id > id) {
+              id = components[i].id
             }
           }
-          let newSlide = {
+          /* end */
+          let newComponentElement = {
             id: id + 1,
             slideImg: req.file ? req.file.originalname : '',
             slideTitle: title,
@@ -122,5 +130,6 @@ router.post('/page/components', (req, res, next) => {
   
 })
   
+/* ---------------- End of CRUD API routes ---------------- */
 
 module.exports = router

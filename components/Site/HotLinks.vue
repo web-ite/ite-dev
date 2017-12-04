@@ -125,6 +125,7 @@
     display: flex;
     flex-direction: column;
     height: 50%;
+    max-height: 270px;
     margin-left: -15px;
     margin-right: -15px;
   }

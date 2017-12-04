@@ -12,7 +12,7 @@
       <img class="card-img-bottom width-full" :src="`/images/freebox/${freebox.freeboxImg}`">
     </div>
     
-    <div v-if="$store.state.admin" class="d-modal">
+    <div v-if="$store.state.admin" class="d-modal d-modal-full">
       <button class="btn btn-primary btn-edit-mode" @click="freeboxModal = true">Edit</button>
       <b-modal hide-header-close v-model="freeboxModal" title="Edit freeboxes">
         <div class="p-3 bg-info text-white header-title">

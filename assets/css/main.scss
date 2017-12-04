@@ -154,6 +154,11 @@ a
   background-color: rgba(0, 123, 255, 0.2);
   outline: 1px dashed #007BFF;
 }
+.d-relative .d-modal.d-modal-full
+{
+  width: 100%;
+  left: 0;
+}
 .d-modal .modal.show .modal-dialog
 {
   z-index: 3;
@@ -287,8 +292,8 @@ a
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  padding-left: 15px;
-  padding-right: 15px;
+  /* padding-left: 15px;
+  padding-right: 15px; */
   margin-bottom: 20px;
 }
 

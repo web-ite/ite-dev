@@ -133,5 +133,29 @@
 			"mdescription": "Benefits of visiting meta description",
 			"mkeywords": "Benefits of visiting meta keywords"
 		}]
+	}, {
+		"name": "Media center",
+		"status": true,
+		"order": 5,
+		"id": 13,
+		"parent": 1,
+		"alias": "media-center",
+		"path": "media/index.vue",
+		"template": "site_second_level",
+		"mdescription": "Media center page meta descriprion",
+		"mkeywords": "Media center meta keywords",
+		"children": [{
+			"name": "News",
+			"status": true,
+			"order": 41,
+			"id": 14,
+			"parent": 5,
+			"alias": "news",
+			"path": "media/news/index.vue",
+			"template": "site_service_template",
+			"mdescription": "News page meta description",
+			"mkeywords": "News page meta keywords",
+			"children": []
+		}]
 	}]
 }

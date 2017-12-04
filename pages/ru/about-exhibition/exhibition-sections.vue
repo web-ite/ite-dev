@@ -3,7 +3,7 @@
     <div class="page-header siteSection__page-header">
       Разделы выставки
     </div>
-    <section class="layer">
+    <section class="layer container">
       <div class="w-66">
         <main-slider-component />
       </div>
@@ -12,7 +12,7 @@
         <hot-links-component />
       </div>
     </section>
-    <section class="layer">
+    <section class="layer container">
       <div class="w-66">
         <freebox-component />
       </div>

@@ -148,7 +148,7 @@ router.put('/components/slider', function (req, res) {
               result.mainPage.mainSlider[i].slideTitle = title
               result.mainPage.mainSlider[i].slideText = text
               result.mainPage.mainSlider[i].slideLink = link
-              result.footer.organisers[i].order = order
+              result.mainPage.mainSlider[i].order = order
             }
           }
           fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf8', (err, data) => {
@@ -504,7 +504,66 @@ router.post('/components/freebox', function (req, res, next) {
 /* Update freebox */
 
 router.put('/components/freebox', function (req, res, next) {
-  
+  upload(req, res, (err) => {
+    if (err) {
+      console.error(err)
+      let date = new Date()
+      let errText = '[' + date + '] Error: ' + err + '\n'
+      fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
+        if (err) {
+          console.error(err)
+        }
+      })
+      res.status(503).send('Could not update slide in main slider.')
+    } else {
+      let id = req.body.id
+      let title = req.body.title
+      let text = req.body.text
+      let link = req.body.link
+      let order = req.body.order
+      fs.readFile('static/common/content.json', 'utf8', (err, data) => {
+        if (err) {
+          console.error(err)
+          let date = new Date()
+          let errText = '[' + date + '] Error: ' + err + '\n'
+          fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
+            if (err) {
+              console.error(err)
+            }
+          })
+          res.status(503).send('Could not read file content.json and fetch main slider data.')
+        } else {
+          let result = JSON.parse(data)
+          for (var i = 0; i < result.mainPage.freeboxes.length; i++) {
+            if (result.mainPage.freeboxes[i].id === id) {
+              if (req.body.originalname) {
+                result.mainPage.freeboxes[i].freeboxImg = req.body.originalname
+              }
+              result.mainPage.freeboxes[i].freeboxTitle = title
+              result.mainPage.freeboxes[i].freeboxText = text
+              result.mainPage.freeboxes[i].freeboxLink = link
+              result.mainPage.freeboxes[i].order = order
+            }
+          }
+          fs.writeFile('static/common/content.json', JSON.stringify(result), 'utf8', (err, data) => {
+            if (err) {
+              console.log(err)
+              let date = new Date()
+              let errText = '[' + date + '] Error: ' + err + '\n'
+              fs.appendFile('static/error-log.txt', errText, 'utf8', (err, data) => {
+                if (err) {
+                  console.error(err)
+                }
+              })
+              res.status(503).send('Could not write to file content.json updated slide in main slider.')
+            } else {
+              res.status(200).send({'status': 200})
+            }
+          })
+        }
+      })
+    }
+  })
 })
 
 /* Order freebox */
@@ -570,7 +629,22 @@ router.post('/components/freebox/order', function (req, res, next) {
 /* Read banner */
 
 router.get('/components/banner', function (req, res, next) {
-  
+  fs.readFile('static/common/content.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error(err)
+      let date = new Date()
+      fs.appendFile('static/error-log.txt', '[ ' + date + ' ] Error: ' + err + '\n', 'utf8', (err, data) => {
+        if (err) {
+          console.error(err)
+        }
+      })
+      res.status(503).send('Could not read file content.json and fetch freeboxes data.')
+    } else {
+      let result = JSON.parse(data)
+      result = result.mainPage.banners
+      res.status(200).json(result)
+    }
+  })
 })
 
 /* Post banner */

@@ -1,8 +1,8 @@
 <template>
   <b-navbar class="primaryNavigationContainer">
     <b-navbar-nav class="mt-2 mt-md-0 primaryNavigation">
-      <b-nav-item-dropdown class="primaryNavigation__item" v-for="page in pages" :key="page.id" :text="page.name" :href="`/${page.alias}`">
-        <b-dropdown-item class="primaryNavigation__item-dropdown" v-for="child in page.children" :key="child.id" :href="`/${page.alias}/${child.alias}`">{{ child.name }}</b-dropdown-item>
+      <b-nav-item-dropdown class="primaryNavigation__item" v-for="page in pages" :key="page.id" :text="page.name" :href="`/ru/${page.alias}`">
+        <b-dropdown-item class="primaryNavigation__item-dropdown" v-for="child in page.children" :key="child.id" :href="`/ru/${page.alias}/${child.alias}`">{{ child.name }}</b-dropdown-item>
       </b-nav-item-dropdown>
     </b-navbar-nav>
   </b-navbar>

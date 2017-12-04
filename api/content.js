@@ -4,14 +4,16 @@ const _ = require('lodash')
 
 const router = Router()
 
-/* ---------------- CRUD content on pages ---------------- */
+/* ---------------- Read and Update content on pages API routes ---------------- */
 
 /* ---------------- Read content ---------------- */
 
 router.get('/page/content', function (req, res, next) {
+  
   let language = req.query.language
   let pageId = req.query.pageId
   let fileUrl = 'static/pages/' + language + '/data.json'
+  
   fs.readFile(fileUrl, 'utf8', (err, data) => {
     if (err) {
       let errText = '[' + new Date() + '] Error: ' + err + '\n' + 
@@ -37,7 +39,7 @@ router.get('/page/content', function (req, res, next) {
   })
 })
 
-/* ---------------- Post content ---------------- */
+/* ---------------- Update content ---------------- */
 
 router.put('/page/content', function (req, res, next) {
   let language = req.body.language
@@ -93,12 +95,6 @@ router.put('/page/content', function (req, res, next) {
   })
 })
 
-/* ---------------- Update content ---------------- */
-
-router.put('/page/content', function (req, res, next) {
-  
-})
-
-/* ---------------- End CRUD ---------------- */
+/* ---------------- End of API routes ---------------- */
 
 module.exports = router
