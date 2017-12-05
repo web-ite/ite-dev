@@ -31,7 +31,6 @@ app.use(auth.passport.session())
 app.get('/admin', auth.passport.authenticate('provider', { successRedirect: '/admin/dashboard' }))
 app.get('/admin/callback', auth.passport.authenticate('provider', {failureRedirect: '/admin' }), function (req, res) { res.redirect('/'); })
 app.get('/', (req, res) => {res.redirect('/ru')})    
-    
 app.use('/api', api)
 
 // Import and Set Nuxt.js options

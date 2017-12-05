@@ -269,11 +269,17 @@
     border: none;
     border-radius: 0;
   }
+  
   .card-title
   {
     color: #349b1d;
     padding-bottom: 10px;
     border-bottom: 1px solid #349b1d;
+  }
+  .card-title a
+  {
+    color: #349b1d;
+    text-decoration: none;
   }
   .card-title span
   {

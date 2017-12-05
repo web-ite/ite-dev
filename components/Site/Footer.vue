@@ -9,70 +9,6 @@
         			<li v-for="child in page.children" :key="child.id"><a :href="`/${page.alias}/${child.alias}`">{{ child.name }}</a></li>
             </ul>
           </div>
-          <!--<div class="footerSection__topColumn">
-            <h6>О выставке</h6>
-            <ul class="list-unstyled">
-        			<li><a href="/ru-RU/about/sections.aspx" style="">Разделы выставки</a></li>
-        			<li><a href="/ru-RU/about/products.aspx">Каталог продукции</a></li>
-        			<li><a href="/ru-RU/about/exposition.aspx">Интерактивный план</a></li>
-        			<li><a href="/ru-RU/about/exhibitor-list.aspx">Список участников</a></li>
-        			<li><a href="/ru-RU/about/venue.aspx" style="">Место проведения</a></li>
-        			<li><a href="/ru-RU/about/support/official.aspx" style="">Поддержка</a></li>
-        			<li><a href="/ru-RU/about/sponsor/golden.aspx" style="">Спонсоры</a></li>
-        			<li><a href="/ru-RU/about/travel.aspx" style="">Организация поездки</a></li>
-        			<li><a href="/ru-RU/about/organizer.aspx" style="">Организатор</a></li>
-        			<li><a href="/ru-RU/about/contacts.aspx" style="">Контакты</a></li>
-        			<li><a href="/ru-RU/about/exhibitions.aspx" style="">Выставки</a></li>
-            </ul>
-          </div>
-          <div class="footerSection__topColumn">
-            <h6>О выставке</h6>
-            <ul class="list-unstyled">
-        			<li><a href="/ru-RU/about/sections.aspx" style="">Разделы выставки</a></li>
-        			<li><a href="/ru-RU/about/products.aspx">Каталог продукции</a></li>
-        			<li><a href="/ru-RU/about/exposition.aspx">Интерактивный план</a></li>
-        			<li><a href="/ru-RU/about/exhibitor-list.aspx">Список участников</a></li>
-        			<li><a href="/ru-RU/about/venue.aspx" style="">Место проведения</a></li>
-        			<li><a href="/ru-RU/about/support/official.aspx" style="">Поддержка</a></li>
-        			<li><a href="/ru-RU/about/sponsor/golden.aspx" style="">Спонсоры</a></li>
-        			<li><a href="/ru-RU/about/travel.aspx" style="">Организация поездки</a></li>
-        			<li><a href="/ru-RU/about/organizer.aspx" style="">Организатор</a></li>
-        			<li><a href="/ru-RU/about/contacts.aspx" style="">Контакты</a></li>
-        			<li><a href="/ru-RU/about/exhibitions.aspx" style="">Выставки</a></li>
-            </ul>
-          </div>
-          <div class="footerSection__topColumn">
-            <h6>О выставке</h6>
-            <ul class="list-unstyled">
-        			<li><a href="/ru-RU/about/sections.aspx" style="">Разделы выставки</a></li>
-        			<li><a href="/ru-RU/about/products.aspx">Каталог продукции</a></li>
-        			<li><a href="/ru-RU/about/exposition.aspx">Интерактивный план</a></li>
-        			<li><a href="/ru-RU/about/exhibitor-list.aspx">Список участников</a></li>
-        			<li><a href="/ru-RU/about/venue.aspx" style="">Место проведения</a></li>
-        			<li><a href="/ru-RU/about/support/official.aspx" style="">Поддержка</a></li>
-        			<li><a href="/ru-RU/about/sponsor/golden.aspx" style="">Спонсоры</a></li>
-        			<li><a href="/ru-RU/about/travel.aspx" style="">Организация поездки</a></li>
-        			<li><a href="/ru-RU/about/organizer.aspx" style="">Организатор</a></li>
-        			<li><a href="/ru-RU/about/contacts.aspx" style="">Контакты</a></li>
-        			<li><a href="/ru-RU/about/exhibitions.aspx" style="">Выставки</a></li>
-            </ul>
-          </div>
-          <div class="footerSection__topColumn">
-            <h6>О выставке</h6>
-            <ul class="list-unstyled">
-        			<li><a href="/ru-RU/about/sections.aspx" style="">Разделы выставки</a></li>
-        			<li><a href="/ru-RU/about/products.aspx">Каталог продукции</a></li>
-        			<li><a href="/ru-RU/about/exposition.aspx">Интерактивный план</a></li>
-        			<li><a href="/ru-RU/about/exhibitor-list.aspx">Список участников</a></li>
-        			<li><a href="/ru-RU/about/venue.aspx" style="">Место проведения</a></li>
-        			<li><a href="/ru-RU/about/support/official.aspx" style="">Поддержка</a></li>
-        			<li><a href="/ru-RU/about/sponsor/golden.aspx" style="">Спонсоры</a></li>
-        			<li><a href="/ru-RU/about/travel.aspx" style="">Организация поездки</a></li>
-        			<li><a href="/ru-RU/about/organizer.aspx" style="">Организатор</a></li>
-        			<li><a href="/ru-RU/about/contacts.aspx" style="">Контакты</a></li>
-        			<li><a href="/ru-RU/about/exhibitions.aspx" style="">Выставки</a></li>
-            </ul>
-          </div>-->
         </div>
       </div>
     </div>
@@ -445,7 +381,7 @@
     background-color: #b5bbbd;
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
   .footerSection__topColumn
   {

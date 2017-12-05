@@ -2,14 +2,16 @@
   <div class="card newsFreebox f9">
       <div class="card-body">
         <h2 class="card-title">
-          <span>→</span>
-          Новости
+          <nuxt-link to="/ru/media-center/news">
+            <span>→</span>
+            Новости
+          </nuxt-link>
         </h2>
         <div class="card-text">
-          <p class="articleBoxItem" v-for="article in articles" @click="goToArticle(article)">
+          <div class="articleBoxItem" v-for="article in articles" @click="goToArticle(article)">
             <span class="articleBoxDate">{{ article.Date }}</span>
             <span class="articleBoxTitle">{{ article.Title }}</span>
-          </p>
+          </div>
         </div>
       </div>
     </div>
@@ -65,5 +67,11 @@
     color: #000;
     padding: 3px 5px;
     margin-right: 10px;
+  }
+  .articleBoxItem {
+    display: flex;
+    align-items: flex-start;
+    padding: 5px 0;
+    border-bottom: 1px dashed #aaa;
   }
 </style>

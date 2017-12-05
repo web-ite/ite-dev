@@ -16,7 +16,7 @@
                 <span class="articleType">{{ article.Type }}</span>
               </div>
               <h4 class="articleTitle">
-                <nuxt-link :to="`news/${article.id}`">{{ article.Title }}</nuxt-link>
+                <nuxt-link :to="`news/${article.alias}`">{{ article.Title }}</nuxt-link>
               </h4>
               <p class="articleText" v-html="article.Description"></p>
             </div>
@@ -25,39 +25,40 @@
           <div v-if="$store.state.admin" class="d-modal">
             <button class="btn btn-primary btn-edit-mode" @click="articlesModal = true">Edit</button>
             <b-modal v-model="articlesModal" hide-header-close title="News articles">
-              <div class="p-3 bg-info text-white header-title">
-                <div class="header-left">
-                  Articles
-                </div>
-                <div class="header-right">
-                  <i class="fa fa-plus" @click="addArticle"></i>
-                </div>
+              <div role="tablist">
+                <b-card no-body class="mb-2">
+                  <div class="p-3 bg-info text-white header-title" role="tab" v-b-toggle.articles>
+                    <div class="header-left">
+                      News articles
+                    </div>
+                    <div class="header-right">
+                      <i class="fa fa-plus" @click="addArticle"></i>
+                    </div>
+                  </div>
+                  <b-collapse id="articles" visible accordion="articles-accordion" role="tabpanel">
+                    <div class="bg-dark text-white header-title exhibitionOrganiser" v-for="article in articles">
+                      <div class="header-left">{{ article.Title }}</div>
+                      <div class="header-right">
+                        <i class="fa fa-arrow-down" @click="changeOrderDown(article)"></i>
+                        <i class="fa fa-arrow-up" @click="changeOrderUp(article)"></i>
+                      </div>
+                    </div>
+                  </b-collapse>
+                </b-card>
               </div>
-              <b-card no-body v-for="article in articles" :key="article.Date" class="mb-2">
-                <div class="p-3 bg-info text-white header-title">
-                  <div class="header-left">
-                    {{ article.Title }}
-                  </div>
-                  <div class="header-right">
-                    <i class="fa fa-edit" @click="editArticle(article)"></i>
-                  </div>
-                </div>
-              </b-card>
-              
               <template slot="modal-footer">
               </template>
             </b-modal>
             
-            <b-modal ref="articleModelModal" hide-header-close :title="articleModel.Title">
+            <b-modal ref="articleModelModal" size="lg" hide-header-close title="Add new article">
               <b-alert :show="articleAlert" :variant="articleAlertType">{{ articleAlertText }}</b-alert>
+              
               <b-row>
                 <b-col cols="12">
                   <div class="dropbox">
                     <b-form-file v-show="articleModel.isInitial" id="input-thumbnail" v-model="articleModel.Thumbnail" @change="articleModel__onThumbnailChange"></b-form-file>
                     <p v-if="articleModel.isInitial">Drag your file(s) here to begin or click to browse</p>
-                    <img v-if="!articleModel.isInitial && articleModel.mode == 'add'" :src="articleModel.ThumbnailPreview" class="logotype-preview"/>
-                    <img v-if="!articleModel.isInitial && articleModel.Thumbnail ==='' && articleModel.mode == 'edit'" :src="`/images/news/${articleModel.ThumbnailPreview}`" class="logotype-preview"/>
-                    <img v-if="!articleModel.isInitial && articleModel.Thumbnail !=='' && articleModel.mode == 'edit'" :src="articleModel.ThumbnailPreview" class="logotype-preview"/>
+                    <img v-if="!articleModel.isInitial" :src="articleModel.ThumbnailPreview" class="logotype-preview"/>
                     <a v-if="!articleModel.isInitial" @click="articleModel__removeThumbnail" class="remove-btn"><i class="fa fa-trash"></i></a>
                   </div>
                 </b-col>
@@ -67,14 +68,17 @@
                   <b-form-group id="input-article-title-group" label="Article title:" label-for="input-article-title">
                     <b-form-input id="input-article-title" type="text" v-model="articleModel.Title"></b-form-input>
                   </b-form-group>
+                  <b-form-group id="input-article-alias-group" label="Article alias:" label-for="input-article-alias">
+                    <b-form-input id="input-article-alias" type="text" v-model="articleModel.alias"></b-form-input>
+                  </b-form-group>
                   <b-form-group id="input-article-description" label="Article description:" label-for="input-article-description">
                     <b-form-textarea id="input-article-description" rows="3" v-model="articleModel.Description"></b-form-textarea>
                   </b-form-group>
                   <b-form-group id="input-article-text-group" label="Article text:" label-for="input-article-text">
-                    <!--<div class="quill-editor" v-model="articleModel.Text" v-quill:myQuillEditor="editorOption"></div>-->
+                    <div class="quill-editor" id="input-article-text" :content="articleModel.Text" v-model="content" v-quill:myQuillEditor="editorOptions"></div>
                   </b-form-group>
                   <b-form-group id="input-article-date-group" label="Article date:" label-for="input-article-date">
-                    <b-form-input id="input-article-date" type="date" v-model="articleModel.date"></b-form-input>
+                    <b-form-input id="input-article-date" type="datetime-local" v-model="articleModel.Date"></b-form-input>
                   </b-form-group>
                   <b-form-group id="input-article-type-group" label="Article type:" label-for="input-article-type">
                      <b-form-select v-model="articleModel.Type" :options="articleTypes" class="mb-3"></b-form-select>
@@ -83,15 +87,15 @@
               </b-row>
               <b-row>
                 <b-col cols="12">
-                  <div class="dropbox">
-                    <b-form-file v-show="articleModel.isInitial" id="input-thumbnail" multiple v-model="articleModel.Thumbnail" @change="articleModel__onThumbnailChange"></b-form-file>
-                  </div>
+                 
                 </b-col>
               </b-row>
+           
               <template slot="modal-footer">
-                <b-button @click="articleModel__save(articleModel)" variant="primary">{{ articleModel.action }}</b-button>
+                <b-button @click="saveArticle(articleModel)" variant="primary">Add new</b-button>
               </template>
             </b-modal>
+
           </div>
           
         </div>
@@ -105,13 +109,12 @@
 
 <script>
   import axios from '~/plugins/axios'
-  
   import HotLinksComponent from '~/components/Site/HotLinks.vue'
-  
   export default {
     layout: 'site_service_template',
     head: {
-      title: 'Sport World Moscow - International Moscow Exhibition - News'
+      title: 'Sport World Moscow - International Moscow Exhibition - News',
+      ref: 'nuxt-dropzone/dropzone.css'
     },
     components: {
       HotLinksComponent
@@ -127,16 +130,17 @@
         articleAlert: false,
         articleAlertType: '',
         articleAlertText: '',
-        editorOption: {
+        editorOptions: {
           modules: {
             toolbar: [
               ['bold', 'italic', 'underline', 'strike'],
-              ['blockquote', 'code-block'],
-              ['link', 'image'],
-              [{'list': 'ordered'}, {'list': 'bullet'}]
+              ['link'],
+              [{'list': 'ordered'}, {'list': 'bullet'}],
+              ['code-block']
             ]
           }
-        }
+        },
+        content: ''
       }
     },
     methods: {
@@ -144,7 +148,6 @@
         let self = this
         self.$refs.articleModelModal.show()
         self.articleModel = {
-          mode: 'add',
           title: 'Add new article',
           isInitial: true,
           Thumbnail: '',
@@ -154,27 +157,9 @@
           Text: '',
           Date: '',
           Type: '',
-          order: '0',
-          action: 'Add'
-        }
-      },
-      editArticle: function (article) {
-        let self = this
-        self.$refs.articleModelModal.show()
-        self.articleModel = {
-          mode: 'edit',
-          title: 'Edit article',
-          isInitial: false,
-          id: article.id,
-          Thumbnail: '',
-          ThumbnailPreview: article.Thumbnail === '' ? '' : article.Thumbnail,
-          Title: article.Title,
-          Description: article.Description,
-          Text: article.Text,
-          Date: article.Date,
-          Type: article.Type,
-          order: article.order,
-          action: 'Save'
+          Gallery: [],
+          alias: '',
+          order: '0'
         }
       },
       articleModel__onThumbnailChange: function (e) {
@@ -199,54 +184,52 @@
         self.articleModel.ThumbnailPreview = ''
         self.articleModel.isInitial = true
       },
-      articleModel__save: function (article) {
+      saveArticle: function (article) {
         let self = this
-        if (((article.ThumbnailPreview !== null) && (article.ThumbnailPreview !== undefined)) || ((article.Thumbnail !== null) && (article.Thumbnail !== undefined))) {
-          let formData
-          if ((article.Thumbnail !== null) && (article.Thumbnail !== undefined)) {
-            formData = new FormData()
+        if ((article.Thumbnail !== null) && (article.Thumbnail !== undefined)) {
+          let formData = new FormData()
+          if ((article.Gallery) !== null && (article.Gallery !== undefined)) {
+            formData.append('language', 'ru')
+            formData.append('images', article.Gallery)
+            axios({
+              method: 'post',
+              url: '/api/services/article/gallery',
+              data: formData
+            }).then((response) => {
+              let id = response.data.id
+              formData.append('image', article.Thumbnail)
+              formData.append('Title', article.Title)
+              formData.append('Description', article.Description)
+              formData.append('Text', self.content)
+              formData.append('Date', article.Date)
+              formData.append('Type', article.Type)
+              formData.append('Gallery', id)
+              formData.append('alias', article.alias)
+              axios({
+                method: 'post',
+                url: '/api/services/articles',
+                data: formData
+              }).then((response) => {
+                console.log(response)
+                self.fetchData()
+                self.$refs.articleModelModal.hide()
+              }).catch((error) => {
+                console.log(error)
+              })
+            }, (error) => {
+              console.log(error)
+            })
+          } else {
             formData.append('image', article.Thumbnail)
             formData.append('Title', article.Title)
             formData.append('Description', article.Description)
             formData.append('Text', article.Text)
             formData.append('Date', article.Date)
             formData.append('Type', article.Type)
-            if (article.mode === 'edit') {
-              formData.append('id', article.id)
-              formData.append('order', article.order)
-            }
-          } else {
-            console.log('Article thumbnail already set')
-            formData = {
-              Title: article.Title,
-              Description: article.Description,
-              Text: article.Text,
-              Date: article.Date,
-              Type: article.Type
-            }
-            if (article.mode === 'edit') {
-              formData.id = article.id
-              formData.order = article.order
-            }
-          }
-          // console.log(formData)
-          if (article.mode === 'add') {
+            formData.append('alias', article.alias)
             axios({
               method: 'post',
               url: '/api/services/articles',
-              data: formData
-            }).then((response) => {
-              console.log(response)
-              self.fetchData()
-              self.$refs.articleModelModal.hide()
-            }).catch((error) => {
-              console.log(error)
-            })
-          } else if (article.mode === 'edit') {
-            console.log(formData)
-            axios({
-              method: 'put',
-              url: '/api/services/article',
               data: formData
             }).then((response) => {
               console.log(response)
@@ -302,6 +285,9 @@
     width: 100%;
     left: 0;
   }
+  #input-article-text-group {
+    min-height: 160px;
+  }
   .articleBlock {
     padding-top: 10px;
     padding-bottom: 10px;
@@ -311,6 +297,10 @@
   }
   .articleThumbnailBlock {
     width: 25%;
+    padding-right: 10px;
+  }
+  .articleThumbnail {
+    max-width: 100%;
   }
   .articleTextBlock {
     width: 75%;
@@ -337,7 +327,8 @@
   .quill-editor
   {
     display: block;
-    min-height: 200px;
+    height: 100%;
     overflow-y: auto;
+    text-overflow: clip;
   }
 </style>

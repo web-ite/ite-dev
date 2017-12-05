@@ -34,7 +34,7 @@ export default {
           toolbar: [
             ['bold', 'italic', 'underline', 'strike'],
             ['blockquote', 'code-block'],
-            ['link', 'image'],
+            ['link'],
             [{'list': 'ordered'}, {'list': 'bullet'}]
           ]
         }
