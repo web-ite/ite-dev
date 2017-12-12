@@ -53,8 +53,8 @@ a
   :hover,
   :focus
   {
-    text-decoration: none!important;
-    color: darken($primary-color, 5%)!important;
+    text-decoration: none;
+    color: darken($primary-color, 5%);
   }
 }
 
@@ -579,7 +579,11 @@ a
 .primaryNavigation__item a.nav-link:hover,
 .primaryNavigation__item a.nav-link:focus,
 .primaryNavigation__item.show a.nav-link,
-.primaryNavigation__item.show a.nav-link span
+.primaryNavigation__item.show a.nav-link span,
+.primaryNavigation__item.show a.nav-link:hover span,
+.primaryNavigation__item.show a.nav-link:focus span,
+.primaryNavigation__item.show a.nav-link span:hover,
+.primaryNavigation__item.show a.nav-link span:focus
 {
   background-color: $primary-color;
   color: #fff!important;
@@ -605,4 +609,36 @@ a
 .primaryNavigation__item-dropdown:not(:last-child)
 {
   border-bottom: 1px solid $primary-color;
+}
+
+.header-title
+{
+  display: flex;
+  padding: 1rem;
+}
+.header-title .header-left
+{
+  width: 60%;
+  text-align: left;
+}
+.header-title .header-right
+{
+  width: 40%;
+  text-align: right;
+}
+.header-title .fa
+{
+  font-size: 16px;
+}
+.header-title .fa:not(:last-child)
+{
+  margin-right: 10px;
+}
+.ql-container
+{
+  height: auto!important;
+}
+.bottomLinks a
+{
+  text-decoration: underline;
 }

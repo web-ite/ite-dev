@@ -41,6 +41,7 @@
                       <div class="header-right">
                         <i class="fa fa-arrow-down" @click="changeOrderDown(article)"></i>
                         <i class="fa fa-arrow-up" @click="changeOrderUp(article)"></i>
+                        <i class="fa fa-close" @click="deleteArticle(article)"></i>
                       </div>
                     </div>
                   </b-collapse>
@@ -77,6 +78,7 @@
                   <b-form-group id="input-article-text-group" label="Article text:" label-for="input-article-text">
                     <div class="quill-editor" id="input-article-text" :content="articleModel.Text" v-model="content" v-quill:myQuillEditor="editorOptions"></div>
                   </b-form-group>
+                  <div class="clearfix"></div>
                   <b-form-group id="input-article-date-group" label="Article date:" label-for="input-article-date">
                     <b-form-input id="input-article-date" type="datetime-local" v-model="articleModel.Date"></b-form-input>
                   </b-form-group>
@@ -245,6 +247,56 @@
           self.articleAlertText = 'Please insert image in article!'
         }
       },
+      deleteArticle: function (article) {
+        let self = this
+        let data = {
+          language: 'ru',
+          object: article
+        }
+        axios({
+          method: 'delete',
+          url: '/api/services/article',
+          data: data
+        }).then((response) => {
+          self.fetchData()
+        }, (error) => {
+          console.log(error)
+        })
+      },
+      changeOrderUp: function (article) {
+        let self = this
+        let data = {
+          language: 'ru',
+          typeOfAction: 'incremention',
+          object: article
+        }
+        console.log(data)
+        axios({
+          method: 'put',
+          url: '/api/services/article/order',
+          data: data
+        }).then((response) => {
+          console.log(response)
+          self.fetchData()
+        })
+      },
+      changeOrderDown: function (article) {
+        let self = this
+        let data = {
+          language: 'ru',
+          typeOfAction: 'decremention',
+          object: article
+        }
+        console.log(data)
+        axios({
+          method: 'put',
+          url: '/api/services/article/order',
+          data: data
+        }).then((response) => {
+          console.log(response)
+          self.fetchData()
+        })
+      },
       fetchData: function () {
         let self = this
         axios({
@@ -260,7 +312,6 @@
             console.log(articles[i].Date)
             let date = new Date(articles[i].Date)
             articles[i].Date = date.toLocaleDateString('ru-RU')
-            console.log(articles[i].Date)
           }
           self.articles = articles
         }, (error) => {

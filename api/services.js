@@ -5,6 +5,15 @@ const _ = require('lodash')
 
 const router = Router()
 
+let storage = multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, 'static/images/news')
+  },
+  filename: function (req, file, callback) {
+    callback(null, file.originalname)
+  }
+})
+
 router.get('/services/articles', function (req, res, next) {
   let language = req.query.language
   let fileUrl = 'static/pages/' + language + '/data.json'
@@ -23,11 +32,11 @@ router.get('/services/articles', function (req, res, next) {
       })
     } else {
       let result = JSON.parse(data)
-      result = result.services.articles
-      result = _.filter(result, 'order', 'ASC')
+      let articles = result.services.articles
+      let response = _.sortBy(articles, 'order')
       res.status(200).json({
         code: 200,
-        data: result
+        data: response
       })
     }
   })
@@ -38,7 +47,6 @@ router.get('/services/article', function (req, res, netx) {
   let language = req.query.language
   let path = req.query.alias
   let alias = path.split('/').pop()
-  console.log(alias)
   let fileUrl = 'static/pages/' + language + '/data.json'
   fs.readFile(fileUrl, 'utf8', (err, data) => {
     if (err) {
@@ -66,14 +74,8 @@ router.get('/services/article', function (req, res, netx) {
 })
 
 router.put('/services/article', function (req, res, next) {
-   let storage = multer.diskStorage({
-    destination: function (req, file, callback) {
-      callback(null, 'static/images/news')
-    },
-    filename: function (req, file, callback) {
-      callback(null, file.originalname)
-    }
-  })
+  console.log(req.body)
+  console.log(req.file)
   let upload = multer({ storage: storage }).single('image')
   upload(req, res, (err) => {
     let language = req.body.language
@@ -109,6 +111,9 @@ router.put('/services/article', function (req, res, next) {
           let id = req.body.id
           for (let i = 0; i < result.services.articles.length; i++) {
             if (result.services.articles[i].id == id) {
+              if (req.body.originalname) {
+                result.services.articles[i].Thumbnail = req.body.originalname
+              }
               result.services.articles[i].Title = req.body.Title
               result.services.articles[i].Text = req.body.Text
               result.services.articles[i].Description = req.body.Description
@@ -144,6 +149,54 @@ router.put('/services/article', function (req, res, next) {
     }
   })
 })
+
+router.delete('/services/article', function (req, res, next) {
+  let language = req.body.language
+  let object = req.body.object
+  let fileUrl = 'static/pages/' + language + '/data.json'
+  fs.readFile(fileUrl, 'utf8', (err, data) => {
+    if (err) {
+      let errText = '[' + new Date() + '] Error: ' + err + '\n' + 
+                 'Could not read file \"' + language + '\/data.json\" and get component \"news\".\n' 
+      fs.appendFile('static/error.txt', errText, 'utf8', (err, data) => {
+        if (err) {
+          console.error(err)
+        }
+      })
+      res.status(503).json({
+        code: 503,
+        message: 'Could not read file \"' + language + '\/data.json\" and get component \"news\".' 
+      })
+    } else {
+      let result = JSON.parse(data)
+      for(let i = 0; i < result.services.articles.length; i++) {
+        if (result.services.articles[i].id === object.id) {
+          result.services.articles.splice(i, 1)
+        }
+      }
+      fs.writeFile(fileUrl, JSON.stringify(result), 'utf8', (err, data) => {
+        if (err) {
+          let errText = '[' + new Date() + '] Error: ' + err + '\n' + 
+                        'Could not write to file \"' + language + '\/data.json\" and push new record to \"news\".\n' 
+          fs.appendFile('static/error.txt', errText, 'utf8', (err, data) => {
+            if (err) {
+              console.error(err)
+            }
+          })
+          res.status(503).json({
+            code: 503,
+            message: 'Could not write to file \"' + language + '\/data.json\" and push new record to \"news\".' 
+          })
+        } else {
+          res.status(200).json({
+            code: 200,
+            message: 'New record to \"news\" was pushed successfully.' 
+          })
+        }
+      })
+    }
+  })
+});
 
 router.post('/services/articles', function (req, res, next) {
   let storage = multer.diskStorage({
@@ -425,6 +478,64 @@ router.get('/services/article/gallery', function (req, res, next) {
       res.status(200).json({
         code: 200,
         data: gallery
+      })
+    }
+  })
+})
+
+router.put('/services/article/order', function (req, res, next) {
+  let action = req.body.typeOfAction
+  let object = req.body.object
+  let language = req.body.language
+  let fileUrl = 'static/pages/' + language + '/data.json'
+  fs.readFile(fileUrl, 'utf8', (err, data) => {
+    if (err) {
+      console.error(err)
+      let error = '[ ' + new Date() + ' ] Error: ' + err + '\n'
+      fs.appendFile('static/common/error-log.txt', error, 'utf8', (err, data) => {
+        if (err) {
+          console.error(err)
+        }
+      })
+      res.status(503).send('Could not read file content.json and fetch data.')
+    } else {
+      let result = JSON.parse(data)
+      if (action ===  'incremention') {
+        if (result.services.articles[object.id - 1].order > 1) {
+          for (var i = 0; i < result.services.articles.length; i++) {
+            if (result.services.articles[i].order === object.order - 1) {
+              result.services.articles[i].order += 1
+            }
+            if (result.services.articles[i].id === object.id) {
+              result.services.articles[i].order -= 1
+            }
+          }
+        }
+      } else if (action === 'decremention') {
+        if (result.services.articles[object.id - 1].order < result.services.articles.length) {
+          for (var i = 0; i < result.services.articles.length; i++) {
+            if (result.services.articles[i].order === object.order + 1) {
+              result.services.articles[i].order -= 1
+            }
+            if (result.services.articles[i].id === object.id) {
+              result.services.articles[i].order += 1
+            }
+          }
+        }
+      }
+      fs.writeFile(fileUrl, JSON.stringify(result), 'utf-8', (err, data) => {
+        if (err) {
+          console.log(err)
+          let error = '[' + new Date() + '] Error: ' + err + '\n'
+          fs.appendFile('static/error-log.txt', error, 'utf8', (err, data) => {
+            if (err) {
+              console.error(err)
+            }
+          })
+          res.status(503).send('Could not write to file content.json data.')
+        } else {
+          res.status(200).send({'status': 200})
+        }
       })
     }
   })

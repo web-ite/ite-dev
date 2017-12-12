@@ -42,7 +42,7 @@
             </a>
           </div>
         </div>
-        <div class="footerSection__social">
+        <!--div class="footerSection__social">
           <ul class="list-inline social">
             <li class="list-inline-item">
               <a href="http://www.facebook.com/" target="_blank" rel="nofollow" style="background-image:url('/images/facebook.png');">&nbsp;</a>
@@ -60,7 +60,7 @@
               <a href="https://instagram.com/" target="_blank" rel="nofollow" style="background-image:url('/images/instagram.png')">&nbsp;</a>
             </li>
           </ul>
-        </div>
+        </div-->
         
         <!-- Footer bottom row editor -->
         <div v-if="$store.state.admin" class="d-modal">
@@ -368,7 +368,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   .footerSection
   {
     text-align: left;
@@ -387,7 +387,15 @@
   {
     width: 20%;
     padding: 10px 15px;
+  }
+  .footerSection__topColumn a
+  {
     color: #fff;
+  }
+  .footerSection__topColumn a:hover,
+  .footerSection__topColumn a:focus
+  {
+    text-decoration: none;
   }
   .footerSection__bottomRow
   {
@@ -416,28 +424,6 @@
     padding: 1rem;
     background-color: #aaa;
     color: #fff;
-  }
-  .header-title
-  {
-    display: flex;
-  }
-  .header-title .header-left
-  {
-    width: 60%;
-    text-align: left;
-  }
-  .header-title .header-right
-  {
-    width: 40%;
-    text-align: right;
-  }
-  .header-title .fa
-  {
-    font-size: 16px;
-  }
-  .header-title .fa:not(:last-child)
-  {
-    margin-right: 10px;
   }
   @media(max-width: 456px)
   {

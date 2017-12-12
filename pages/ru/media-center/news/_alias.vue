@@ -6,20 +6,30 @@
     <section class="layer container">
       <div class="w-66">
         <div class="article" v-bind:class="{ 'd-relative': $store.state.admin }">
-          <img :src="`/images/news/${article.Thumbnail}`">
+          <img :src="`/images/news/${article.Thumbnail}`" class="articleThumbnail">
+          <div class="row">
+            <div class="col-6">
+              <p class="articleDate">{{ article.Date }}</p>
+            </div>
+            <div class="col-6">
+              <p class="articleType">{{ article.Type }}</p>
+            </div>
+          </div>
           <p v-html="article.Text"></p>
           <div v-if="$store.state.admin" class="d-modal">
             <button class="btn btn-primary btn-edit-mode" @click="articleModal = true">Edit</button>
             <b-modal v-model="articleModal" size="lg" hide-header-close title="Edit article">
               <b-alert :show="articleAlert" :variant="articleAlertType">{{ articleAlertText }}</b-alert>
-              
               <b-row>
                 <b-col cols="12">
                   <div class="dropbox">
-                    <b-form-file v-show="!articleModel.Thumbnail" id="input-thumbnail" v-model="articleModel.Thumbnail" @change="articleModel__onThumbnailChange"></b-form-file>
-                    <p v-if="!articleModel.Thumbnail">Drag your file(s) here to begin or click to browse</p>
-                    <img v-if="articleModel.Thumbnail" :src="`/images/news/${article.Thumbnail}`" class="logotype-preview"/>
-                    <a v-if="articleModel.Thumbnail" @click="articleModel__removeThumbnail" class="remove-btn"><i class="fa fa-trash"></i></a>
+                  
+                    <img v-if="thumbnail" :src="thumbnailSource" class="logotype-preview"/>
+                    <a v-if="thumbnail" @click="removeThumbnail" class="remove-btn"><i class="fa fa-trash"></i></a>
+                    
+                    <b-form-file v-if="!thumbnail" id="input-thumbnail" v-model="thumbnailFile" @change="onThumbnailChange"></b-form-file>
+                    <p v-if="!thumbnail">Drag your file(s) here to begin or click to browse</p>
+                    
                   </div>
                 </b-col>
               </b-row>
@@ -37,6 +47,7 @@
                   <b-form-group id="input-article-text-group" label="Article text:" label-for="input-article-text">
                     <div class="quill-editor" id="input-article-text" v-model="articleModel.Text"  v-quill:myQuillEditor="editorOptions"></div>
                   </b-form-group>
+                  <div class="clearfix"></div>
                   <b-form-group id="input-article-date-group" label="Article date:" label-for="input-article-date">
                     <b-form-input id="input-article-date" type="datetime-local" v-model="articleModel.Date"></b-form-input>
                   </b-form-group>
@@ -45,17 +56,14 @@
                   </b-form-group>
                 </b-col>
               </b-row>
-              <b-row>
-                <b-col cols="12">
-                 
-                </b-col>
-              </b-row>
-           
               <template slot="modal-footer">
-                <b-button @click="saveArticle(articleModel)" variant="primary">Add new</b-button>
+                <b-button @click="saveArticle(articleModel)" variant="primary">Save</b-button>
               </template>
             </b-modal>
           </div>
+        </div>
+        <div class="bottomLinks">
+          <nuxt-link :to="`/${$store.state.language}/media-center/news`">Назад к списку</nuxt-link>
         </div>
       </div>
       <div class="w-33">
@@ -88,6 +96,9 @@
         articleTypes: [
           'News', 'Press release'
         ],
+        thumbnail: false,
+        thumbnailFile: '',
+        thumbnailSource: '',
         editorOptions: {
           modules: {
             toolbar: [
@@ -102,34 +113,34 @@
       }
     },
     methods: {
-      articleModel__onThumbnailChange: function (e) {
+      onThumbnailChange: function (e) {
         let files = e.target.files || e.dataTransfer.files
         if (!files.length) {
           return
         }
-        this.articleModel__createThumbnail(files[0])
+        this.createThumbnail(files[0])
       },
-      articleModel__createThumbnail: function (file) {
+      createThumbnail: function (file) {
         let self = this
+        self.thumbnail = true
         let reader = new FileReader()
-        self.articleModel.isInitial = false
         reader.onload = (e) => {
-          self.articleModel.ThumbnailPreview = e.target.result
+          self.thumbnailSource = self.thumbnailFile = e.target.result
         }
         reader.readAsDataURL(file)
       },
-      articleModel__removeThumbnail: function () {
+      removeThumbnail: function () {
         let self = this
-        self.articleModel.Thumbnail = ''
-        self.articleModel.ThumbnailPreview = ''
-        self.articleModel.isInitial = true
+        self.thumbnail = false
+        self.thumbnailSource = ''
+        self.thumbnailFile = null
       },
       saveArticle: function (article) {
         let self = this
-        if ((article.Thumbnail !== null) && (article.Thumbnail !== undefined)) {
+        if ((self.thumbnailFile !== null) && (self.thumbnailFile !== undefined)) {
           let formData = new FormData()
           formData.append('language', 'ru')
-          formData.append('image', article.Thumbnail)
+          formData.append('image', self.thumbnailFile)
           formData.append('Title', article.Title)
           formData.append('Description', article.Description)
           formData.append('Text', article.Text)
@@ -150,15 +161,36 @@
             console.log(error)
           })
         } else {
-          self.articleAlert = true
+          /* self.articleAlert = true
           self.articleAlertType = 'danger'
-          self.articleAlertText = 'Please insert image in article!'
+          self.articleAlertText = 'Please insert image in article!' */
+          let formData = {
+            language: 'ru',
+            Title: article.Title,
+            Description: article.Description,
+            Text: article.Text,
+            Date: article.Date,
+            Type: article.Type,
+            alias: article.alias,
+            id: article.id,
+            order: article.order
+          }
+          axios({
+            method: 'put',
+            url: '/api/services/article',
+            data: formData
+          }).then((response) => {
+            console.log(response)
+            self.fetchData()
+            self.articleModal = false
+          }).catch((error) => {
+            console.log(error)
+          })
         }
       },
       fetchData: function () {
         if (process.browser) {
           var path = window.location.pathname
-          console.log(path)
           let self = this
           axios({
             method: 'get',
@@ -168,8 +200,14 @@
               alias: path
             }
           }).then((response) => {
-            console.log(response)
             self.article = response.data.data[0]
+            let date = new Date(self.article.Date)
+            self.article.Date = date.toLocaleDateString('ru-RU')
+            if (self.article.Thumbnail) {
+              self.thumbnail = true
+              self.thumbnailSource = `/images/news/${self.article.Thumbnail}`
+              self.thumbnailFile = null
+            }
             self.articleModel = self.article
             self.articleGallery = response.data.gallery
           }, (error) => {
@@ -188,6 +226,16 @@
 <style>
   .article {
     padding: 20px 20px 0 0;
+  }
+  .articleThumbnail {
+    margin-bottom: 20px;
+  }
+  .articleDate {
+    font-weight: 300;
+  }
+  .articleType {
+    text-align: right;
+    font-weight: 300;
   }
   .article .d-modal {
     left: 0;
