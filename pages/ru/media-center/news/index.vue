@@ -55,7 +55,7 @@
               <b-alert :show="articleAlert" :variant="articleAlertType">{{ articleAlertText }}</b-alert>
               
               <b-row>
-                <b-col cols="12">
+                <b-col cols="6">
                   <div class="dropbox">
                     <b-form-file v-show="articleModel.isInitial" id="input-thumbnail" v-model="articleModel.Thumbnail" @change="articleModel__onThumbnailChange"></b-form-file>
                     <p v-if="articleModel.isInitial">Drag your file(s) here to begin or click to browse</p>
@@ -63,15 +63,23 @@
                     <a v-if="!articleModel.isInitial" @click="articleModel__removeThumbnail" class="remove-btn"><i class="fa fa-trash"></i></a>
                   </div>
                 </b-col>
-              </b-row>
-              <b-row>
-                <b-col cols="12">
+                <b-col cols="6">
                   <b-form-group id="input-article-title-group" label="Article title:" label-for="input-article-title">
                     <b-form-input id="input-article-title" type="text" v-model="articleModel.Title"></b-form-input>
                   </b-form-group>
                   <b-form-group id="input-article-alias-group" label="Article alias:" label-for="input-article-alias">
                     <b-form-input id="input-article-alias" type="text" v-model="articleModel.alias"></b-form-input>
                   </b-form-group>
+                  <b-form-group id="input-article-date-group" label="Article date:" label-for="input-article-date">
+                    <b-form-input id="input-article-date" type="datetime-local" v-model="articleModel.Date"></b-form-input>
+                  </b-form-group>
+                  <b-form-group id="input-article-type-group" label="Article type:" label-for="input-article-type">
+                     <b-form-select v-model="articleModel.Type" :options="articleTypes" class="mb-3"></b-form-select>
+                  </b-form-group>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col cols="12">
                   <b-form-group id="input-article-description" label="Article description:" label-for="input-article-description">
                     <b-form-textarea id="input-article-description" rows="3" v-model="articleModel.Description"></b-form-textarea>
                   </b-form-group>
@@ -79,12 +87,6 @@
                     <div class="quill-editor" id="input-article-text" :content="articleModel.Text" v-model="content" v-quill:myQuillEditor="editorOptions"></div>
                   </b-form-group>
                   <div class="clearfix"></div>
-                  <b-form-group id="input-article-date-group" label="Article date:" label-for="input-article-date">
-                    <b-form-input id="input-article-date" type="datetime-local" v-model="articleModel.Date"></b-form-input>
-                  </b-form-group>
-                  <b-form-group id="input-article-type-group" label="Article type:" label-for="input-article-type">
-                     <b-form-select v-model="articleModel.Type" :options="articleTypes" class="mb-3"></b-form-select>
-                  </b-form-group>
                 </b-col>
               </b-row>
               <b-row>

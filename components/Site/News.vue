@@ -35,7 +35,10 @@
             language: 'ru'
           }
         }).then((response) => {
-          let articles = response.data.data
+          let articles = []
+          for (let i = 0; i < 4; i++) {
+            articles[i] = response.data.data[i]
+          }
           for (let i = 0; i < articles.length; i++) {
             let date = new Date(articles[i].Date)
             articles[i].Date = date.getDate() + '.' + (date.getMonth() + 1)
@@ -59,6 +62,7 @@
     width: 100%;
     border: none;
     border-radius: 0;
+    min-height: 298px;
     max-height: 298px;
     overflow: hidden;
   }

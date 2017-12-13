@@ -47,6 +47,7 @@
     "util": "^0.10.3",
     "vee-validate": "^2.0.0-beta.17",
     "vue-awesome-swiper": "^2.6.7",
+    "vue-ckeditor2": "^1.18.0",
     "vue-easy-slider": "^3.1.7",
     "vue-easy-toast": "^1.0.2",
     "vue-froala-wysiwyg": "^2.7.0",
